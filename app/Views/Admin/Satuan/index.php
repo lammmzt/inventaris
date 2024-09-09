@@ -7,21 +7,20 @@
             <div class="pd-20">
                 <div class="row mb-4">
                     <div class="col-sm-6">
-                        <h4 class="text-blue h4">Data User</h4>
+                        <h4 class="text-blue h4">Data Satuan</h4>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addUser" type="button">
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addsatuan" type="button">
                             <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
                 <div class="pb-20 table-responsive">
-                    <table class="table hover multiple-select-row nowrap" id="tableUsers">
+                    <table class="table hover multiple-select-row nowrap" id="tablesatuan">
                         <thead>
                             <tr>
-                                <th class="table-plus">Username</th>
-                                <th class="table-plus">Nama</th>
-                                <th>Role</th>
+                                <th class="table-plus">Nama Satuan</th>
+                                <th class="">Status Satuan</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
                         </thead>
@@ -33,52 +32,28 @@
     </div>
 </div>
 
-<!-- ======================================== users ======================================== -->
-<!-- modal addUser -->
-<div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<!-- modal addsatuan -->
+<div class="modal fade" id="addsatuan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    Tambah User
+                    Tambah satuan
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
                 </button>
             </div>
-            <form id="form_tambah_user">
+            <form id="form_tambah_satuan">
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="nama_user" class="col-sm-4 col-form-label">Nama User<span
+                        <label for="nama_satuan" class="col-sm-4 col-form-label">Nama satuan<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="nama_user" name="nama_user"
-                                placeholder="Masukan nama User">
-                            <div class="form-control-feedback " id="errornama_user"></div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="username" class="col-sm-4 col-form-label">Username<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="username" name="username"
-                                placeholder="Masukan username">
-                            <div class="form-control-feedback " id="errorusername"></div>
-                        </div>
-                    </div>
-                    <!-- select -->
-                    <div class="form-group row">
-                        <label for="role" class="col-sm-4 col-form-label">Role<span class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <select class="form-control required" id="role" name="role">
-                                <option value="">Pilih Role</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Pegawai">Pegawai</option>
-                                <option value="KA. TU">KA. TU</option>
-                                <option value="Petugas BOS">Petugas BOS</option>
-                                <option value="Kepala Sekolah">Kepala Sekolah</option>
-                            </select>
-                            <div class="form-control-feedback " id="errorrole"></div>
+                            <input type="text" class="form-control required" id="nama_satuan" name="nama_satuan"
+                                placeholder="Masukan nama satuan">
+                            <div class="form-control-feedback " id="errornama_satuan"></div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +61,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         Batal
                     </button>
-                    <button type="submit" class="btn btn-primary" id="btn_tambah_user">
+                    <button type="submit" class="btn btn-primary" id="btn_tambah_satuan">
                         Simpan
                     </button>
                 </div>
@@ -96,46 +71,27 @@
 </div>
 
 <!-- modal edit -->
-<div class="modal fade" id="edituser" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade" id="editsatuan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    Edit User
+                    Edit satuan
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
                 </button>
             </div>
-            <form id="form_edit_user">
+            <form id="form_edit_satuan">
                 <div class="modal-body">
-                    <input type="hidden" id="editid_user" name="id_user">
+                    <input type="hidden" id="editid_satuan" name="id_satuan">
                     <div class="form-group row">
-                        <label for="editnama_user" class="col-sm-4 col-form-label">Nama User<span
+                        <label for="editnama_satuan" class="col-sm-4 col-form-label">Nama satuan<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="editnama_user" name="nama_user">
-                            <div class="form-control-feedback " id="erroreditnama_user"></div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="editusername" class="col-sm-4 col-form-label">Username<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="editusername" name="username">
-                            <div class="form-control-feedback " id="erroreditusername"></div>
-                        </div>
-                    </div>
-                    <!-- select -->
-                    <div class="form-group row">
-                        <label for="editrole" class="col-sm-4 col-form-label">Role<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <select class="form-control required" id="editrole" name="role">
-
-                            </select>
-                            <div class="form-control-feedback " id="erroreditrole"></div>
+                            <input type="text" class="form-control required" id="editnama_satuan" name="nama_satuan">
+                            <div class="form-control-feedback " id="erroreditnama_satuan"></div>
                         </div>
                     </div>
                 </div>
@@ -143,7 +99,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         Batal
                     </button>
-                    <button type="submit" class="btn btn-primary" id="btn_edit_users">
+                    <button type="submit" class="btn btn-primary" id="btn_edit_satuan">
                         Edit
                     </button>
                 </div>
@@ -151,14 +107,15 @@
         </div>
     </div>
 </div>
+
 <!-- modal view -->
-<div class="modal fade" id="viewuser" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade" id="viewsatuan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    View User
+                    View satuan
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
@@ -166,15 +123,15 @@
             </div>
             <div class="modal-body">
                 <div class="form-group row">
-                    <label for="viewnama_user" class="col-sm-4 col-form-label">Nama User</label></label>
+                    <label for="viewnama_satuan" class="col-sm-4 col-form-label">Nama satuan</label></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewnama_user" name="nama_user" readonly>
+                        <input type="text" class="form-control" id="viewnama_satuan" name="nama_satuan" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="viewusername" class="col-sm-4 col-form-label">Username</label></label>
+                    <label for="viewjenis_satuan" class="col-sm-4 col-form-label">jenis_satuan</label></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewusername" name="username" readonly>
+                        <input type="text" class="form-control" id="viewjenis_satuan" name="jenis_satuan" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -212,7 +169,7 @@
 </div>
 
 
-<!-- ======================================== END users ======================================== -->
+<!-- ======================================== END satuan ======================================== -->
 
 
 <?= $this->endSection('content');?>
@@ -220,29 +177,26 @@
 <?= $this->section('dataTables');?>
 
 <script text="text/javascript">
-// dataTables users
-function dataTablesUsers() {
+// dataTables satuan
+function dataTablessatuan() {
     $(document).ready(function() {
-        $('#tableUsers').DataTable({
+        $('#tablesatuan').DataTable({
             processing: true,
             serverSide: true,
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('Admin/User/DataTables') ?>",
+            ajax: "<?php echo base_url('Admin/Satuan/DataTables') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
-                    data: 'username',
-                    class: 'table-plus'
+                    data: 'nama_satuan'
                 },
                 {
-                    data: 'nama_user'
-                },
-                {
-                    data: 'role'
+                    data: 'status_satuan',
+                    class: 'text-center'
                 },
                 {
                     data: 'action',
@@ -259,7 +213,7 @@ function dataTablesUsers() {
 }
 
 $(document).ready(function() {
-    dataTablesUsers();
+    dataTablessatuan();
 });
 
 function getSwall(status, message) {
@@ -273,32 +227,30 @@ function getSwall(status, message) {
     })
 }
 
-// ======================================== users ========================================
+// ======================================== satuan ========================================
 
 // DATA
-const users = [
-    'nama_user',
-    'username',
-    'role',
-    'id_user'
+const satuan = [
+    'nama_satuan',
+    'id_satuan'
 ];
 
 
 // tambah 
 $(function() {
-    $("#form_tambah_user").submit(function(e) {
+    $("#form_tambah_satuan").submit(function(e) {
         e.preventDefault();
         const formData = new FormData(this);
         if (!this.checkValidity()) {
             e.preventDefault();
             $(this).addClass('form-control-success');
         } else {
-            $("#btn_tambah_user").attr("disabled", "disabled");
-            $("#btn_tambah_user").html(
+            $("#btn_tambah_satuan").attr("disabled", "disabled");
+            $("#btn_tambah_satuan").html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/User/save') ?>',
+                url: '<?= base_url('Admin/Satuan/save') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -321,70 +273,60 @@ $(function() {
                             }
                         });
                     } else {
-                        $("#form_tambah_user")[0].reset();
-                        $("#addUser").modal('hide');
-                        $('#tableUsers').DataTable().ajax.reload();
+                        $("#form_tambah_satuan")[0].reset();
+                        $("#addsatuan").modal('hide');
+                        $('#tablesatuan').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                        users.forEach(function(item) {
+                        satuan.forEach(function(item) {
                             $("#" + item).removeClass('form-control-danger');
                             $("#" + item).removeClass('form-control-success');
                             $("#error" + item).html('');
                             $("#error" + item).removeClass('has-danger');
                         });
                     }
-                    $("#btn_tambah_user").removeAttr("disabled");
-                    $("#btn_tambah_user").html("Tambah");
+                    $("#btn_tambah_satuan").removeAttr("disabled");
+                    $("#btn_tambah_satuan").html("Tambah");
                 }
             });
         }
     });
 });
 
-// edit user
-$(document).on('click', '.edit_user', function() {
+// edit satuan
+$(document).on('click', '.edit_satuan', function() {
     const id = $(this).attr('id');
     $.ajax({
-        url: '<?= base_url('Admin/User/edit') ?>',
+        url: '<?= base_url('Admin/Satuan/edit') ?>',
         method: 'post',
         data: {
-            id_user: id
+            id_satuan: id
         },
         dataType: 'json',
         success: function(response) {
-            $('#edituser').modal('show');
+            $('#editsatuan').modal('show');
             $.each(response.data, function(key, value) {
                 $('#edit' + key).val(value);
             });
-            // add select in edit
-            $('#editrole').html(
-                `<option value="">Pilih Role</option>
-                <option value="Admin" ${response.data.role == 'Admin' ? 'selected' : ''}>Admin</option>
-                <option value="Pegawai" ${response.data.role == 'Pegawai' ? 'selected' : ''}>Pegawai</option>
-                <option value="KA. TU" ${response.data.role == 'KA. TU' ? 'selected' : ''}>KA. TU</option>
-                <option value="Petugas BOS" ${response.data.role == 'Petugas BOS' ? 'selected' : ''}>Petugas BOS</option>
-                <option value="Kepala Sekolah" ${response.data.role == 'Kepala Sekolah' ? 'selected' : ''}>Kepala Sekolah</option>`
-
-            );
 
         }
     });
 });
 
-// update user
+// update satuan
 $(function() {
-    $("#form_edit_user").submit(function(e) {
+    $("#form_edit_satuan").submit(function(e) {
         e.preventDefault();
         const formData = new FormData(this);
         if (!this.checkValidity()) {
             e.preventDefault();
             $(this).addClass('form-control-success');
         } else {
-            $("#btn_edit_user").attr("disabled", "disabled");
-            $("#btn_edit_user").html(
+            $("#btn_edit_satuan").attr("disabled", "disabled");
+            $("#btn_edit_satuan").html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/User/update') ?>',
+                url: '<?= base_url('Admin/Satuan/update') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -392,6 +334,7 @@ $(function() {
                 processData: false,
                 dataType: 'json',
                 success: function(response) {
+                    // alert(formData);
                     if (response.error) {
                         // foeach error 
                         $.each(response.data, function(key, value) {
@@ -407,27 +350,27 @@ $(function() {
                             }
                         });
                     } else {
-                        $("#form_edit_user")[0].reset();
-                        $("#edituser").modal('hide');
-                        $('#tableUsers').DataTable().ajax.reload();
+                        $("#form_edit_satuan")[0].reset();
+                        $("#editsatuan").modal('hide');
+                        $('#tablesatuan').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                        users.forEach(function(item) {
+                        satuan.forEach(function(item) {
                             $("#edit" + item).removeClass('form-control-danger');
                             $("#edit" + item).removeClass('form-control-success');
                             $("#erroredit" + item).html('');
                             $("#erroredit" + item).removeClass('has-danger');
                         });
                     }
-                    $("#btn_edit_user").removeAttr("disabled");
-                    $("#btn_edit_user").html("Edit");
+                    $("#btn_edit_satuan").removeAttr("disabled");
+                    $("#btn_edit_satuan").html("Edit");
                 }
             });
         }
     });
 });
 
-// delete user
-$(document).on('click', '.delete_user', function() {
+// delete satuan
+$(document).on('click', '.delete_satuan', function() {
     const id = $(this).attr('id');
     swal({
             title: "Apakah anda yakin?",
@@ -442,14 +385,14 @@ $(document).on('click', '.delete_user', function() {
         .then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: '<?= base_url('Admin/User/delete') ?>',
+                    url: '<?= base_url('Admin/Satuan/delete') ?>',
                     method: 'post',
                     data: {
-                        id_user: id
+                        id_satuan: id
                     },
                     dataType: 'json',
                     success: function(response) {
-                        $('#tableUsers').DataTable().ajax.reload();
+                        $('#tablesatuan').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
                     }
                 });
@@ -457,18 +400,18 @@ $(document).on('click', '.delete_user', function() {
         });
 });
 
-// view user
-$(document).on('click', '.view_user', function() {
+// view satuan
+$(document).on('click', '.view_satuan', function() {
     const id = $(this).attr('id');
     $.ajax({
-        url: '<?= base_url('Admin/User/edit') ?>',
+        url: '<?= base_url('Admin/Satuan/edit') ?>',
         method: 'post',
         data: {
-            id_user: id
+            id_satuan: id
         },
         dataType: 'json',
         success: function(response) {
-            $('#viewuser').modal('show');
+            $('#viewsatuan').modal('show');
             $.each(response.data, function(key, value) {
                 $('#view' + key).val(value);
             });
@@ -476,49 +419,20 @@ $(document).on('click', '.view_user', function() {
     });
 });
 
-// reset password
-$(document).on('click', '.reset_pass', function() {
-    const id = $(this).attr('id');
-    swal({
-            title: "Apakah anda yakin?",
-            text: "Password akan direset menjadi default!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonText: "Ya, Reset!",
-            confirmButtonClass: "btn btn-success margin-5",
-            cancelButtonText: "Batal",
-        })
-        .then((result) => {
-            if (result.value) {
-                $.ajax({
-                    url: '<?= base_url('Admin/User/reset') ?>',
-                    method: 'post',
-                    data: {
-                        id_user: id
-                    },
-                    dataType: 'json',
-                    success: function(response) {
-                        getSwall(response.status, response.data);
-                    }
-                });
-            }
-        });
-});
 
 // change status
-$(document).on('click', '.change_status_user', function() {
+$(document).on('click', '.change_status_satuan', function() {
     const id = $(this).attr('id');
     // alert(id);
     $.ajax({
-        url: '<?= base_url('Admin/User/changeStatus') ?>',
+        url: '<?= base_url('Admin/Satuan/updateStatus') ?>',
         method: 'post',
         data: {
-            id_user: id
+            id_satuan: id
         },
         dataType: 'json',
         success: function(response) {
-            // $('#tableUsers').DataTable().ajax.reload();
+            // satuan').DataTable().ajax.reload();
             getSwall(response.status, response.data);
         }
     });

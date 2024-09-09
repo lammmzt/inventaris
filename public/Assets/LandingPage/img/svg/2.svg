@@ -1,9 +1,0 @@
-<svg width="97" height="317" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-full">
-    <path
-        d="M24-306C48.962-188.089 73-114.171 73 13.375c0 127.546-49.039 192.329-49 319.875.039 127.164 48.98 192.712 49 319.875C73.02 780.48 48.979 856.31 24 974"
-        stroke="#fff" stroke-width="4" stroke-dasharray="8 12"></path>
-    <rect x="49" width="48" height="48" rx="24" fill="#7D0A0A"></rect><text fill="#F2F2FA" font-family="AvertaStd"
-        font-weight="600" font-size="24">
-        <tspan x="66.5" y="30.792">2</tspan>
-    </text>
-</svg>

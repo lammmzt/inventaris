@@ -37,6 +37,40 @@ $routes->group('Admin', function ($routes) {
         $routes->post('updatePass', 'usersController::updatePass');
     });
 
+
+    $routes->group('Barang', function ($routes) {
+        $routes->get('/', 'barangController::index');
+        $routes->get('DataTables', 'barangController::ajaxDataTables');
+        $routes->post('save', 'barangController::store');
+        $routes->post('delete', 'barangController::destroy');
+        $routes->post('edit', 'barangController::edit');
+        $routes->post('update', 'barangController::update');
+        $routes->post('updateStatus', 'barangController::changeStatus');
+    });
+
+    $routes->group('Ruangan', function ($routes) {
+        $routes->get('/', 'ruanganController::index');
+        $routes->get('DataTables', 'ruanganController::ajaxDataTables');
+        $routes->post('save', 'ruanganController::store');
+        $routes->post('delete', 'ruanganController::destroy');
+        $routes->post('edit', 'ruanganController::edit');
+        $routes->post('update', 'ruanganController::update');
+        $routes->post('updateStatus', 'ruanganController::changeStatus');
+        $routes->post('fetchDataRuangan', 'ruanganController::fetchDataRuangan');
+    });
+
+    $routes->group('Satuan', function ($routes) {
+        $routes->get('/', 'satuanController::index');
+        $routes->get('DataTables', 'satuanController::ajaxDataTables');
+        $routes->post('save', 'satuanController::store');
+        $routes->post('delete', 'satuanController::destroy');
+        $routes->post('edit', 'satuanController::edit');
+        $routes->post('update', 'satuanController::update');
+        $routes->post('updateStatus', 'satuanController::changeStatus');
+        $routes->post('fetchDataSatuan', 'satuanController::fetchDataSatuan');
+    });
+
+
     $routes->group('Setting', function ($routes) {
         $routes->get('/', 'usersController::Setting');
         $routes->post('update', 'usersController::update');

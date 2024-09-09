@@ -54,59 +54,11 @@
                     </a>
                 </li>
 
-                <li class="dropdown <?= $active == 'waGateway' || $active == 'sendWa' ? 'show' : '' ?>">
-                    <a href="javascript:;" class="dropdown-toggle">
-                        <span class="micon bi bi-whatsapp"></span><span class="mtext">WA Gateway</span>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="<?= base_url('Admin/waGateway') ?>"
-                                class="<?= $active == 'waGateway'  ? 'active' : '' ?>">Setting</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown <?= $active == 'chatBot' || $active == 'chatBot' ? 'show' : '' ?>">
-                    <a href="javascript:;" class="dropdown-toggle">
-                        <span class="micon bi bi-chat-dots">
-                        </span><span class="mtext">Chat Bot</span>
-                    </a>
-                    <ul class="submenu">
-                        <li><a href="<?= base_url('Admin/chatBot') ?>"
-                                class="<?= $active == 'chatBot'  ? 'active' : '' ?>">Lis Pertanyaan</a></li>
-                    </ul>
-                </li>
 
                 <?php
                 //  endif; 
                 ?>
 
-                <li class="dropdown <?= $active == 'Antrian' || $active == 'Scan' ? 'show' : '' ?>">
-                    <a href="javascript:;" class="dropdown-toggle">
-                        <span class="micon bi bi-card-checklist"></span><span class="mtext">Antrean</span>
-                    </a>
-                    <ul class="submenu">
-                        <?php
-                        if (session()->get('role') == 'Administrator'):
-                        ?>
-                        <li>
-                            <a href="<?= base_url('Admin/Antrian') ?>"
-                                class="<?= $active == 'Antrian'  ? 'active' : '' ?>">Daftar Antrean</a>
-                        </li>
-                        <?php endif; ?>
-
-                        <li>
-                            <a href="<?= base_url('Admin/Antrian/scan') ?>"
-                                class="<?= $active == 'Scan'  ? 'active' : '' ?>">Scan QR Code</a>
-                        </li>
-                        <?php
-                        if (session()->get('role') == 'Verifikator' || session()->get('role') == 'Administrator'):
-                        ?>
-                        <li>
-                            <a href="<?= base_url('Admin/Antrian/List') ?>"
-                                class="<?= $active == 'List'  ? 'active' : '' ?>">List Antrean</a>
-                        </li>
-
-                        <?php endif; ?>
-                    </ul>
-                </li>
 
 
                 <li
@@ -127,13 +79,7 @@
                 <li>
                     <div class="dropdown-divider"></div>
                 </li>
-                <li>
-                    <a href="https://ppdb.sman1pekalongan.sch.id" target="_blank" class="dropdown-toggle no-arrow">
-                        <span class="micon bi bi-layout-text-window-reverse"></span>
-                        <span class="mtext">Landing Page
-                            <img src="vendors/images/coming-soon.png" alt="" width="25" /></span>
-                    </a>
-                </li>
+
             </ul>
         </div>
     </div>
