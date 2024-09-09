@@ -1,0 +1,303 @@
+:root {
+	--color-primary: #fff;
+	--color-primary2: #e0e0e0;
+	--color-secondary: #000;
+	--color-secondary2: rgba(150, 149, 149, 0.1);
+}
+
+body {
+	/* min-height: 100vh; */
+	margin: 0;
+	padding: 0;
+}
+
+.countdown {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.countdown span {
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+	font-size: 3rem;
+	margin-left: 0.8rem;
+}
+
+.countdown span:first-of-type {
+	margin-left: 0;
+}
+
+.countdown-circles {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.countdown-circles span {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.2);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.countdown-circles span:first-of-type {
+	margin-left: 0;
+}
+
+/* .bg-gradient-1 {
+	background: #7f7fd5;
+	background: -webkit-linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
+	background: linear-gradient(to right, #7f7fd5, #86a8e7, #91eae4);
+}
+
+.bg-gradient-2 {
+	background: #654ea3;
+	background: -webkit-linear-gradient(to right, #654ea3, #eaafc8);
+	background: linear-gradient(to right, #654ea3, #eaafc8);
+}
+
+.bg-gradient-3 {
+	background: #ff416c;
+	background: -webkit-linear-gradient(to right, #ff416c, #ff4b2b);
+	background: linear-gradient(to right, #ff416c, #ff4b2b);
+} */
+
+.bg-gradient-4 {
+	background: #007991;
+	background: -webkit-linear-gradient(to right, #007991, #78ffd6);
+	background: linear-gradient(to right, #007991, #78ffd6);
+}
+
+.rounded {
+	border-radius: 1rem !important;
+}
+
+.btn-demo {
+	padding: 0.5rem 2rem !important;
+	border-radius: 30rem !important;
+	background: rgba(255, 255, 255, 0.3);
+	color: var(--color-primary);
+	text-transform: uppercase;
+	font-weight: bold !important;
+}
+
+.btn-demo:hover,
+.btn-demo:focus {
+	color: var(--color-primary);
+	background: rgba(255, 255, 255, 0.5);
+}
+
+.title-head {
+	font-size: 2.5rem;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 0;
+}
+.head-1 {
+	background: linear-gradient(90deg, #ff416c, #ff4b2b);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.head-2 {
+	background: linear-gradient(90deg, #7f7fd5, #86a8e7, #91eae4);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.head-3 {
+	background: black;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.form1 {
+	background: var(--color-primary2);
+	padding: 20px;
+	border-radius: 10px;
+}
+
+.btn-dark-mode {
+	border: 1px solid transparent;
+	border-radius: 30rem !important;
+	background: var(--color-primary);
+	color: var(--color-secondary);
+	text-transform: uppercase;
+	font-size: 2.4rem;
+}
+
+.dark-mode {
+	background: var(--color-secondary);
+	color: var(--color-primary);
+}
+
+.dark-mode .btn-dark-mode {
+	background: var(--color-secondary);
+	color: var(--color-primary);
+}
+
+.dark-mode .countdown span {
+	color: var(--color-primary);
+}
+
+.dark-mode .head-3 {
+	background: var(--color-primary);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.dark-mode .form1 {
+	background: var(--color-secondary2);
+	color: var(--color-primary);
+}
+
+.header-hasil {
+	background: #007991;
+	background: -webkit-linear-gradient(to right, #007991, #78ffd6);
+	background: linear-gradient(to right, #007991, #78ffd6);
+	height: 15vh;
+	display: flex;
+	align-items: center;
+}
+
+.img-lulus {
+	width: 50%;
+}
+
+.title-siswa {
+	font-size: 2rem;
+	font-weight: bold;
+	background: #007991;
+	background: -webkit-linear-gradient(to right, #007991, #78ffd6);
+	background: linear-gradient(to right, #007991, #78ffd6);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.value-siswa {
+	font-size: 2rem;
+	font-weight: bold;
+	color: var(--color-primary);
+}
+
+.img-siswa {
+	width: 100%;
+	border-radius: 10px;
+	border: 1px solid black;
+}
+.table-siswa {
+	width: 100%;
+	padding: 20px;
+}
+@media (max-width: 768px) {
+	.countdown span {
+		font-size: 2.4rem;
+	}
+
+	.countdown-circles span {
+		width: 90px;
+		height: 90px;
+	}
+
+	.btn-dark-mode {
+		font-size: 2rem;
+	}
+
+	.title-head {
+		font-size: 2rem;
+	}
+}
+@media (max-width: 576px) {
+	.countdown span {
+		font-size: 2rem;
+	}
+	.countdown-circles span {
+		width: 80px;
+		height: 80px;
+	}
+	.btn-dark-mode {
+		font-size: 1.5rem;
+	}
+
+	.title-head {
+		font-size: 1.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.countdown span {
+		font-size: 1.5rem;
+	}
+
+	.countdown-circles span {
+		width: 70px;
+		height: 70px;
+	}
+
+	.btn-dark-mode {
+		font-size: 1.2rem;
+	}
+
+	.title-head {
+		font-size: 1.2rem;
+	}
+}
+
+@media (max-width: 380px) {
+	.countdown span {
+		font-size: 1.2rem;
+	}
+
+	.countdown-circles span {
+		width: 60px;
+		height: 60px;
+	}
+
+	.btn-dark-mode {
+		font-size: 1rem;
+	}
+
+	.title-head {
+		font-size: 1rem;
+	}
+}
+
+@media (max-width: 320px) {
+	.countdown span {
+		font-size: 1rem;
+	}
+
+	.countdown-circles span {
+		width: 50px;
+		height: 50px;
+	}
+
+	.btn-dark-mode {
+		font-size: 0.8rem;
+	}
+
+	.title-head {
+		font-size: 0.8rem;
+	}
+}
+
+@media (max-width: 280px) {
+	.countdown span {
+		font-size: 0.8rem;
+	}
+
+	.countdown-circles span {
+		width: 40px;
+		height: 40px;
+	}
+
+	.btn-dark-mode {
+		font-size: 0.6rem;
+	}
+
+	.title-head {
+		font-size: 0.6rem;
+	}
+}
