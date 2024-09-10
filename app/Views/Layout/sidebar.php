@@ -32,13 +32,15 @@
                 <?php
                 // if (session()->get('role') == 'Admin'):
                 ?>
-                <li class="dropdown <?= $active == 'Barang' || $active == 'Ruangan' ? 'show' : '' ?>">
+                <li
+                    class="dropdown <?= $active == 'Barang' || $active == 'detail_barang' || $active == 'Ruangan' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-gear"></span><span class="mtext">Master Data</span>
                     </a>
                     <ul class="submenu">
                         <li><a href="<?= base_url('Admin/Barang') ?>"
-                                class="<?= $active == 'Barang'  ? 'active' : '' ?>">Master Barang</a></li>
+                                class="<?= $active == 'Barang' || $active == 'detail_barang' ? 'active' : '' ?>">Master
+                                Barang</a></li>
                         <li><a href="<?= base_url('Admin/Ruangan') ?>"
                                 class="<?= $active == 'Ruangan'  ? 'active' : '' ?>">Ruangan</a></li>
                         <li><a href="<?= base_url('Admin/Satuan') ?>"

@@ -40,7 +40,6 @@ class satuanController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item view_satuan" id="' . $row->id_satuan . '"><i class="dw dw-eye"></i> View</a>
                             <button class="dropdown-item edit_satuan" id="' . $row->id_satuan . '"><i class="dw dw-edit2"></i> Edit</button>
                             <button class="dropdown-item delete_satuan" id="' . $row->id_satuan . '"><i class="dw dw-delete-3"></i> Delete</button>
                         </div>

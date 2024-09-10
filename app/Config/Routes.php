@@ -37,15 +37,25 @@ $routes->group('Admin', function ($routes) {
         $routes->post('updatePass', 'usersController::updatePass');
     });
 
-
     $routes->group('Barang', function ($routes) {
         $routes->get('/', 'barangController::index');
+        $routes->get('getBarangByCode/(:segment)', 'barangController::getBarangByCode/$1');
         $routes->get('DataTables', 'barangController::ajaxDataTables');
         $routes->post('save', 'barangController::store');
         $routes->post('delete', 'barangController::destroy');
         $routes->post('edit', 'barangController::edit');
         $routes->post('update', 'barangController::update');
         $routes->post('updateStatus', 'barangController::changeStatus');
+    });
+    $routes->group('Barang/Detail', function ($routes) {
+        $routes->get('(:segment)', 'tipeBarangController::index/$1');
+        // $routes->get('/', 'tipeBarangController::index');
+        $routes->post('DataTables', 'tipeBarangController::ajaxDataTables');
+        $routes->post('save', 'tipeBarangController::store');
+        $routes->post('delete', 'tipeBarangController::destroy');
+        $routes->post('edit', 'tipeBarangController::edit');
+        $routes->post('update', 'tipeBarangController::update');
+        $routes->post('updateStatus', 'tipeBarangController::changeStatus');
     });
 
     $routes->group('Ruangan', function ($routes) {

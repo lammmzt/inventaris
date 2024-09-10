@@ -4,44 +4,44 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use Hermawan\DataTables\DataTable;
-use App\Models\ruanganModel;
+use App\Models\atkModel;
 use Ramsey\Uuid\Uuid;
 
-class ruanganController extends BaseController
+class atkController extends BaseController
 {
-    protected $ruanganModel;
+    protected $atkModel;
 
     public function __construct()
     {
-        $this->ruanganModel = new ruanganModel();
+        $this->atkModel = new atkModel();
     }
     public function index()
     {
         $data = [
             'main_menu' => 'Master Data',
-            'title' => 'Data Ruangan',
-            'active' => 'Ruangan',
+            'title' => 'Data atk',
+            'active' => 'atk',
         ];
-        return view('Admin/Ruangan/index', $data);
+        return view('Admin/ATK/index', $data);
     }
 
     public function ajaxDataTables()
     {
-        $builder = $this->ruanganModel->getruangan();
+        $builder = $this->atkModel->getatk();
         // dd($builder);
         return DataTable::of($builder)
-            ->add('status_ruangan', function ($row) {
+            ->add('status_atk', function ($row) {
                 return '<div class="custom-control custom-switch"> <input type="checkbox" 
-                '.($row->status_ruangan == 1 ? 'checked' : '').' 
-                class="custom-control-input switch-btn change_status_ruangan " data-size="small" data-color="#0099ff" id="'.$row->id_ruangan.'"> <label class="custom-control-label" for="'.$row->id_ruangan.'"></label> </div>';
+                '.($row->status_atk == 1 ? 'checked' : '').' 
+                class="custom-control-input switch-btn change_status_atk " data-size="small" data-color="#0099ff" id="'.$row->id_atk.'"> <label class="custom-control-label" for="'.$row->id_atk.'"></label> </div>';
             })
             ->add('action', function ($row) {   
                 return '
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item edit_ruangan" id="' . $row->id_ruangan . '"><i class="dw dw-edit2"></i> Edit</button>
-                            <button class="dropdown-item delete_ruangan" id="' . $row->id_ruangan . '"><i class="dw dw-delete-3"></i> Delete</button>
+                            <button class="dropdown-item edit_atk" id="' . $row->id_atk . '"><i class="dw dw-edit2"></i> Edit</button>
+                            <button class="dropdown-item delete_atk" id="' . $row->id_atk . '"><i class="dw dw-delete-3"></i> Delete</button>
                         </div>
                 </div>
                 ';
@@ -53,9 +53,9 @@ class ruanganController extends BaseController
     {
         $validation =  \Config\Services::validation();
         $validation->setRules([
-            'nama_ruangan' => [
-                'label' => 'Nama ruangan',
-                'rules' => 'required|is_unique[ruangan.nama_ruangan]',
+            'nama_atk' => [
+                'label' => 'Nama atk',
+                'rules' => 'required|is_unique[atk.nama_atk]',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
                     'is_unique' => '{field} sudah ada',
@@ -73,11 +73,11 @@ class ruanganController extends BaseController
         } else {
            
             $data = [
-                'id_ruangan' => Uuid::uuid4()->toString(),
-                'nama_ruangan' => $this->request->getPost('nama_ruangan'),
-                'status_ruangan' => '1',
+                'id_atk' => Uuid::uuid4()->toString(),
+                'nama_atk' => $this->request->getPost('nama_atk'),
+                'status_atk' => '1',
             ];
-            $this->ruanganModel->insert($data);
+            $this->atkModel->insert($data);
             return $this->response->setJSON([
                 'error' => false,
                 'data' => 'Data berhasil disimpan',
@@ -88,8 +88,8 @@ class ruanganController extends BaseController
 
     public function edit()
     {
-        $id_ruangan = $this->request->getPost('id_ruangan');
-        $data = $this->ruanganModel->find($id_ruangan);
+        $id_atk = $this->request->getPost('id_atk');
+        $data = $this->atkModel->find($id_atk);
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,
@@ -100,15 +100,15 @@ class ruanganController extends BaseController
     public function update()
     {
         $validation =  \Config\Services::validation();
-        $nama_ruangan_old = $this->ruanganModel->find($this->request->getPost('id_ruangan'));
-        if ($this->request->getPost('nama_ruangan') == $nama_ruangan_old['nama_ruangan']) {
+        $nama_atk_old = $this->atkModel->find($this->request->getPost('id_atk'));
+        if ($this->request->getPost('nama_atk') == $nama_atk_old['nama_atk']) {
             $is_unique = '';
         } else {
-            $is_unique = '|is_unique[ruangan.nama_ruangan]';
+            $is_unique = '|is_unique[atk.nama_atk]';
         }
         $validation->setRules([
-            'nama_ruangan' => [
-                'label' => 'Nama ruangan',
+            'nama_atk' => [
+                'label' => 'Nama atk',
                 'rules' => 'required'.$is_unique,
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
@@ -127,10 +127,10 @@ class ruanganController extends BaseController
             ]);
         } else {
             $data = [
-                'id_ruangan' => $this->request->getPost('id_ruangan'),
-                'nama_ruangan' => $this->request->getPost('nama_ruangan'),
+                'id_atk' => $this->request->getPost('id_atk'),
+                'nama_atk' => $this->request->getPost('nama_atk'),
             ];
-            $this->ruanganModel->save($data);
+            $this->atkModel->save($data);
             return $this->response->setJSON([
                 'error' => false,
                 'data' => 'Data berhasil diupdate',
@@ -141,8 +141,8 @@ class ruanganController extends BaseController
 
     public function destroy()
     {
-        $id_ruangan = $this->request->getPost('id_ruangan');
-        $this->ruanganModel->delete($id_ruangan);
+        $id_atk = $this->request->getPost('id_atk');
+        $this->atkModel->delete($id_atk);
         return $this->response->setJSON([
             'error' => false,
             'data' => 'Data berhasil dihapus',
@@ -152,13 +152,13 @@ class ruanganController extends BaseController
 
     public function changeStatus()
     {
-        $id_ruangan = $this->request->getPost('id_ruangan');
+        $id_atk = $this->request->getPost('id_atk');
 
-        $status_ruangan = $this->ruanganModel->find($id_ruangan);
+        $status_atk = $this->atkModel->find($id_atk);
         $data = [
-            'status_ruangan' => $status_ruangan['status_ruangan'] == 1 ? '0' : '1',
+            'status_atk' => $status_atk['status_atk'] == 1 ? '0' : '1',
         ];
-        $this->ruanganModel->update($id_ruangan, $data);
+        $this->atkModel->update($id_atk, $data);
         return $this->response->setJSON([
             'error' => false,
             'data' => 'Status berhasil diubah',
@@ -166,10 +166,10 @@ class ruanganController extends BaseController
         ]);
     }
 
-    public function fetchDataRuangan()
+    public function fetchDataatk()
     {
-        $id_ruangan = $this->request->getPost('id_ruangan');
-        $data = $this->ruanganModel->find($id_ruangan);
+        $id_atk = $this->request->getPost('id_atk');
+        $data = $this->atkModel->find($id_atk);
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,

@@ -25,7 +25,7 @@ class tipeBarangModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang')
+                ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang')
                 ->join('barang', 'barang.id_barang = tipe_barang.barang_id');
         }
         return $this
@@ -33,5 +33,14 @@ class tipeBarangModel extends Model
             ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
             ->where(['id_tipe_barang' => $id])
             ->first();
+    }
+
+
+    public function getTipeBarangByBarang($id)
+    {
+        return $this
+            ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang')
+            ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
+            ->where(['barang_id' => $id]);
     }
 }

@@ -108,67 +108,6 @@
     </div>
 </div>
 
-<!-- modal view -->
-<div class="modal fade" id="viewsatuan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">
-                    View satuan
-                </h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    ×
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group row">
-                    <label for="viewnama_satuan" class="col-sm-4 col-form-label">Nama satuan</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewnama_satuan" name="nama_satuan" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewjenis_satuan" class="col-sm-4 col-form-label">jenis_satuan</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewjenis_satuan" name="jenis_satuan" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewrole" class="col-sm-4 col-form-label">Role</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewrole" name="role" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewlast_login" class="col-sm-4 col-form-label">Last Login</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewlast_login" name="last_login" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewcreated_at" class="col-sm-4 col-form-label">Created At</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewcreated_at" name="created_at" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewupdated_at" class="col-sm-4 col-form-label">Updated At</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewupdated_at" name="updated_at" readonly>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    Tutup
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <!-- ======================================== END satuan ======================================== -->
 
 
@@ -398,25 +337,6 @@ $(document).on('click', '.delete_satuan', function() {
                 });
             }
         });
-});
-
-// view satuan
-$(document).on('click', '.view_satuan', function() {
-    const id = $(this).attr('id');
-    $.ajax({
-        url: '<?= base_url('Admin/Satuan/edit') ?>',
-        method: 'post',
-        data: {
-            id_satuan: id
-        },
-        dataType: 'json',
-        success: function(response) {
-            $('#viewsatuan').modal('show');
-            $.each(response.data, function(key, value) {
-                $('#view' + key).val(value);
-            });
-        }
-    });
 });
 
 
