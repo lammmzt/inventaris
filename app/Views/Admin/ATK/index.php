@@ -7,20 +7,22 @@
             <div class="pd-20">
                 <div class="row mb-4">
                     <div class="col-sm-6">
-                        <h4 class="text-blue h4">Data Ruangan</h4>
+                        <h4 class="text-blue h4">Data ATK</h4>
                     </div>
                     <div class="col-sm-6 text-right">
-                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addruangan" type="button">
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addatk" type="button">
                             <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
                 <div class="pb-20 table-responsive">
-                    <table class="table hover multiple-select-row nowrap" id="tableruangan">
+                    <table class="table hover multiple-select-row nowrap" id="tableatk">
                         <thead>
                             <tr>
-                                <th class="table-plus">Nama Ruangan</th>
-                                <th class="">Status Ruangan</th>
+                                <th class="table-plus">Nama ATK</th>
+                                <th class="table-plus">Nama Barang</th>
+                                <th class="table-plus">Tipe Barang</th>
+                                <th class="">Status ATK</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
                         </thead>
@@ -32,28 +34,27 @@
     </div>
 </div>
 
-<!-- modal addruangan -->
-<div class="modal fade" id="addruangan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<!-- modal addatk -->
+<div class="modal fade" id="addatk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    Tambah ruangan
+                    Tambah ATK
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
                 </button>
             </div>
-            <form id="form_tambah_ruangan">
+            <form id="form_tambah_atk">
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="nama_ruangan" class="col-sm-4 col-form-label">Nama ruangan<span
+                        <label for="nama_atk" class="col-sm-4 col-form-label">Nama ATK<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="nama_ruangan" name="nama_ruangan"
-                                placeholder="Masukan nama ruangan">
-                            <div class="form-control-feedback " id="errornama_ruangan"></div>
+                            <input type="text" class="form-control required" id="nama_atk" name="nama_atk"
+                                placeholder="Masukan nama atk">
+                            <div class="form-control-feedback " id="errornama_atk"></div>
                         </div>
                     </div>
                 </div>
@@ -61,7 +62,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         Batal
                     </button>
-                    <button type="submit" class="btn btn-primary" id="btn_tambah_ruangan">
+                    <button type="submit" class="btn btn-primary" id="btn_tambah_atk">
                         Simpan
                     </button>
                 </div>
@@ -71,27 +72,26 @@
 </div>
 
 <!-- modal edit -->
-<div class="modal fade" id="editruangan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="editatk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    Edit ruangan
+                    Edit ATK
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
                 </button>
             </div>
-            <form id="form_edit_ruangan">
+            <form id="form_edit_atk">
                 <div class="modal-body">
-                    <input type="hidden" id="editid_ruangan" name="id_ruangan">
+                    <input type="hidden" id="editid_atk" name="id_atk">
                     <div class="form-group row">
-                        <label for="editnama_ruangan" class="col-sm-4 col-form-label">Nama ruangan<span
+                        <label for="editnama_atk" class="col-sm-4 col-form-label">Nama atk<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="editnama_ruangan" name="nama_ruangan">
-                            <div class="form-control-feedback " id="erroreditnama_ruangan"></div>
+                            <input type="text" class="form-control required" id="editnama_atk" name="nama_atk">
+                            <div class="form-control-feedback " id="erroreditnama_atk"></div>
                         </div>
                     </div>
                 </div>
@@ -99,7 +99,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         Batal
                     </button>
-                    <button type="submit" class="btn btn-primary" id="btn_edit_ruangan">
+                    <button type="submit" class="btn btn-primary" id="btn_edit_atk">
                         Edit
                     </button>
                 </div>
@@ -108,32 +108,38 @@
     </div>
 </div>
 
-<!-- ======================================== END ruangan ======================================== -->
+<!-- ======================================== END atk ======================================== -->
 
 <?= $this->endSection('content');?>
 
 <?= $this->section('dataTables');?>
 
 <script text="text/javascript">
-// dataTables ruangan
-function dataTablesruangan() {
+// dataTables atk
+function dataTablesatk() {
     $(document).ready(function() {
-        $('#tableruangan').DataTable({
+        $('#tableatk').DataTable({
             processing: true,
             serverSide: true,
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('Admin/Ruangan/DataTables') ?>",
+            ajax: "<?php echo base_url('Admin/ATK/DataTables') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
-                    data: 'nama_ruangan'
+                    data: 'nama_atk'
                 },
                 {
-                    data: 'status_ruangan',
+                    data: 'nama_barang'
+                },
+                {
+                    data: 'nama_tipe_barang'
+                },
+                {
+                    data: 'status_atk',
                     class: 'text-center'
                 },
                 {
@@ -151,7 +157,7 @@ function dataTablesruangan() {
 }
 
 $(document).ready(function() {
-    dataTablesruangan();
+    dataTablesatk();
 });
 
 function getSwall(status, message) {
@@ -165,30 +171,30 @@ function getSwall(status, message) {
     })
 }
 
-// ======================================== ruangan ========================================
+// ======================================== atk ========================================
 
 // DATA
-const ruangan = [
-    'nama_ruangan',
-    'id_ruangan'
+const atk = [
+    'nama_atk',
+    'id_atk'
 ];
 
 
 // tambah 
 $(function() {
-    $("#form_tambah_ruangan").submit(function(e) {
+    $("#form_tambah_atk").submit(function(e) {
         e.preventDefault();
         const formData = new FormData(this);
         if (!this.checkValidity()) {
             e.preventDefault();
             $(this).addClass('form-control-success');
         } else {
-            $("#btn_tambah_ruangan").attr("disabled", "disabled");
-            $("#btn_tambah_ruangan").html(
+            $("#btn_tambah_atk").attr("disabled", "disabled");
+            $("#btn_tambah_atk").html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/Ruangan/save') ?>',
+                url: '<?= base_url('Admin/ATK/save') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -211,37 +217,37 @@ $(function() {
                             }
                         });
                     } else {
-                        $("#form_tambah_ruangan")[0].reset();
-                        $("#addruangan").modal('hide');
-                        $('#tableruangan').DataTable().ajax.reload();
+                        $("#form_tambah_atk")[0].reset();
+                        $("#addatk").modal('hide');
+                        $('#tableatk').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                        ruangan.forEach(function(item) {
+                        atk.forEach(function(item) {
                             $("#" + item).removeClass('form-control-danger');
                             $("#" + item).removeClass('form-control-success');
                             $("#error" + item).html('');
                             $("#error" + item).removeClass('has-danger');
                         });
                     }
-                    $("#btn_tambah_ruangan").removeAttr("disabled");
-                    $("#btn_tambah_ruangan").html("Tambah");
+                    $("#btn_tambah_atk").removeAttr("disabled");
+                    $("#btn_tambah_atk").html("Tambah");
                 }
             });
         }
     });
 });
 
-// edit ruangan
-$(document).on('click', '.edit_ruangan', function() {
+// edit atk
+$(document).on('click', '.edit_atk', function() {
     const id = $(this).attr('id');
     $.ajax({
-        url: '<?= base_url('Admin/Ruangan/edit') ?>',
+        url: '<?= base_url('Admin/atk/edit') ?>',
         method: 'post',
         data: {
-            id_ruangan: id
+            id_atk: id
         },
         dataType: 'json',
         success: function(response) {
-            $('#editruangan').modal('show');
+            $('#editatk').modal('show');
             $.each(response.data, function(key, value) {
                 $('#edit' + key).val(value);
             });
@@ -250,21 +256,21 @@ $(document).on('click', '.edit_ruangan', function() {
     });
 });
 
-// update ruangan
+// update atk
 $(function() {
-    $("#form_edit_ruangan").submit(function(e) {
+    $("#form_edit_atk").submit(function(e) {
         e.preventDefault();
         const formData = new FormData(this);
         if (!this.checkValidity()) {
             e.preventDefault();
             $(this).addClass('form-control-success');
         } else {
-            $("#btn_edit_ruangan").attr("disabled", "disabled");
-            $("#btn_edit_ruangan").html(
+            $("#btn_edit_atk").attr("disabled", "disabled");
+            $("#btn_edit_atk").html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/Ruangan/update') ?>',
+                url: '<?= base_url('Admin/ATK/update') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -288,27 +294,27 @@ $(function() {
                             }
                         });
                     } else {
-                        $("#form_edit_ruangan")[0].reset();
-                        $("#editruangan").modal('hide');
-                        $('#tableruangan').DataTable().ajax.reload();
+                        $("#form_edit_atk")[0].reset();
+                        $("#editatk").modal('hide');
+                        $('#tableatk').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                        ruangan.forEach(function(item) {
+                        atk.forEach(function(item) {
                             $("#edit" + item).removeClass('form-control-danger');
                             $("#edit" + item).removeClass('form-control-success');
                             $("#erroredit" + item).html('');
                             $("#erroredit" + item).removeClass('has-danger');
                         });
                     }
-                    $("#btn_edit_ruangan").removeAttr("disabled");
-                    $("#btn_edit_ruangan").html("Edit");
+                    $("#btn_edit_atk").removeAttr("disabled");
+                    $("#btn_edit_atk").html("Edit");
                 }
             });
         }
     });
 });
 
-// delete ruangan
-$(document).on('click', '.delete_ruangan', function() {
+// delete atk
+$(document).on('click', '.delete_atk', function() {
     const id = $(this).attr('id');
     swal({
             title: "Apakah anda yakin?",
@@ -323,14 +329,14 @@ $(document).on('click', '.delete_ruangan', function() {
         .then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: '<?= base_url('Admin/Ruangan/delete') ?>',
+                    url: '<?= base_url('Admin/ATK/delete') ?>',
                     method: 'post',
                     data: {
-                        id_ruangan: id
+                        id_atk: id
                     },
                     dataType: 'json',
                     success: function(response) {
-                        $('#tableruangan').DataTable().ajax.reload();
+                        $('#tableatk').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
                     }
                 });
@@ -342,18 +348,18 @@ $(document).on('click', '.delete_ruangan', function() {
 
 
 // change status
-$(document).on('click', '.change_status_ruangan', function() {
+$(document).on('click', '.change_status_atk', function() {
     const id = $(this).attr('id');
     // alert(id);
     $.ajax({
-        url: '<?= base_url('Admin/Ruangan/updateStatus') ?>',
+        url: '<?= base_url('Admin/ATK/updateStatus') ?>',
         method: 'post',
         data: {
-            id_ruangan: id
+            id_atk: id
         },
         dataType: 'json',
         success: function(response) {
-            // ruangan').DataTable().ajax.reload();
+            // atk').DataTable().ajax.reload();
             getSwall(response.status, response.data);
         }
     });

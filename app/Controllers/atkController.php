@@ -18,9 +18,9 @@ class atkController extends BaseController
     public function index()
     {
         $data = [
-            'main_menu' => 'Master Data',
-            'title' => 'Data atk',
-            'active' => 'atk',
+            'main_menu' => 'ATK',
+            'title' => 'Data ATK',
+            'active' => 'ATK',
         ];
         return view('Admin/ATK/index', $data);
     }
@@ -61,6 +61,20 @@ class atkController extends BaseController
                     'is_unique' => '{field} sudah ada',
                 ],
             ],
+            'satuan_id' => [
+                'label' => 'Satuan',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'tipe_barang_id' => [
+                'label' => 'Tipe Barang',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
 
         ]);
 
@@ -74,6 +88,8 @@ class atkController extends BaseController
            
             $data = [
                 'id_atk' => Uuid::uuid4()->toString(),
+                'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
+                'satuan_id' => $this->request->getPost('satuan_id'),
                 'nama_atk' => $this->request->getPost('nama_atk'),
                 'status_atk' => '1',
             ];
@@ -89,7 +105,7 @@ class atkController extends BaseController
     public function edit()
     {
         $id_atk = $this->request->getPost('id_atk');
-        $data = $this->atkModel->find($id_atk);
+        $data = $this->atkModel->getAtk($id_atk);
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,
@@ -115,8 +131,21 @@ class atkController extends BaseController
                     'is_unique' => '{field} sudah ada',
                 ],
             ],
+            'satuan_id' => [
+                'label' => 'Satuan',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'tipe_barang_id' => [
+                'label' => 'Tipe Barang',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
             
-
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -128,6 +157,8 @@ class atkController extends BaseController
         } else {
             $data = [
                 'id_atk' => $this->request->getPost('id_atk'),
+                'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
+                'satuan_id' => $this->request->getPost('satuan_id'),
                 'nama_atk' => $this->request->getPost('nama_atk'),
             ];
             $this->atkModel->save($data);
@@ -156,7 +187,7 @@ class atkController extends BaseController
 
         $status_atk = $this->atkModel->find($id_atk);
         $data = [
-            'status_atk' => $status_atk['status_atk'] == 1 ? '0' : '1',
+            'status_atk' => $status_atk['status_atk'] == '1' ? '0' : '1',
         ];
         $this->atkModel->update($id_atk, $data);
         return $this->response->setJSON([

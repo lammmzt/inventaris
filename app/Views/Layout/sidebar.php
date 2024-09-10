@@ -48,6 +48,15 @@
                     </ul>
                 </li>
                 <li>
+                    <a href="<?= base_url('Admin/ATK') ?>"
+                        class="dropdown-toggle no-arrow <?= $active == 'ATK'  ? 'active' : '' ?>">
+                        <!-- <span class="micon bi bi-archive"></span> -->
+                        <span class="micon bi bi-archive"></span>
+                        <span class="mtext">ATK
+                            <img src="vendors/images/coming-soon.png" alt="" width="25" /></span>
+                    </a>
+                </li>
+                <li>
                     <a href="<?= base_url('Admin/User') ?>"
                         class="dropdown-toggle no-arrow <?= $active == 'Users'  ? 'active' : '' ?>">
                         <span class="micon bi bi-person"></span>

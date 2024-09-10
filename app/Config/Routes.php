@@ -24,6 +24,7 @@ $routes->group('Auth', function ($routes) {
 // group route admin
 $routes->group('Admin', function ($routes) {
     $routes->get('Dashboard', 'Home::index');
+
     $routes->group('User', function ($routes) {
         $routes->get('/', 'usersController::index');
         $routes->get('DataTables', 'usersController::ajaxDataTables');
@@ -35,27 +36,6 @@ $routes->group('Admin', function ($routes) {
         $routes->post('changeStatus', 'usersController::changeStatus');
         $routes->post('fetchDataUser', 'usersController::fetchDataUser');
         $routes->post('updatePass', 'usersController::updatePass');
-    });
-
-    $routes->group('Barang', function ($routes) {
-        $routes->get('/', 'barangController::index');
-        $routes->get('getBarangByCode/(:segment)', 'barangController::getBarangByCode/$1');
-        $routes->get('DataTables', 'barangController::ajaxDataTables');
-        $routes->post('save', 'barangController::store');
-        $routes->post('delete', 'barangController::destroy');
-        $routes->post('edit', 'barangController::edit');
-        $routes->post('update', 'barangController::update');
-        $routes->post('updateStatus', 'barangController::changeStatus');
-    });
-    $routes->group('Barang/Detail', function ($routes) {
-        $routes->get('(:segment)', 'tipeBarangController::index/$1');
-        // $routes->get('/', 'tipeBarangController::index');
-        $routes->post('DataTables', 'tipeBarangController::ajaxDataTables');
-        $routes->post('save', 'tipeBarangController::store');
-        $routes->post('delete', 'tipeBarangController::destroy');
-        $routes->post('edit', 'tipeBarangController::edit');
-        $routes->post('update', 'tipeBarangController::update');
-        $routes->post('updateStatus', 'tipeBarangController::changeStatus');
     });
 
     $routes->group('Ruangan', function ($routes) {
@@ -78,6 +58,39 @@ $routes->group('Admin', function ($routes) {
         $routes->post('update', 'satuanController::update');
         $routes->post('updateStatus', 'satuanController::changeStatus');
         $routes->post('fetchDataSatuan', 'satuanController::fetchDataSatuan');
+    });
+
+    $routes->group('Barang', function ($routes) {
+        $routes->get('/', 'barangController::index');
+        $routes->get('getBarangByCode/(:segment)', 'barangController::getBarangByCode/$1');
+        $routes->get('DataTables', 'barangController::ajaxDataTables');
+        $routes->post('save', 'barangController::store');
+        $routes->post('delete', 'barangController::destroy');
+        $routes->post('edit', 'barangController::edit');
+        $routes->post('update', 'barangController::update');
+        $routes->post('updateStatus', 'barangController::changeStatus');
+    });
+
+    $routes->group('Barang/Detail', function ($routes) {
+        $routes->get('(:segment)', 'tipeBarangController::index/$1');
+        // $routes->get('/', 'tipeBarangController::index');
+        $routes->post('DataTables', 'tipeBarangController::ajaxDataTables');
+        $routes->post('save', 'tipeBarangController::store');
+        $routes->post('delete', 'tipeBarangController::destroy');
+        $routes->post('edit', 'tipeBarangController::edit');
+        $routes->post('update', 'tipeBarangController::update');
+        $routes->post('updateStatus', 'tipeBarangController::changeStatus');
+    });
+
+    $routes->group('ATK', function ($routes) {
+        $routes->get('/', 'atkController::index');
+        $routes->get('DataTables', 'atkController::ajaxDataTables');
+        $routes->post('save', 'atkController::store');
+        $routes->post('delete', 'atkController::destroy');
+        $routes->post('edit', 'atkController::edit');
+        $routes->post('update', 'atkController::update');
+        $routes->post('changeStatus', 'atkController::changeStatus');
+        $routes->post('fetchDataATK', 'atkController::fetchDataatk');
     });
 
 
