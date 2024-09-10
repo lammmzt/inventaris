@@ -43,4 +43,12 @@ class tipeBarangModel extends Model
             ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
             ->where(['barang_id' => $id]);
     }
+
+    public function getTipeBarangByJenisBarang($id){
+        return $this
+            ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang')
+            ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
+            ->where(['barang.jenis_barang' => $id])
+            ->findAll();
+    }
 }

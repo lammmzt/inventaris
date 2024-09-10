@@ -24,6 +24,7 @@ class atkController extends BaseController
         ];
         return view('Admin/ATK/index', $data);
     }
+    
 
     public function ajaxDataTables()
     {

@@ -25,6 +25,15 @@ class satuanController extends BaseController
         return view('Admin/Satuan/index', $data);
     }
 
+    public function fetchAll(){
+        $data = $this->satuanModel->getsatuan()->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+
     public function ajaxDataTables()
     {
         $builder = $this->satuanModel->getsatuan();

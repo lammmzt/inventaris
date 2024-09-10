@@ -58,6 +58,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('update', 'satuanController::update');
         $routes->post('updateStatus', 'satuanController::changeStatus');
         $routes->post('fetchDataSatuan', 'satuanController::fetchDataSatuan');
+        $routes->post('fetchAll', 'satuanController::fetchAll');
     });
 
     $routes->group('Barang', function ($routes) {
@@ -69,6 +70,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('edit', 'barangController::edit');
         $routes->post('update', 'barangController::update');
         $routes->post('updateStatus', 'barangController::changeStatus');
+        $routes->post('fetchBarangByJenisBarang', 'barangController::fetchBarangByJenisBarang');
     });
 
     $routes->group('Barang/Detail', function ($routes) {
@@ -80,6 +82,9 @@ $routes->group('Admin', function ($routes) {
         $routes->post('edit', 'tipeBarangController::edit');
         $routes->post('update', 'tipeBarangController::update');
         $routes->post('updateStatus', 'tipeBarangController::changeStatus');
+        $routes->post('fetchAll', 'tipeBarangController::fetchAll');
+        $routes->post('fetchTipeBarangByJenisBarang', 'tipeBarangController::fetchTipeBarangByJenisBarang');
+        $routes->post('fetchTipeBarangByIdBarang', 'tipeBarangController::fetchTipeBarangByIdBarang');
     });
 
     $routes->group('ATK', function ($routes) {

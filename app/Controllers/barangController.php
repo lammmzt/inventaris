@@ -25,14 +25,41 @@ class barangController extends BaseController
         return view('Admin/Barang/index', $data);
     }
 
-    public function getBarangByCode($kode_barang)
+    public function fetchBarangByCode($kode_barang)
     {
         $data = $this->barangModel->getBarangByCode($kode_barang);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
+        if ($data == null) {
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => 'Data tidak ditemukan',
+                'status' => '404'
+            ]);
+        }else{
+            return $this->response->setJSON([
+                'error' => false,
+                'data' => $data,
+                'status' => '200'
+            ]);
+        }
+    }
+
+    public function fetchBarangByJenisBarang()
+    {
+        $jenis_barang = $this->request->getPost('jenis_barang');
+        $data = $this->barangModel->getBarangByJenisBarang($jenis_barang);
+        if ($data == null) {
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => 'Data tidak ditemukan',
+                'status' => '404'
+            ]);
+        }else{
+            return $this->response->setJSON([
+                'error' => false,
+                'data' => $data,
+                'status' => '200'
+            ]);
+        }
     }
 
     public function ajaxDataTables()
@@ -201,18 +228,6 @@ class barangController extends BaseController
             'status' => '200'
         ]);
     }
-
-    public function fetchDataBarang()
-    {
-        $id_barang = $this->request->getPost('id_barang');
-        $data = $this->barangModel->find($id_barang);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
-    }
-    
 
 }
 

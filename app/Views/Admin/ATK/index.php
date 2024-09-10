@@ -21,7 +21,6 @@
                             <tr>
                                 <th class="table-plus">Nama ATK</th>
                                 <th class="table-plus">Nama Barang</th>
-                                <th class="table-plus">Tipe Barang</th>
                                 <th class="">Status ATK</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
@@ -35,7 +34,7 @@
 </div>
 
 <!-- modal addatk -->
-<div class="modal fade" id="addatk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade" id="addatk" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -57,15 +56,39 @@
                             <div class="form-control-feedback " id="errornama_atk"></div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Batal
-                    </button>
-                    <button type="submit" class="btn btn-primary" id="btn_tambah_atk">
-                        Simpan
-                    </button>
-                </div>
+
+                    <div class="form-group row">
+                        <label for="tipe_barang_id" class="col-sm-4 col-form-label">Tipe Barang<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <select class="custom-select2 form-control required" name="tipe_barang_id"
+                                id="tipe_barang_id" style="width: 100%; height: 38px; z-index: -9999;">
+
+                            </select>
+                            <div class="form-control-feedback " id="errortipe_barang_id"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="satuan_id" class="col-sm-4 col-form-label">Satuan<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <select class="custom-select2 form-control required" name="satuan_id" id="satuan_id"
+                                style="width: 100%; height: 38px; z-index: -9999;">
+                                <option value="">Pilih Satuan</option>
+                            </select>
+                            <div class="form-control-feedback " id="errorsatuan_id"></div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btn_tambah_atk">
+                            Simpan
+                        </button>
+                    </div>
             </form>
         </div>
     </div>
@@ -136,9 +159,6 @@ function dataTablesatk() {
                     data: 'nama_barang'
                 },
                 {
-                    data: 'nama_tipe_barang'
-                },
-                {
                     data: 'status_atk',
                     class: 'text-center'
                 },
@@ -156,8 +176,50 @@ function dataTablesatk() {
     });
 }
 
+// get data tipe barang
+function getTipeBarang() {
+    $.ajax({
+        url: '<?= base_url('Admin/Barang/Detail/fetchTipeBarangByJenisBarang') ?>',
+        method: 'post',
+        dataType: 'json',
+        data: {
+            jenis_barang: '0'
+        },
+        success: function(response) {
+            var html = '';
+            html += '<option value="">Pilih Tipe Barang</option>';
+            $.each(response.data, function(key, value) {
+                html += '<option value="' + value.id_tipe_barang + '">' + value.nama_barang +
+                    ' - ' + value.nama_tipe_barang +
+                    '</option>';
+            });
+            $('#tipe_barang_id').html(html);
+        }
+    });
+};
+
+// get data satuan
+function getSatuan() {
+    $.ajax({
+        url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
+        method: 'post',
+        dataType: 'json',
+        success: function(response) {
+            var html = '';
+            html += '<option value="">Pilih Satuan</option>';
+            $.each(response.data, function(key, value) {
+                html += '<option value="' + value.id_satuan + '">' + value.nama_satuan +
+                    '</option>';
+            });
+            $('#satuan_id').html(html);
+        }
+    });
+};
+
 $(document).ready(function() {
     dataTablesatk();
+    getTipeBarang();
+    getSatuan();
 });
 
 function getSwall(status, message) {
@@ -176,9 +238,10 @@ function getSwall(status, message) {
 // DATA
 const atk = [
     'nama_atk',
-    'id_atk'
+    'id_atk',
+    'tipe_barang_id',
+    'satuan_id'
 ];
-
 
 // tambah 
 $(function() {

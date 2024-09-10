@@ -18,6 +18,7 @@ class tipeBarangController extends BaseController
         $this->tipeBarangModel = new tipeBarangModel();
         $this->barangModel = new barangModel();
     }
+
     public function index()
     {
         $kode_barang = $this->request->getUri()->getSegment(4);
@@ -37,16 +38,52 @@ class tipeBarangController extends BaseController
         ];
         return view('Admin/Barang/tipe_barang', $data);
     }
-    
-    public function fetchTipeBarang()
-    {
-        $id_tipe_barang = $this->request->getPost('id_tipe_barang');
-        $data = $this->tipeBarangModel->find($id_tipe_barang);
+
+    public function fetchAll(){
+        $data = $this->tipeBarangModel->getTipeBarang()->findAll();
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,
             'status' => '200'
         ]);
+    }
+    
+    public function fetchTipeBarangByJenisBarang()
+    {
+        $jenis_barang = $this->request->getPost('jenis_barang');
+        $data = $this->tipeBarangModel->getTipeBarangByJenisBarang($jenis_barang);
+        if ($data == null) {
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => 'Data tidak ditemukan',
+                'status' => '404'
+            ]);
+        }else{
+            return $this->response->setJSON([
+                'error' => false,
+                'data' => $data,
+                'status' => '200'
+            ]);
+        }
+    }
+    
+    public function fetchTipeBarangByIdBarang()
+    {
+        $id_barang = $this->request->getPost('id_barang');
+        $data = $this->tipeBarangModel->getTipeBarangByBarang($id_barang);
+        if ($data == null) {
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => 'Data tidak ditemukan',
+                'status' => '404'
+            ]);
+        }else{
+            return $this->response->setJSON([
+                'error' => false,
+                'data' => $data,
+                'status' => '200'
+            ]);
+        }
     }
 
     public function ajaxDataTables()
@@ -187,10 +224,6 @@ class tipeBarangController extends BaseController
             'status' => '200'
         ]);
     }
-
-    
-    
-
 }
 
 ?>
