@@ -53,13 +53,28 @@ class atkController extends BaseController
     public function store()
     {
         $validation =  \Config\Services::validation();
+
+        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
+        $merek_atk = $this->request->getPost('merek_atk');
+        $data_merk_by_tipe = $this->atkModel->where('tipe_barang_id', $tipe_barang_id)->where('merek_atk', $merek_atk)->countAllResults();
+        
+        // dd($data_merk_by_tipe);
+        
+        if($data_merk_by_tipe > 0){
+           $rules = 'required|is_unique[atk.merek_atk]';
+        }else{
+            $rules = 'required';
+        }
+
+        // dd($rules);  
+        
         $validation->setRules([
             'merek_atk' => [
                 'label' => 'Merek ATK',
-                'rules' => 'required|is_unique[atk.merek_atk]',
+                'rules' => $rules,
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
-                    'is_unique' => '{field} sudah ada',
+                    'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
             'satuan_id' => [
@@ -71,6 +86,13 @@ class atkController extends BaseController
             ],
             'tipe_barang_id' => [
                 'label' => 'Tipe Barang',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'qty_atk' => [
+                'label' => 'Qyt ATK',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
@@ -118,10 +140,19 @@ class atkController extends BaseController
     {
         $validation =  \Config\Services::validation();
         $merek_atk_old = $this->atkModel->find($this->request->getPost('id_atk'));
-        if ($this->request->getPost('merek_atk') == $merek_atk_old['merek_atk']) {
+        
+        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
+        $merek_atk = $this->request->getPost('merek_atk');
+        $data_merk_by_tipe = $this->atkModel->where('tipe_barang_id', $tipe_barang_id)->where('merek_atk', $merek_atk)->countAllResults();
+        
+        if($merek_atk_old['merek_atk'] == $merek_atk){
             $is_unique = '';
-        } else {
-            $is_unique = '|is_unique[atk.merek_atk]';
+        }else{
+            if($data_merk_by_tipe > 0){
+                $is_unique = '|is_unique[atk.merek_atk]';
+            }else{
+                $is_unique = '';
+            }
         }
         $validation->setRules([
             'merek_atk' => [
@@ -129,7 +160,7 @@ class atkController extends BaseController
                 'rules' => 'required'.$is_unique,
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
-                    'is_unique' => '{field} sudah ada',
+                    'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
             'satuan_id' => [
@@ -159,6 +190,7 @@ class atkController extends BaseController
             $data = [
                 'id_atk' => $this->request->getPost('id_atk'),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
+                'qty_atk' => $this->request->getPost('qty_atk'),
                 'satuan_id' => $this->request->getPost('satuan_id'),
                 'merek_atk' => $this->request->getPost('merek_atk'),
             ];

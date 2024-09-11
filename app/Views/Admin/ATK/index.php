@@ -48,6 +48,7 @@
                 </button>
             </div>
             <form id="form_tambah_atk">
+                <!-- <form action="<?= base_url('Admin/ATK/save') ?>" method="post"> -->
                 <div class="modal-body">
                     <div class="form-group row">
                         <label for="tipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
@@ -80,6 +81,15 @@
                             <div class="form-control-feedback " id="errorsatuan_id"></div>
                         </div>
 
+                    </div>
+                    <div class="form-group row">
+                        <label for="qty_atk" class="col-sm-4 col-form-label">QTY ATK<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control required" id="qty_atk" name="qty_atk"
+                                placeholder="Masukan Merek ATK" min="0" value="0">
+                            <div class="form-control-feedback " id="errorqty_atk"></div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -138,6 +148,15 @@
                                 <option value="">Pilih Satuan</option>
                             </select>
                             <div class="form-control-feedback " id="erroreditsatuan_id"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editqty_atk" class="col-sm-4 col-form-label">QTY ATK<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control required" id="editqty_atk" name="qty_atk"
+                                placeholder="Masukan Merek ATK" min="0" value="0">
+                            <div class="form-control-feedback " id="erroreditqty_atk"></div>
                         </div>
                     </div>
                 </div>
@@ -271,7 +290,8 @@ const atk = [
     'merek_atk',
     'id_atk',
     'tipe_barang_id',
-    'satuan_id'
+    'satuan_id',
+    'qty_atk'
 ];
 
 // hapus error
@@ -361,12 +381,10 @@ function getEditBarang($id_barang) {
             $.each(response.data, function(key, value) {
                 if (value.id_tipe_barang == $id_barang) {
                     // alert(value.id_tipe_barang);
-                    html += '<option selected value="' + value
-                        .id_tipe_barang +
-                        '">' +
+                    html += '<option value="' + value.id_tipe_barang +
+                        '" selected>' +
                         value.nama_barang + ' - ' + value
-                        .nama_tipe_barang +
-                        '</option>';
+                        .nama_tipe_barang + '</option>';
                 } else {
                     html += '<option value="' + value.id_tipe_barang +
                         '">' +
@@ -375,8 +393,8 @@ function getEditBarang($id_barang) {
                         '</option>';
                 }
             });
+
             $('#edittipe_barang_id').html(html);
-            $('#edittipe_barang_id').val(response.data.tipe_barang_id);
         }
     });
 }
@@ -420,7 +438,6 @@ $(document).on('click', '.edit_atk', function() {
                         }
                     });
                     $('#editsatuan_id').html(html);
-                    $('#editsatuan_id').val(response.data.satuan_id);
                 }
             });
         }
