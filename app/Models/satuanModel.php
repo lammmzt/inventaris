@@ -16,7 +16,7 @@ class satuanModel extends Model
         'updated_at'
     ];
     protected $useTimestamps = true;
-    protected $useAutoIncrement = true;
+    // protected $useAutoIncrement = true;
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 

@@ -82,11 +82,10 @@ class satuanController extends BaseController
         } else {
            
             $data = [
-                'id_satuan' => Uuid::uuid4()->toString(),
                 'nama_satuan' => $this->request->getPost('nama_satuan'),
                 'status_satuan' => '1',
             ];
-            $this->satuanModel->insert($data);
+            $this->satuanModel->save($data);
             return $this->response->setJSON([
                 'error' => false,
                 'data' => 'Data berhasil disimpan',
@@ -124,8 +123,6 @@ class satuanController extends BaseController
                     'is_unique' => '{field} sudah ada',
                 ],
             ],
-            
-
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {

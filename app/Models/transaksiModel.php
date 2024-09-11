@@ -41,7 +41,7 @@ class transaksiModel extends Model
         return $this
             ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user') 
             ->join('users', 'users.id_user = transaksi.user_id')
-            ->where('tipe_transaksi', 'Masuk');
+            ->where('tipe_transaksi', '0');
     }
 
     public function getTransaksiKeluar()
@@ -49,6 +49,6 @@ class transaksiModel extends Model
         return $this
             ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
             ->join('users', 'users.id_user = transaksi.user_id')
-            ->where('tipe_transaksi', 'Keluar');
+            ->where('tipe_transaksi', '1');
     }
 }

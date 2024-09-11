@@ -12,16 +12,32 @@
                     </div>
                 </div>
                 <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5>
-                <form id="form_tambah_transaksi">
-                    <!-- <div class="form-group row">
-                        <label for="ket_transaksi" class="col-sm-4 col-form-label">Keterangan<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control required" id="ket_transaksi" name="ket_transaksi"
-                                placeholder="Masukan ket_transaksi transaksi"></textarea>
-                            <div class="form-control-feedback " id="errorket_transaksi"></div>
+                <form id="form_tambah_transaksi_masuk">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="tgl_transaksi" class="col-sm-4 col-form-label">Tanggal<span
+                                        class="rq">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control required" id="tgl_transaksi"
+                                        name="tgl_transaksi">
+                                    <div class="form-control-feedback " id="errortgl_transaksi"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div> -->
+                        <!-- ket -->
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="ket_transaksi" class="col-sm-4 col-form-label">Keterangan<span
+                                        class="rq">*</span></label></label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control required" id="ket_transaksi" name="ket_transaksi"
+                                        placeholder="Masukan ket_transaksi transaksi"></textarea>
+                                    <div class="form-control-feedback " id="errorket_transaksi"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="atk_id" class="col-sm-2 col-form-label">Nama ATK<span
                                 class="rq">*</span></label></label>
@@ -38,31 +54,32 @@
                             </button>
                         </div>
                     </div>
-                </form>
-                <div class="table-responsive mt-3">
-                    <table class="table table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col" class="text-center">#</th>
-                                <th scope="col">Nama ATK</th>
-                                <th scope="col" class="text-center" style="width: 250px;">QTY</th>
-                                <th scope="col" class="text-center" style="width: 150px;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody_transaksi">
-                            <tr>
-                                <td colspan="4" class="text-center">Data Kosong</td>
-                            </tr>
+                    <div class="table-responsive pt-4">
+                        <table class="table table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-center">#</th>
+                                    <th scope="col">Nama ATK</th>
+                                    <th scope="col" class="text-center" style="width: 250px;">QTY</th>
+                                    <th scope="col" class="text-center" style="width: 150px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody_transaksi">
+                                <tr>
+                                    <td colspan="4" class="text-center">Data Kosong</td>
+                                </tr>
 
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="row mt-3">
-                    <div class="col-md-12">
-                        <button type="button" class="btn btn-primary float-right" id="btn_simpan">Simpan</button>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-primary float-right" id="btn_simpan">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
@@ -86,7 +103,8 @@ function getATK() {
             html += '<option value="">Pilih ATK</option>';
             $.each(response.data, function(key, value) {
                 html += '<option value="' + value.id_atk + '">' + value.nama_barang +
-                    ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' +
+                    ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' + ' @ ' + value
+                    .nama_satuan +
                     '</option>';
                 // html += '<option value="' + value.id_atk + '">' + +
                 //     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' +
@@ -193,24 +211,62 @@ $('#btn_simpan').click(function() {
         });
         return;
     }
+    var tgl_transaksi = $('#tgl_transaksi').val();
+    var ket_transaksi = $('#ket_transaksi').val();
+    if (tgl_transaksi == '') {
+        $("#tgl_transaksi").addClass('form-control-danger');
+        $("#errortgl_transaksi").addClass('has-danger');
+        $("#errortgl_transaksi").html("Tanggal transaksi tidak boleh kosong");
+        $('#tgl_transaksi').focus();
+        return false;
+    } else {
+        $('#errortgl_transaksi').html('');
+        $("#errortgl_transaksi").removeClass('has-danger');
+        $("#errortgl_transaksi").addClass('has-success');
+        $("#tgl_transaksi").removeClass('form-control-danger');
+    }
+
+    if (ket_transaksi == '') {
+        $("#ket_transaksi").addClass('form-control-danger');
+        $("#errorket_transaksi").addClass('has-danger');
+        $("#errorket_transaksi").html("Keterangan transaksi tidak boleh kosong");
+        $('#ket_transaksi').focus();
+        return false;
+    } else {
+        $('#errorket_transaksi').html('');
+        $("#errorket_transaksi").removeClass('has-danger');
+        $("#errorket_transaksi").addClass('has-success');
+        $("#ket_transaksi").removeClass('form-control-danger');
+    }
+
     var data = {
+        tgl_transaksi: tgl_transaksi,
+        ket_transaksi: ket_transaksi,
         detail_transaksi: detail_transaksi
     };
-    // $.ajax({
-    //     url: '<?= base_url('Admin/ATK/Transaksi/save') ?>',
-    //     method: 'post',
-    //     data: data,
-    //     dataType: 'json',
-    //     success: function(response) {
-    //         getSwall(response.status, response.message);
-    //         if (response.status == '200') {
-    //             detail_transaksi = [];
-    //             renderDetailTransaksi();
-    //         }
-    //     }
-    // });
 
-    console.log(data);
+    // console.log(data);
+    $.ajax({
+        url: '<?= base_url('Admin/ATK/Transaksi/insertTransaksiMasuk') ?>',
+        method: 'post',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status == '200') {
+                getSwall(response.status, response.data);
+                $('#form_tambah_transaksi_masuk')[0].reset();
+                detail_transaksi = [];
+                renderDetailTransaksi();
+                $('#atk_id').val('');
+                $('#atk_id').trigger('change');
+            } else {
+                getSwall(response.status, response.data);
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
 });
 </script>
 

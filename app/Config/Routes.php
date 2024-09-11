@@ -107,6 +107,7 @@ $routes->group('Admin', function ($routes) {
 
         
         $routes->get('FORM_MASUK', 'transaksiController::transaksi_masuk');
+        $routes->post('insertTransaksiMasuk', 'transaksiController::insertTransaksiMasuk');
         $routes->post('save', 'transaksiController::store');
         $routes->post('delete', 'transaksiController::destroy');
         $routes->post('edit', 'transaksiController::edit');
