@@ -19,8 +19,9 @@
                     <table class="table hover multiple-select-row nowrap" id="tableatk">
                         <thead>
                             <tr>
-                                <th class="table-plus">Merek ATK</th>
                                 <th class="table-plus">Nama Barang</th>
+                                <th class="table-plus">Merek ATK</th>
+                                <th class="table-plus">QTY</th>
                                 <th class="">Status ATK</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
@@ -175,10 +176,14 @@ function dataTablesatk() {
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
+                    data: 'nama_barang'
+                },
+                {
                     data: 'merek_atk'
                 },
                 {
-                    data: 'nama_barang'
+                    data: 'qty_atk',
+                    class: 'text-center'
                 },
                 {
                     data: 'status_atk',
@@ -247,8 +252,6 @@ $('#addatk').on('shown.bs.modal', function() {
     getTipeBarang();
     getSatuan();
 });
-
-
 
 function getSwall(status, message) {
     swal({

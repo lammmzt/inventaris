@@ -25,6 +25,15 @@ class ruanganController extends BaseController
         return view('Admin/Ruangan/index', $data);
     }
 
+    public function fetchAll(){
+        $data = $this->ruanganModel->getRuangan()->where('status_ruangan', '1')->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+
     public function ajaxDataTables()
     {
         $builder = $this->ruanganModel->getruangan();

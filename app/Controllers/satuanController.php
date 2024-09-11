@@ -26,7 +26,7 @@ class satuanController extends BaseController
     }
 
     public function fetchAll(){
-        $data = $this->satuanModel->getsatuan()->findAll();
+        $data = $this->satuanModel->getsatuan()->where('status_satuan', '1')->findAll();
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,

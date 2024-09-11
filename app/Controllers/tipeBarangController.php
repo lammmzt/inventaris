@@ -40,7 +40,7 @@ class tipeBarangController extends BaseController
     }
 
     public function fetchAll(){
-        $data = $this->tipeBarangModel->getTipeBarang()->findAll();
+        $data = $this->tipeBarangModel->getTipeBarang()->where('status_tipe_barang', '1')->findAll();
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,

@@ -46,6 +46,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('edit', 'ruanganController::edit');
         $routes->post('update', 'ruanganController::update');
         $routes->post('updateStatus', 'ruanganController::changeStatus');
+        $routes->post('fetchAll', 'ruanganController::fetchAll');
         $routes->post('fetchDataRuangan', 'ruanganController::fetchDataRuangan');
     });
 
