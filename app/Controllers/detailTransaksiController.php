@@ -9,7 +9,7 @@ use App\Models\atkModel;
 use App\Models\detailTransaksiModel;
 use Ramsey\Uuid\Uuid;
 
-class transaksiController extends BaseController
+class detailTransaksiController extends BaseController
 {
     protected $transaksiModel;
     protected $detailTransaksiModel;
@@ -99,44 +99,6 @@ class transaksiController extends BaseController
         return view('Admin/Transaksi/transaksi_masuk', $data);
     }
 
-
-    // ==================== TRANSAKSI MASUK ====================
-    public function insertTransaksiMasuk(){
-        $ket_transaksi = $this->request->getPost('ket_transaksi');
-        $tgl_transaksi = $this->request->getPost('tgl_transaksi');
-
-        $data = [   
-            'id_transaksi' => Uuid::uuid4()->toString(),
-            // 'user_id' => session()->get('id_user'),
-            'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
-            'tipe_transaksi' => '0',
-            'ket_transaksi' => $ket_transaksi,
-            'status_transaksi' => '1',
-            'tanggal_transaksi' => $tgl_transaksi,
-        ];
-
-        $this->transaksiModel->insert($data);
-        
-        // insert detail transaksi
-        $detail_transaksi = $this->request->getPost('detail_transaksi');
-
-        for ($i=0; $i < count($detail_transaksi); $i++) { 
-            $dt_trx = [
-                'transaksi_id' => $data['id_transaksi'],
-                'atk_id' => $detail_transaksi[$i]['atk_id'],
-                'qty' => $detail_transaksi[$i]['qty'],
-                'status_detail_transaksi' => '1',
-            ];
-            $this->detailTransaksiModel->save($dt_trx);
-            $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $detail_transaksi[$i]['qty']]);
-        }
-
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => 'Data berhasil disimpan',
-            'status' => '200'
-        ]);
-    }
 
     public function edit()
     {

@@ -179,7 +179,7 @@ function dataTablesTipeBarang() {
                 },
                 {
                     data: 'action',
-                    class: 'datatable-nosort'
+                    class: 'datatable-nosort text-center'
                 },
 
             ],
