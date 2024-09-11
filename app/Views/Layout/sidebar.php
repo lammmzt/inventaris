@@ -32,19 +32,37 @@
                 <?php
                 // if (session()->get('role') == 'Admin'):
                 ?>
-                <li class="dropdown <?= $active == 'Barang' || $active == 'Ruangan' ? 'show' : '' ?>">
+                <li
+                    class="dropdown <?= $active == 'Barang' || $active == 'detail_barang' || $active == 'Ruangan' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-gear"></span><span class="mtext">Master Data</span>
                     </a>
                     <ul class="submenu">
                         <li><a href="<?= base_url('Admin/Barang') ?>"
-                                class="<?= $active == 'Barang'  ? 'active' : '' ?>">Master Barang</a></li>
+                                class="<?= $active == 'Barang' || $active == 'detail_barang' ? 'active' : '' ?>">Master
+                                Barang</a></li>
                         <li><a href="<?= base_url('Admin/Ruangan') ?>"
                                 class="<?= $active == 'Ruangan'  ? 'active' : '' ?>">Ruangan</a></li>
                         <li><a href="<?= base_url('Admin/Satuan') ?>"
                                 class="<?= $active == 'Satuan'  ? 'active' : '' ?>">Satuan</a></li>
                     </ul>
                 </li>
+                <li
+                    class="dropdown <?= $active == 'ATK' || $active == 'transaksi' || $active == 'ATK' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-archive"></span><span class="mtext">ATK</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Admin/ATK') ?>" class="<?= $active == 'ATK'  ? 'active' : '' ?>">Data
+                                ATK
+                            </a></li>
+                        <li><a href="<?= base_url('Admin/ATK/Transaksi') ?>"
+                                class="<?= $active == 'transaksi'  ? 'active' : '' ?>">
+                                Transakasi
+                            </a></li>
+                    </ul>
+                </li>
+
                 <li>
                     <a href="<?= base_url('Admin/User') ?>"
                         class="dropdown-toggle no-arrow <?= $active == 'Users'  ? 'active' : '' ?>">
@@ -58,9 +76,6 @@
                 <?php
                 //  endif; 
                 ?>
-
-
-
                 <li
                     class="dropdown <?= $active == 'laporan_antrean' || $active == 'laporan_data_siswa' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">

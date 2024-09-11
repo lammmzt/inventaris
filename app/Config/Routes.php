@@ -24,6 +24,7 @@ $routes->group('Auth', function ($routes) {
 // group route admin
 $routes->group('Admin', function ($routes) {
     $routes->get('Dashboard', 'Home::index');
+
     $routes->group('User', function ($routes) {
         $routes->get('/', 'usersController::index');
         $routes->get('DataTables', 'usersController::ajaxDataTables');
@@ -37,17 +38,6 @@ $routes->group('Admin', function ($routes) {
         $routes->post('updatePass', 'usersController::updatePass');
     });
 
-
-    $routes->group('Barang', function ($routes) {
-        $routes->get('/', 'barangController::index');
-        $routes->get('DataTables', 'barangController::ajaxDataTables');
-        $routes->post('save', 'barangController::store');
-        $routes->post('delete', 'barangController::destroy');
-        $routes->post('edit', 'barangController::edit');
-        $routes->post('update', 'barangController::update');
-        $routes->post('updateStatus', 'barangController::changeStatus');
-    });
-
     $routes->group('Ruangan', function ($routes) {
         $routes->get('/', 'ruanganController::index');
         $routes->get('DataTables', 'ruanganController::ajaxDataTables');
@@ -56,6 +46,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('edit', 'ruanganController::edit');
         $routes->post('update', 'ruanganController::update');
         $routes->post('updateStatus', 'ruanganController::changeStatus');
+        $routes->post('fetchAll', 'ruanganController::fetchAll');
         $routes->post('fetchDataRuangan', 'ruanganController::fetchDataRuangan');
     });
 
@@ -68,6 +59,68 @@ $routes->group('Admin', function ($routes) {
         $routes->post('update', 'satuanController::update');
         $routes->post('updateStatus', 'satuanController::changeStatus');
         $routes->post('fetchDataSatuan', 'satuanController::fetchDataSatuan');
+        $routes->post('fetchAll', 'satuanController::fetchAll');
+    });
+
+    $routes->group('Barang', function ($routes) {
+        $routes->get('/', 'barangController::index');
+        $routes->get('getBarangByCode/(:segment)', 'barangController::getBarangByCode/$1');
+        $routes->get('DataTables', 'barangController::ajaxDataTables');
+        $routes->post('save', 'barangController::store');
+        $routes->post('delete', 'barangController::destroy');
+        $routes->post('edit', 'barangController::edit');
+        $routes->post('update', 'barangController::update');
+        $routes->post('updateStatus', 'barangController::changeStatus');
+        $routes->post('fetchBarangByJenisBarang', 'barangController::fetchBarangByJenisBarang');
+    });
+
+    $routes->group('Barang/Detail', function ($routes) {
+        $routes->get('(:segment)', 'tipeBarangController::index/$1');
+        // $routes->get('/', 'tipeBarangController::index');
+        $routes->post('DataTables', 'tipeBarangController::ajaxDataTables');
+        $routes->post('save', 'tipeBarangController::store');
+        $routes->post('delete', 'tipeBarangController::destroy');
+        $routes->post('edit', 'tipeBarangController::edit');
+        $routes->post('update', 'tipeBarangController::update');
+        $routes->post('updateStatus', 'tipeBarangController::changeStatus');
+        $routes->post('fetchAll', 'tipeBarangController::fetchAll');
+        $routes->post('fetchTipeBarangByJenisBarang', 'tipeBarangController::fetchTipeBarangByJenisBarang');
+        $routes->post('fetchTipeBarangByIdBarang', 'tipeBarangController::fetchTipeBarangByIdBarang');
+    });
+
+    $routes->group('ATK', function ($routes) {
+        $routes->get('/', 'atkController::index');
+        $routes->get('DataTables', 'atkController::ajaxDataTables');
+        $routes->post('save', 'atkController::store');
+        $routes->post('delete', 'atkController::destroy');
+        $routes->post('edit', 'atkController::edit');
+        $routes->post('update', 'atkController::update');
+        $routes->post('changeStatus', 'atkController::changeStatus');
+        $routes->post('fetchAll', 'atkController::fetchAll');
+        $routes->post('fetchDataATK', 'atkController::fetchDataatk');
+    });
+
+    $routes->group('ATK/Transaksi', function ($routes) {
+        $routes->get('/', 'transaksiController::index');
+        $routes->get('DataTablesMasuk', 'transaksiController::ajaxDataTablesMasuk');
+        $routes->get('DataTablesKeluar', 'transaksiController::ajaxDataTablesKeluar');
+
+        // transaksi masuk
+        $routes->get('FORM_MASUK', 'transaksiController::transaksi_masuk');
+        $routes->post('insertTransaksiMasuk', 'transaksiController::insertTransaksiMasuk');
+        $routes->post('fetchDetailTransByIdTrans', 'transaksiController::fetchDetailTransByIdTrans');
+        $routes->get('detail_trans_masuk', 'transaksiController::detail_trans_masuk');
+
+        
+        $routes->post('save', 'transaksiController::store');
+        $routes->post('delete', 'transaksiController::destroy');
+        $routes->post('edit', 'transaksiController::edit');
+        $routes->post('update', 'transaksiController::update');
+        $routes->post('changeStatus', 'transaksiController::changeStatus');
+        $routes->post('fetchDataTransaksi', 'transaksiController::fetchDataTransaksi');
+        $routes->post('fetchDataTransaksiById', 'transaksiController::fetchDataTransaksiById');
+
+
     });
 
 

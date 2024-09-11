@@ -5,24 +5,53 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20">
-                <div class="row mb-4">
-                    <div class="col-sm-6">
-                        <h4 class="text-blue h4">Data Barang</h4>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <a href="<?= base_url('Admin/Barang'); ?>" class="btn btn-primary"><i
+                                class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
-                    <div class="col-sm-6 text-right">
+                </div>
+                <div class="row mb-4">
+                    <div class="col-sm-11">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Kode Barang</label>
+                                    <input class="form-control" type="text" readonly id="kode_barang"
+                                        value="<?= $kode_barang; ?>" />
+                                    <input class="form-control" type="hidden" readonly id="id_barang"
+                                        value="<?= $id_barang; ?>" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Nama Barang</label>
+                                    <input class="form-control" type="text" readonly id="nama_barang"
+                                        value="<?= $nama_barang; ?>" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group ">
+                                    <label>Jenis Barang</label>
+                                    <input class="form-control" type="text" readonly id="jenis_barang"
+                                        value="<?= ($jenis_barang == '1') ? 'Inventaris' : 'ATK'; ?>" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1 text-right d-flex align-items-center">
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addBarang" type="button">
                             <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
+
                 <div class="pb-20 table-responsive">
-                    <table class="table hover multiple-select-row nowrap" id="tableBarang">
+                    <table class="table hover multiple-select-row nowrap" id="tableTipeBarang">
                         <thead>
                             <tr>
-                                <th class="table-plus">Kode Barang</th>
-                                <th class="">Jenis Barang</th>
-                                <th class="">Nama Barang</th>
-                                <th class="">Status Barang</th>
+                                <th class="">Nama Tipe Barang</th>
+                                <th class="">Status Tipe Barang</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
                         </thead>
@@ -41,7 +70,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    Tambah Barang
+                    Tambah Tipe Barang
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
@@ -49,25 +78,14 @@
             </div>
             <form id="form_tambah_barang">
                 <div class="modal-body">
+                    <input type="hidden" name="barang_id" value="<?= $id_barang; ?>">
                     <div class="form-group row">
-                        <label for="nama_barang" class="col-sm-4 col-form-label">Nama Barang<span
+                        <label for="nama_tipe_barang" class="col-sm-4 col-form-label">Nama Tipe Barang<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="nama_barang" name="nama_barang"
-                                placeholder="Masukan nama Barang">
-                            <div class="form-control-feedback " id="errornama_barang"></div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="jenis_barang" class="col-sm-4 col-form-label">jenis_barang<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <select class="form-control required" id="jenis_barang" name="jenis_barang">
-                                <option value="">Pilih jenis_barang</option>
-                                <option value="1">Inventaris</option>
-                                <option value="0">ATK</option>
-                            </select>
-                            <div class="form-control-feedback " id="errorjenis_barang"></div>
+                            <input type="text" class="form-control required" id="nama_tipe_barang"
+                                name="nama_tipe_barang" placeholder="Masukan nama tipe barang">
+                            <div class="form-control-feedback " id="errornama_tipe_barang"></div>
                         </div>
                     </div>
                 </div>
@@ -85,13 +103,13 @@
 </div>
 
 <!-- modal edit -->
-<div class="modal fade" id="editbarang" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade" id="edit_tipe_barang" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    Edit barang
+                    Edit tipe barang
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
@@ -99,23 +117,14 @@
             </div>
             <form id="form_edit_barang">
                 <div class="modal-body">
-                    <input type="hidden" id="editid_barang" name="id_barang">
+                    <input type="hidden" id="editid_tipe_barang" name="id_tipe_barang">
                     <div class="form-group row">
-                        <label for="editnama_barang" class="col-sm-4 col-form-label">Nama Barang<span
+                        <label for="editnama_tipe_barang" class="col-sm-4 col-form-label">Nama Tipe Barang<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="editnama_barang" name="nama_barang">
-                            <div class="form-control-feedback " id="erroreditnama_barang"></div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="editjenis_barang" class="col-sm-4 col-form-label">Jenis Barang<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <select class="form-control required" id="editjenis_barang" name="jenis_barang">
-
-                            </select>
-                            <div class="form-control-feedback " id="erroreditjenis_barang"></div>
+                            <input type="text" class="form-control required" id="editnama_tipe_barang"
+                                name="nama_tipe_barang">
+                            <div class="form-control-feedback " id="erroreditnama_tipe_barang"></div>
                         </div>
                     </div>
                 </div>
@@ -141,32 +150,31 @@
 
 <script text="text/javascript">
 // dataTables barang
-function dataTablesBarang() {
+function dataTablesTipeBarang() {
     $(document).ready(function() {
-        $('#tableBarang').DataTable({
+        $('#tableTipeBarang').DataTable({
             processing: true,
             serverSide: true,
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('Admin/Barang/DataTables') ?>",
+            ajax: {
+                url: '<?= base_url('Admin/Barang/Detail/DataTables') ?>',
+                type: 'POST',
+                data: function(data) {
+                    data.id_barang = $('#id_barang').val();
+                }
+            },
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
-                    data: 'kode_barang',
+                    data: 'nama_tipe_barang',
                     class: 'table-plus'
                 },
                 {
-                    data: 'jenis_barang',
-                    class: 'text-center'
-                },
-                {
-                    data: 'nama_barang'
-                },
-                {
-                    data: 'status_barang',
+                    data: 'status_tipe_barang',
                     class: 'text-center'
                 },
                 {
@@ -184,7 +192,7 @@ function dataTablesBarang() {
 }
 
 $(document).ready(function() {
-    dataTablesBarang();
+    dataTablesTipeBarang();
 });
 
 function getSwall(status, message) {
@@ -202,9 +210,9 @@ function getSwall(status, message) {
 
 // DATA
 const barang = [
-    'nama_barang',
-    'jenis_barang',
-    'id_barang'
+    'nama_tipe_barang',
+    'id_barang',
+    'id_tipe_barang'
 ];
 
 
@@ -222,7 +230,7 @@ $(function() {
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/Barang/save') ?>',
+                url: '<?= base_url('Admin/Barang/Detail/save') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -234,26 +242,34 @@ $(function() {
                         // foeach error 
                         $.each(response.data, function(key, value) {
                             if (value != '') {
-                                $("#" + key).addClass('form-control-danger');
-                                $("#error" + key).addClass('has-danger');
+                                $("#" + key).addClass(
+                                    'form-control-danger');
+                                $("#error" + key).addClass(
+                                    'has-danger');
                                 $("#error" + key).html(value);
                             } else {
-                                $("#" + key).removeClass('form-control-danger');
-                                $("#" + key).addClass('form-control-success');
+                                $("#" + key).removeClass(
+                                    'form-control-danger');
+                                $("#" + key).addClass(
+                                    'form-control-success');
                                 $("#error" + key).html('');
-                                $("#error" + key).removeClass('has-danger');
+                                $("#error" + key).removeClass(
+                                    'has-danger');
                             }
                         });
                     } else {
                         $("#form_tambah_barang")[0].reset();
                         $("#addBarang").modal('hide');
-                        $('#tableBarang').DataTable().ajax.reload();
+                        $('#tableTipeBarang').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
                         barang.forEach(function(item) {
-                            $("#" + item).removeClass('form-control-danger');
-                            $("#" + item).removeClass('form-control-success');
+                            $("#" + item).removeClass(
+                                'form-control-danger');
+                            $("#" + item).removeClass(
+                                'form-control-success');
                             $("#error" + item).html('');
-                            $("#error" + item).removeClass('has-danger');
+                            $("#error" + item).removeClass(
+                                'has-danger');
                         });
                     }
                     $("#btn_tambah_barang").removeAttr("disabled");
@@ -265,27 +281,22 @@ $(function() {
 });
 
 // edit barang
-$(document).on('click', '.edit_barang', function() {
+$(document).on('click', '.edit_tipe_barang', function() {
     const id = $(this).attr('id');
+    // alert(id);
     $.ajax({
-        url: '<?= base_url('Admin/Barang/edit') ?>',
+        url: '<?= base_url('Admin/Barang/Detail/edit') ?>',
         method: 'post',
         data: {
-            id_barang: id
+            id_tipe_barang: id
         },
         dataType: 'json',
         success: function(response) {
-            $('#editbarang').modal('show');
+            // alert(response.data);
+            $('#edit_tipe_barang').modal('show');
             $.each(response.data, function(key, value) {
                 $('#edit' + key).val(value);
             });
-            // add select in edit
-            $('#editjenis_barang').html(
-                `<option value="">Pilih Jenis Barang</option>
-                <option value="1" ${response.data.jenis_barang == 1 ? 'selected' : ''}>Inventaris</option>
-                <option value="0" ${response.data.jenis_barang == 0 ? 'selected' : ''}>ATK</option>`
-            );
-
         }
     });
 });
@@ -304,7 +315,7 @@ $(function() {
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/Barang/update') ?>',
+                url: '<?= base_url('Admin/Barang/Detail/update') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -317,26 +328,34 @@ $(function() {
                         // foeach error 
                         $.each(response.data, function(key, value) {
                             if (value != '') {
-                                $("#edit" + key).addClass('form-control-danger');
-                                $("#erroredit" + key).addClass('has-danger');
+                                $("#edit" + key).addClass(
+                                    'form-control-danger');
+                                $("#erroredit" + key).addClass(
+                                    'has-danger');
                                 $("#erroredit" + key).html(value);
                             } else {
-                                $("#edit" + key).removeClass('form-control-danger');
-                                $("#edit" + key).addClass('form-control-success');
+                                $("#edit" + key).removeClass(
+                                    'form-control-danger');
+                                $("#edit" + key).addClass(
+                                    'form-control-success');
                                 $("#erroredit" + key).html('');
-                                $("#erroredit" + key).removeClass('has-danger');
+                                $("#erroredit" + key).removeClass(
+                                    'has-danger');
                             }
                         });
                     } else {
                         $("#form_edit_barang")[0].reset();
-                        $("#editbarang").modal('hide');
-                        $('#tableBarang').DataTable().ajax.reload();
+                        $("#edit_tipe_barang").modal('hide');
+                        $('#tableTipeBarang').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
                         barang.forEach(function(item) {
-                            $("#edit" + item).removeClass('form-control-danger');
-                            $("#edit" + item).removeClass('form-control-success');
+                            $("#edit" + item).removeClass(
+                                'form-control-danger');
+                            $("#edit" + item).removeClass(
+                                'form-control-success');
                             $("#erroredit" + item).html('');
-                            $("#erroredit" + item).removeClass('has-danger');
+                            $("#erroredit" + item).removeClass(
+                                'has-danger');
                         });
                     }
                     $("#btn_edit_barang").removeAttr("disabled");
@@ -348,7 +367,7 @@ $(function() {
 });
 
 // delete barang
-$(document).on('click', '.delete_barang', function() {
+$(document).on('click', '.delete_tipe_barang', function() {
     const id = $(this).attr('id');
     swal({
             title: "Apakah anda yakin?",
@@ -363,14 +382,14 @@ $(document).on('click', '.delete_barang', function() {
         .then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: '<?= base_url('Admin/Barang/delete') ?>',
+                    url: '<?= base_url('Admin/Barang/Detail/delete') ?>',
                     method: 'post',
                     data: {
-                        id_barang: id
+                        id_tipe_barang: id
                     },
                     dataType: 'json',
                     success: function(response) {
-                        $('#tableBarang').DataTable().ajax.reload();
+                        $('#tableTipeBarang').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
                     }
                 });
@@ -378,23 +397,16 @@ $(document).on('click', '.delete_barang', function() {
         });
 });
 
-// view barang
-$(document).on('click', '.view_barang', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    window.location.href = '<?= base_url('Admin/Barang/Detail/') ?>' + id;
-});
-
 
 // change status
-$(document).on('click', '.change_status_barang', function() {
+$(document).on('click', '.change_status_tipe_barang', function() {
     const id = $(this).attr('id');
     // alert(id);
     $.ajax({
-        url: '<?= base_url('Admin/Barang/updateStatus') ?>',
+        url: '<?= base_url('Admin/Barang/Detail/updateStatus') ?>',
         method: 'post',
         data: {
-            id_barang: id
+            id_tipe_barang: id
         },
         dataType: 'json',
         success: function(response) {

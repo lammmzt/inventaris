@@ -4,30 +4,54 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use Hermawan\DataTables\DataTable;
+use App\Models\tipeBarangModel;
 use App\Models\barangModel;
 use Ramsey\Uuid\Uuid;
 
-class barangController extends BaseController
+class tipeBarangController extends BaseController
 {
+    protected $tipeBarangModel;
     protected $barangModel;
 
     public function __construct()
     {
+        $this->tipeBarangModel = new tipeBarangModel();
         $this->barangModel = new barangModel();
     }
+
     public function index()
     {
+        $kode_barang = $this->request->getUri()->getSegment(4);
+        // dd($kode_barang);
+        $data_barang = $this->barangModel->getBarangByCode($kode_barang);
+        if ($data_barang == null) {
+            return redirect()->to(base_url('Admin/Barang'));    
+        }
         $data = [
-            'main_menu' => 'Master Data',
-            'title' => 'Data Barang',
-            'active' => 'Barang',
+            'main_menu' => 'Data Barang',
+            'title' => 'Detail Barang',
+            'active' => 'detail_barang',
+            'kode_barang' => $kode_barang,
+            'nama_barang' => $data_barang['nama_barang'],
+            'jenis_barang' => $data_barang['jenis_barang'],
+            'id_barang' => $data_barang['id_barang'],
         ];
-        return view('Admin/Barang/index', $data);
+        return view('Admin/Barang/tipe_barang', $data);
     }
 
-    public function fetchBarangByCode($kode_barang)
+    public function fetchAll(){
+        $data = $this->tipeBarangModel->getTipeBarang()->where('status_tipe_barang', '1')->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+    
+    public function fetchTipeBarangByJenisBarang()
     {
-        $data = $this->barangModel->getBarangByCode($kode_barang);
+        $jenis_barang = $this->request->getPost('jenis_barang');
+        $data = $this->tipeBarangModel->getTipeBarangByJenisBarang($jenis_barang);
         if ($data == null) {
             return $this->response->setJSON([
                 'error' => true,
@@ -42,11 +66,11 @@ class barangController extends BaseController
             ]);
         }
     }
-
-    public function fetchBarangByJenisBarang()
+    
+    public function fetchTipeBarangByIdBarang()
     {
-        $jenis_barang = $this->request->getPost('jenis_barang');
-        $data = $this->barangModel->getBarangByJenisBarang($jenis_barang);
+        $id_barang = $this->request->getPost('id_barang');
+        $data = $this->tipeBarangModel->getTipeBarangByBarang($id_barang);
         if ($data == null) {
             return $this->response->setJSON([
                 'error' => true,
@@ -64,26 +88,21 @@ class barangController extends BaseController
 
     public function ajaxDataTables()
     {
-        $builder = $this->barangModel->getBarang();
-        // dd($builder);
+        $id_barang = $this->request->getPost('id_barang');
+        $builder = $this->tipeBarangModel->getTipeBarangByBarang($id_barang);
         return DataTable::of($builder)
-            ->add('jenis_barang', function ($row) {
-                // jika jenis_barang = 1 maka label inventaris dan sebaliknya atk
-                return $row->jenis_barang == 1 ? '<span class="badge badge-primary">Inventaris</span>' : '<span class="badge badge-success">ATK</span>';
-            })
-            ->add('status_barang', function ($row) {
+            ->add('status_tipe_barang', function ($row) {
                 return '<div class="custom-control custom-switch"> <input type="checkbox" 
-                '.($row->status_barang == 1 ? 'checked' : '').' 
-                class="custom-control-input switch-btn change_status_barang " data-size="small" data-color="#0099ff" id="'.$row->id_barang.'"> <label class="custom-control-label" for="'.$row->id_barang.'"></label> </div>';
+                '.($row->status_tipe_barang == '1' ? 'checked' : '').' 
+                class="custom-control-input switch-btn change_status_tipe_barang " data-size="small" data-color="#0099ff" id="'.$row->id_tipe_barang.'"> <label class="custom-control-label" for="'.$row->id_tipe_barang.'"></label> </div>';
             })
             ->add('action', function ($row) {   
                 return '
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item view_barang" id="' . $row->kode_barang . '"><i class="dw dw-eye"></i> Detail</a>
-                            <button class="dropdown-item edit_barang" id="' . $row->id_barang . '"><i class="dw dw-edit2"></i> Edit</button>
-                            <button class="dropdown-item delete_barang" id="' . $row->id_barang . '"><i class="dw dw-delete-3"></i> Delete</button>
+                            <button class="dropdown-item edit_tipe_barang" id="' . $row->id_tipe_barang . '"><i class="dw dw-edit2"></i> Edit</button>
+                            <button class="dropdown-item delete_tipe_barang" id="' . $row->id_tipe_barang . '"><i class="dw dw-delete-3"></i> Delete</button>
                         </div>
                 </div>
                 ';
@@ -91,21 +110,20 @@ class barangController extends BaseController
             ->toJson(true);
     }
 
-
     public function store()
     {
         $validation =  \Config\Services::validation();
         $validation->setRules([
-            'nama_barang' => [
-                'label' => 'Nama Barang',
-                'rules' => 'required|is_unique[barang.nama_barang]',
+            'nama_tipe_barang' => [
+                'label' => 'Nama Tipe Barang',
+                'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
                     'is_unique' => '{field} sudah ada',
                 ],
             ],
-            'jenis_barang' => [
-                'label' => 'Jenis Barang',
+            'barang_id' => [
+                'label' => 'Jenis tipeBarang',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
@@ -121,19 +139,13 @@ class barangController extends BaseController
                 'status' => '422'
             ]);
         } else {
-            if($this->request->getPost('jenis_barang') == '1'){
-                $kode_barang = 'INV-'.date('Ymd').'-'.rand(100,999);
-            }else{
-                $kode_barang = 'ATK-'.date('Ymd').'-'.rand(100,999);
-            }
             $data = [
-                'id_barang' => Uuid::uuid4()->toString(),
-                'kode_barang' => $kode_barang,
-                'nama_barang' => $this->request->getPost('nama_barang'),
-                'jenis_barang' => $this->request->getPost('jenis_barang'),
-                'status_barang' => '1',
+                'id_tipe_barang' => Uuid::uuid4()->toString(),
+                'barang_id' => $this->request->getPost('barang_id'),
+                'nama_tipe_barang' => $this->request->getPost('nama_tipe_barang'),
+                'status_tipe_barang' => '1',
             ];
-            $this->barangModel->insert($data);
+            $this->tipeBarangModel->insert($data);
             return $this->response->setJSON([
                 'error' => false,
                 'data' => 'Data berhasil disimpan',
@@ -144,8 +156,8 @@ class barangController extends BaseController
 
     public function edit()
     {
-        $id_barang = $this->request->getPost('id_barang');
-        $data = $this->barangModel->find($id_barang);
+        $id_tipe_barang = $this->request->getPost('id_tipe_barang');
+        $data = $this->tipeBarangModel->find($id_tipe_barang);
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,
@@ -156,29 +168,14 @@ class barangController extends BaseController
     public function update()
     {
         $validation =  \Config\Services::validation();
-        $nama_barang_old = $this->barangModel->find($this->request->getPost('id_barang'));
-        if ($this->request->getPost('nama_barang') == $nama_barang_old['nama_barang']) {
-            $is_unique = '';
-        } else {
-            $is_unique = '|is_unique[barang.nama_barang]';
-        }
         $validation->setRules([
-            'nama_barang' => [
-                'label' => 'Nama Barang',
-                'rules' => 'required'.$is_unique,
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                    'is_unique' => '{field} sudah ada',
-                ],
-            ],
-            'jenis_barang' => [
-                'label' => 'Jenis Barang',
+            'nama_tipe_barang' => [
+                'label' => 'Nama tipeBarang',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -189,11 +186,10 @@ class barangController extends BaseController
             ]);
         } else {
             $data = [
-                'id_barang' => $this->request->getPost('id_barang'),
-                'nama_barang' => $this->request->getPost('nama_barang'),
-                'jenis_barang' => $this->request->getPost('jenis_barang'),
+                'id_tipe_barang' => $this->request->getPost('id_tipe_barang'),
+                'nama_tipe_barang' => $this->request->getPost('nama_tipe_barang'),
             ];
-            $this->barangModel->save($data);
+            $this->tipeBarangModel->save($data);
             return $this->response->setJSON([
                 'error' => false,
                 'data' => 'Data berhasil diupdate',
@@ -204,8 +200,8 @@ class barangController extends BaseController
 
     public function destroy()
     {
-        $id_barang = $this->request->getPost('id_barang');
-        $this->barangModel->delete($id_barang);
+        $id_tipe_barang = $this->request->getPost('id_tipe_barang');
+        $this->tipeBarangModel->delete($id_tipe_barang);
         return $this->response->setJSON([
             'error' => false,
             'data' => 'Data berhasil dihapus',
@@ -215,20 +211,19 @@ class barangController extends BaseController
 
     public function changeStatus()
     {
-        $id_barang = $this->request->getPost('id_barang');
+        $id_tipe_barang = $this->request->getPost('id_tipe_barang');
 
-        $status_barang = $this->barangModel->find($id_barang);
+        $status_tipe_barang = $this->tipeBarangModel->find($id_tipe_barang);
         $data = [
-            'status_barang' => $status_barang['status_barang'] == 1 ? '0' : '1',
+            'status_tipe_barang' => $status_tipe_barang['status_tipe_barang'] == 1 ? '0' : '1',
         ];
-        $this->barangModel->update($id_barang, $data);
+        $this->tipeBarangModel->update($id_tipe_barang, $data);
         return $this->response->setJSON([
             'error' => false,
             'data' => 'Status berhasil diubah',
             'status' => '200'
         ]);
     }
-
 }
 
 ?>

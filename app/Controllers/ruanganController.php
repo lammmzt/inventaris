@@ -25,6 +25,15 @@ class ruanganController extends BaseController
         return view('Admin/Ruangan/index', $data);
     }
 
+    public function fetchAll(){
+        $data = $this->ruanganModel->getRuangan()->where('status_ruangan', '1')->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+
     public function ajaxDataTables()
     {
         $builder = $this->ruanganModel->getruangan();
@@ -40,7 +49,6 @@ class ruanganController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item view_ruangan" id="' . $row->id_ruangan . '"><i class="dw dw-eye"></i> View</a>
                             <button class="dropdown-item edit_ruangan" id="' . $row->id_ruangan . '"><i class="dw dw-edit2"></i> Edit</button>
                             <button class="dropdown-item delete_ruangan" id="' . $row->id_ruangan . '"><i class="dw dw-delete-3"></i> Delete</button>
                         </div>

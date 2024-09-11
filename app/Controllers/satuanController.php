@@ -25,6 +25,15 @@ class satuanController extends BaseController
         return view('Admin/Satuan/index', $data);
     }
 
+    public function fetchAll(){
+        $data = $this->satuanModel->getsatuan()->where('status_satuan', '1')->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+
     public function ajaxDataTables()
     {
         $builder = $this->satuanModel->getsatuan();
@@ -40,7 +49,6 @@ class satuanController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item view_satuan" id="' . $row->id_satuan . '"><i class="dw dw-eye"></i> View</a>
                             <button class="dropdown-item edit_satuan" id="' . $row->id_satuan . '"><i class="dw dw-edit2"></i> Edit</button>
                             <button class="dropdown-item delete_satuan" id="' . $row->id_satuan . '"><i class="dw dw-delete-3"></i> Delete</button>
                         </div>
@@ -74,11 +82,10 @@ class satuanController extends BaseController
         } else {
            
             $data = [
-                'id_satuan' => Uuid::uuid4()->toString(),
                 'nama_satuan' => $this->request->getPost('nama_satuan'),
                 'status_satuan' => '1',
             ];
-            $this->satuanModel->insert($data);
+            $this->satuanModel->save($data);
             return $this->response->setJSON([
                 'error' => false,
                 'data' => 'Data berhasil disimpan',
@@ -116,8 +123,6 @@ class satuanController extends BaseController
                     'is_unique' => '{field} sudah ada',
                 ],
             ],
-            
-
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {

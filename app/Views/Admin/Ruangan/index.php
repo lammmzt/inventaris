@@ -108,69 +108,7 @@
     </div>
 </div>
 
-<!-- modal view -->
-<div class="modal fade" id="viewruangan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">
-                    View ruangan
-                </h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    ×
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group row">
-                    <label for="viewnama_ruangan" class="col-sm-4 col-form-label">Nama ruangan</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewnama_ruangan" name="nama_ruangan" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewjenis_ruangan" class="col-sm-4 col-form-label">jenis_ruangan</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewjenis_ruangan" name="jenis_ruangan" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewrole" class="col-sm-4 col-form-label">Role</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewrole" name="role" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewlast_login" class="col-sm-4 col-form-label">Last Login</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewlast_login" name="last_login" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewcreated_at" class="col-sm-4 col-form-label">Created At</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewcreated_at" name="created_at" readonly>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="viewupdated_at" class="col-sm-4 col-form-label">Updated At</label></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="viewupdated_at" name="updated_at" readonly>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    Tutup
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <!-- ======================================== END ruangan ======================================== -->
-
 
 <?= $this->endSection('content');?>
 
@@ -200,7 +138,7 @@ function dataTablesruangan() {
                 },
                 {
                     data: 'action',
-                    class: 'datatable-nosort'
+                    class: 'datatable-nosort text-center'
                 },
 
             ],
@@ -400,24 +338,7 @@ $(document).on('click', '.delete_ruangan', function() {
         });
 });
 
-// view ruangan
-$(document).on('click', '.view_ruangan', function() {
-    const id = $(this).attr('id');
-    $.ajax({
-        url: '<?= base_url('Admin/Ruangan/edit') ?>',
-        method: 'post',
-        data: {
-            id_ruangan: id
-        },
-        dataType: 'json',
-        success: function(response) {
-            $('#viewruangan').modal('show');
-            $.each(response.data, function(key, value) {
-                $('#view' + key).val(value);
-            });
-        }
-    });
-});
+
 
 
 // change status

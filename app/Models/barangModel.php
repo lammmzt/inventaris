@@ -29,4 +29,14 @@ class barangModel extends Model
         }
         return $this->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')->where(['id_barang' => $id])->first();
     }
+
+    public function getBarangByCode($code)
+    {
+        return $this->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')->where(['kode_barang' => $code])->first();
+    }
+
+    public function getBarangByJenisBarang($type)
+    {
+        return $this->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')->where(['jenis_barang' => $type])->findAll();
+    }
 }
