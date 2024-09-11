@@ -56,6 +56,10 @@
                         <li><a href="<?= base_url('Admin/ATK') ?>" class="<?= $active == 'ATK'  ? 'active' : '' ?>">Data
                                 ATK
                             </a></li>
+                        <li><a href="<?= base_url('Admin/ATK/Transaksi') ?>"
+                                class="<?= $active == 'transaksi'  ? 'active' : '' ?>">
+                                Transakasi
+                            </a></li>
                     </ul>
                 </li>
 
@@ -72,9 +76,6 @@
                 <?php
                 //  endif; 
                 ?>
-
-
-
                 <li
                     class="dropdown <?= $active == 'laporan_antrean' || $active == 'laporan_data_siswa' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">

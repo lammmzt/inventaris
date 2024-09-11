@@ -12,7 +12,7 @@ class transaksiModel extends Model
         'id_transaksi',
         'user_id',
         'tipe_transaksi',
-        'kete_transaksi',
+        'ket_transaksi',
         'status_transaksi',
         'tanggal_transaksi',
         'created_at',
@@ -27,11 +27,28 @@ class transaksiModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.kete_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
+                ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
                 ->join('users', 'users.id_user = transaksi.user_id');
         }
         return $this
-            ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.kete_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
+            ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
             ->where(['id_transaksi' => $id])->first();
+    }
+
+
+    public function getTransaksiMasuk()
+    {
+        return $this
+            ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user') 
+            ->join('users', 'users.id_user = transaksi.user_id')
+            ->where('tipe_transaksi', 'Masuk');
+    }
+
+    public function getTransaksiKeluar()
+    {
+        return $this
+            ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
+            ->join('users', 'users.id_user = transaksi.user_id')
+            ->where('tipe_transaksi', 'Keluar');
     }
 }

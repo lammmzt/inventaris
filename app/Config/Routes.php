@@ -99,6 +99,24 @@ $routes->group('Admin', function ($routes) {
         $routes->post('fetchDataATK', 'atkController::fetchDataatk');
     });
 
+    $routes->group('ATK/Transaksi', function ($routes) {
+        $routes->get('/', 'transaksiController::index');
+        $routes->get('DataTablesMasuk', 'transaksiController::ajaxDataTablesMasuk');
+        $routes->get('DataTablesKeluar', 'transaksiController::ajaxDataTablesKeluar');
+
+        
+        $routes->get('FORM_MASUK', 'transaksiController::transaksi_masuk');
+        $routes->post('save', 'transaksiController::store');
+        $routes->post('delete', 'transaksiController::destroy');
+        $routes->post('edit', 'transaksiController::edit');
+        $routes->post('update', 'transaksiController::update');
+        $routes->post('changeStatus', 'transaksiController::changeStatus');
+        $routes->post('fetchDataTransaksi', 'transaksiController::fetchDataTransaksi');
+        $routes->post('fetchDataTransaksiById', 'transaksiController::fetchDataTransaksiById');
+
+
+    });
+
 
     $routes->group('Setting', function ($routes) {
         $routes->get('/', 'usersController::Setting');
