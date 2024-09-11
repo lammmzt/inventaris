@@ -96,6 +96,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('edit', 'atkController::edit');
         $routes->post('update', 'atkController::update');
         $routes->post('changeStatus', 'atkController::changeStatus');
+        $routes->post('fetchAll', 'atkController::fetchAll');
         $routes->post('fetchDataATK', 'atkController::fetchDataatk');
     });
 

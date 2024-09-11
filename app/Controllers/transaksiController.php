@@ -75,6 +75,15 @@ class transaksiController extends BaseController
             }, 'last')
             ->toJson(true);
     }
+
+    public function fetchAll(){
+        $data = $this->transaksiModel->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
     
     // ==================== TRANSAKSI MASUK ====================
 

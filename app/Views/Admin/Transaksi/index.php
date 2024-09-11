@@ -106,9 +106,8 @@
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="tipe_barang_id"
                                 id="tipe_barang_id" style="width: 100%; height: 38px;">
-
+                                <div class="form-control-feedback " id="errortipe_barang_id"></div>
                             </select>
-                            <div class="form-control-feedback " id="errortipe_barang_id"></div>
                         </div>
                     </div>
                     <div class="form-group row">

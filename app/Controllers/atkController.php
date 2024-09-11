@@ -24,6 +24,16 @@ class atkController extends BaseController
         ];
         return view('Admin/ATK/index', $data);
     }
+
+    public function fetchAll()
+    {
+        $data = $this->atkModel->getAtk()->where(['status_atk' => '1'])->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
     
 
     public function ajaxDataTables()
