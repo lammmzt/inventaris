@@ -34,7 +34,7 @@ class atkController extends BaseController
             ->add('status_atk', function ($row) {
                 return '<div class="custom-control custom-switch"> <input type="checkbox" 
                 '.($row->status_atk == 1 ? 'checked' : '').' 
-                class="custom-control-input switch-btn change_status_atk " data-size="small" data-color="#0099ff" id="'.$row->id_atk.'"> <label class="custom-control-label" for="'.$row->id_atk.'"></label> </div>';
+                class="custom-control-input switch-btn change_status_atk" data-size="small" data-color="#0099ff" id="'.$row->id_atk.'"> <label class="custom-control-label" for="'.$row->id_atk.'"></label> </div>';
             })
             ->add('action', function ($row) {   
                 return '
@@ -54,9 +54,9 @@ class atkController extends BaseController
     {
         $validation =  \Config\Services::validation();
         $validation->setRules([
-            'nama_atk' => [
-                'label' => 'Nama atk',
-                'rules' => 'required|is_unique[atk.nama_atk]',
+            'merek_atk' => [
+                'label' => 'Merek ATK',
+                'rules' => 'required|is_unique[atk.merek_atk]',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
                     'is_unique' => '{field} sudah ada',
@@ -91,7 +91,7 @@ class atkController extends BaseController
                 'id_atk' => Uuid::uuid4()->toString(),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
                 'satuan_id' => $this->request->getPost('satuan_id'),
-                'nama_atk' => $this->request->getPost('nama_atk'),
+                'merek_atk' => $this->request->getPost('merek_atk'),
                 'status_atk' => '1',
             ];
             $this->atkModel->insert($data);
@@ -117,15 +117,15 @@ class atkController extends BaseController
     public function update()
     {
         $validation =  \Config\Services::validation();
-        $nama_atk_old = $this->atkModel->find($this->request->getPost('id_atk'));
-        if ($this->request->getPost('nama_atk') == $nama_atk_old['nama_atk']) {
+        $merek_atk_old = $this->atkModel->find($this->request->getPost('id_atk'));
+        if ($this->request->getPost('merek_atk') == $merek_atk_old['merek_atk']) {
             $is_unique = '';
         } else {
-            $is_unique = '|is_unique[atk.nama_atk]';
+            $is_unique = '|is_unique[atk.merek_atk]';
         }
         $validation->setRules([
-            'nama_atk' => [
-                'label' => 'Nama atk',
+            'merek_atk' => [
+                'label' => 'Merek ATK',
                 'rules' => 'required'.$is_unique,
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
@@ -160,7 +160,7 @@ class atkController extends BaseController
                 'id_atk' => $this->request->getPost('id_atk'),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
                 'satuan_id' => $this->request->getPost('satuan_id'),
-                'nama_atk' => $this->request->getPost('nama_atk'),
+                'merek_atk' => $this->request->getPost('merek_atk'),
             ];
             $this->atkModel->save($data);
             return $this->response->setJSON([

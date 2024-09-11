@@ -19,7 +19,7 @@
                     <table class="table hover multiple-select-row nowrap" id="tableatk">
                         <thead>
                             <tr>
-                                <th class="table-plus">Nama ATK</th>
+                                <th class="table-plus">Merek ATK</th>
                                 <th class="table-plus">Nama Barang</th>
                                 <th class="">Status ATK</th>
                                 <th class="datatable-nosort">Action</th>
@@ -34,7 +34,8 @@
 </div>
 
 <!-- modal addatk -->
-<div class="modal fade" id="addatk" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade" id="addatk" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+    data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -48,33 +49,31 @@
             <form id="form_tambah_atk">
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="nama_atk" class="col-sm-4 col-form-label">Nama ATK<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="nama_atk" name="nama_atk"
-                                placeholder="Masukan nama atk">
-                            <div class="form-control-feedback " id="errornama_atk"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="tipe_barang_id" class="col-sm-4 col-form-label">Tipe Barang<span
+                        <label for="tipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="tipe_barang_id"
-                                id="tipe_barang_id" style="width: 100%; height: 38px; z-index: -9999;">
+                                id="tipe_barang_id" style="width: 100%; height: 38px;">
 
                             </select>
                             <div class="form-control-feedback " id="errortipe_barang_id"></div>
                         </div>
                     </div>
-
+                    <div class="form-group row">
+                        <label for="merek_atk" class="col-sm-4 col-form-label">Merek ATK<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control required" id="merek_atk" name="merek_atk"
+                                placeholder="Masukan Merek ATK">
+                            <div class="form-control-feedback " id="errormerek_atk"></div>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="satuan_id" class="col-sm-4 col-form-label">Satuan<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="satuan_id" id="satuan_id"
-                                style="width: 100%; height: 38px; z-index: -9999;">
+                                style="width: 100%; height: 38px;">
                                 <option value="">Pilih Satuan</option>
                             </select>
                             <div class="form-control-feedback " id="errorsatuan_id"></div>
@@ -89,13 +88,14 @@
                             Simpan
                         </button>
                     </div>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 <!-- modal edit -->
-<div class="modal fade" id="editatk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade" id="editatk" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -110,11 +110,33 @@
                 <div class="modal-body">
                     <input type="hidden" id="editid_atk" name="id_atk">
                     <div class="form-group row">
-                        <label for="editnama_atk" class="col-sm-4 col-form-label">Nama atk<span
+                        <label for="edittipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="editnama_atk" name="nama_atk">
-                            <div class="form-control-feedback " id="erroreditnama_atk"></div>
+                            <select class="custom-select2 form-control required" name="tipe_barang_id"
+                                id="edittipe_barang_id" style="width: 100%; height: 38px;">
+
+                            </select>
+                            <div class="form-control-feedback " id="erroreditipe_barang_id"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editmerek_atk" class="col-sm-4 col-form-label">Merek ATK<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control required" id="editmerek_atk" name="merek_atk">
+                            <div class="form-control-feedback " id="erroreditmerek_atk"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editsatuan_id" class="col-sm-4 col-form-label">Satuan<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <select class="custom-select2 form-control required" name="satuan_id" id="editsatuan_id"
+                                style="width: 100%; height: 38px;">
+                                <option value="">Pilih Satuan</option>
+                            </select>
+                            <div class="form-control-feedback " id="erroreditsatuan_id"></div>
                         </div>
                     </div>
                 </div>
@@ -153,7 +175,7 @@ function dataTablesatk() {
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
-                    data: 'nama_atk'
+                    data: 'merek_atk'
                 },
                 {
                     data: 'nama_barang'
@@ -187,7 +209,7 @@ function getTipeBarang() {
         },
         success: function(response) {
             var html = '';
-            html += '<option value="">Pilih Tipe Barang</option>';
+            html += '<option value="">Pilih Barang</option>';
             $.each(response.data, function(key, value) {
                 html += '<option value="' + value.id_tipe_barang + '">' + value.nama_barang +
                     ' - ' + value.nama_tipe_barang +
@@ -218,9 +240,15 @@ function getSatuan() {
 
 $(document).ready(function() {
     dataTablesatk();
+});
+
+// ketika modal tambah atk muncul
+$('#addatk').on('shown.bs.modal', function() {
     getTipeBarang();
     getSatuan();
 });
+
+
 
 function getSwall(status, message) {
     swal({
@@ -237,11 +265,27 @@ function getSwall(status, message) {
 
 // DATA
 const atk = [
-    'nama_atk',
+    'merek_atk',
     'id_atk',
     'tipe_barang_id',
     'satuan_id'
 ];
+
+// hapus error
+atk.forEach(function(item) {
+    $("#" + item).on('change', function() {
+        $("#" + item).removeClass('form-control-danger');
+        $("#" + item).removeClass('form-control-success');
+        $("#error" + item).html('');
+        $("#error" + item).removeClass('has-danger');
+    });
+    $("#edit" + item).on('change', function() {
+        $("#edit" + item).removeClass('form-control-danger');
+        $("#edit" + item).removeClass('form-control-success');
+        $("#erroredit" + item).html('');
+        $("#erroredit" + item).removeClass('has-danger');
+    });
+});
 
 // tambah 
 $(function() {
@@ -299,11 +343,46 @@ $(function() {
     });
 });
 
+// fungsi get data edit barang
+function getEditBarang($id_barang) {
+    $.ajax({
+        url: '<?= base_url('Admin/Barang/Detail/fetchTipeBarangByJenisBarang') ?>',
+        method: 'post',
+        dataType: 'json',
+        data: {
+            jenis_barang: '0'
+        },
+        success: function(response) {
+            var html = '';
+            // alert(old_id_tipe_barang);
+            $.each(response.data, function(key, value) {
+                if (value.id_tipe_barang == $id_barang) {
+                    // alert(value.id_tipe_barang);
+                    html += '<option selected value="' + value
+                        .id_tipe_barang +
+                        '">' +
+                        value.nama_barang + ' - ' + value
+                        .nama_tipe_barang +
+                        '</option>';
+                } else {
+                    html += '<option value="' + value.id_tipe_barang +
+                        '">' +
+                        value.nama_barang + ' - ' + value
+                        .nama_tipe_barang +
+                        '</option>';
+                }
+            });
+            $('#edittipe_barang_id').html(html);
+            $('#edittipe_barang_id').val(response.data.tipe_barang_id);
+        }
+    });
+}
+
 // edit atk
 $(document).on('click', '.edit_atk', function() {
     const id = $(this).attr('id');
     $.ajax({
-        url: '<?= base_url('Admin/atk/edit') ?>',
+        url: '<?= base_url('Admin/ATK/edit') ?>',
         method: 'post',
         data: {
             id_atk: id
@@ -314,7 +393,33 @@ $(document).on('click', '.edit_atk', function() {
             $.each(response.data, function(key, value) {
                 $('#edit' + key).val(value);
             });
-
+            const old_tipe_barang_id = response.data.tipe_barang_id;
+            const old_satuan_id = response.data.satuan_id;
+            // alert(old_id_tipe_barang);
+            getEditBarang(old_tipe_barang_id);
+            $.ajax({
+                url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
+                method: 'post',
+                dataType: 'json',
+                success: function(response) {
+                    var html = '';
+                    $.each(response.data, function(key, value) {
+                        if (value.id_satuan == old_satuan_id) {
+                            // alert(value.id_satuan);
+                            html += '<option value="' + value
+                                .id_satuan +
+                                '" selected>' + value.nama_satuan +
+                                '</option>';
+                        } else {
+                            html += '<option value="' + value.id_satuan +
+                                '">' + value.nama_satuan +
+                                '</option>';
+                        }
+                    });
+                    $('#editsatuan_id').html(html);
+                    $('#editsatuan_id').val(response.data.satuan_id);
+                }
+            });
         }
     });
 });
@@ -415,7 +520,7 @@ $(document).on('click', '.change_status_atk', function() {
     const id = $(this).attr('id');
     // alert(id);
     $.ajax({
-        url: '<?= base_url('Admin/ATK/updateStatus') ?>',
+        url: '<?= base_url('Admin/ATK/changeStatus') ?>',
         method: 'post',
         data: {
             id_atk: id
