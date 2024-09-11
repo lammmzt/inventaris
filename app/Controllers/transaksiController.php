@@ -87,9 +87,10 @@ class transaksiController extends BaseController
         ]);
     }
     
+
     // ==================== TRANSAKSI MASUK ====================
 
-     public function transaksi_masuk()
+    public function transaksi_masuk()
     {
         $data = [
             'main_menu' => 'transaksi',
@@ -136,6 +137,26 @@ class transaksiController extends BaseController
             'data' => 'Data berhasil disimpan',
             'status' => '200'
         ]);
+    }
+
+    public function fetchDetailTransByIdTrans()
+    {
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        $data = $this->detailTransaksiModel->getTransMasukByTransId($id_transaksi);
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+
+    public function detail_trans_masuk(){
+        $data = [
+            'main_menu' => 'transaksi',
+            'title' => 'Detail Transaksi Masuk',
+            'active' => 'transaksi',
+        ];
+        return view('Admin/Transaksi/detail_transaksi_masuk', $data);
     }
 
     public function edit()
