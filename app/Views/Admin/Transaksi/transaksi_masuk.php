@@ -211,6 +211,7 @@ $('#btn_simpan').click(function() {
         });
         return;
     }
+
     var tgl_transaksi = $('#tgl_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
     if (tgl_transaksi == '') {
@@ -244,7 +245,10 @@ $('#btn_simpan').click(function() {
         ket_transaksi: ket_transaksi,
         detail_transaksi: detail_transaksi
     };
-
+    $("#btn_simpan").attr("disabled", "disabled");
+    $("#btn_simpan").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    );
     // console.log(data);
     $.ajax({
         url: '<?= base_url('Admin/ATK/Transaksi/insertTransaksiMasuk') ?>',
@@ -267,6 +271,8 @@ $('#btn_simpan').click(function() {
                 $("#errorket_transaksi").removeClass('has-danger');
                 $("#errorket_transaksi").removeClass('has-success');
                 $("#ket_transaksi").removeClass('form-control-danger');
+                $("#btn_simpan").removeAttr("disabled");
+                $("#btn_simpan").html('Simpan');
             } else {
                 getSwall(response.status, response.data);
             }

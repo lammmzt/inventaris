@@ -26,8 +26,7 @@
                                         <!-- <h4 class="text-blue h4">Data ATK</h4> -->
                                     </div>
                                     <div class="col-sm-6 text-right">
-                                        <a href="<?= base_url('Admin/ATK/Transaksi/FORM_MASUK') ?>"
-                                            class="btn btn-primary">
+                                        <a href="<?= base_url('Admin/ATK/Transaksi/Masuk') ?>" class="btn btn-primary">
                                             <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
                                         </a>
                                     </div>

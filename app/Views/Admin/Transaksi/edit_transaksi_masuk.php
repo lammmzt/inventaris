@@ -38,22 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="atk_id" class="col-sm-2 col-form-label">Nama ATK<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-9">
-                            <select class="custom-select2 form-control" name="atk_id" id="atk_id"
-                                style="width: 100%; height: 38px;">
 
-                            </select>
-                        </div>
-                        <div class="col-sm-1">
-                            <button type="button" class="btn btn-primary text-right d-flex align-items-center m-1"
-                                id="btn_plus" disabled>
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
                     <div class="table-responsive pt-4">
                         <table class="table table table-striped">
                             <thead>
@@ -65,9 +50,6 @@
                                 </tr>
                             </thead>
                             <tbody id="tbody_transaksi">
-                                <tr>
-                                    <td colspan="4" class="text-center">Data Kosong</td>
-                                </tr>
 
                             </tbody>
                         </table>
@@ -211,6 +193,7 @@ $('#btn_simpan').click(function() {
         });
         return;
     }
+
     var tgl_transaksi = $('#tgl_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
     if (tgl_transaksi == '') {
@@ -244,7 +227,10 @@ $('#btn_simpan').click(function() {
         ket_transaksi: ket_transaksi,
         detail_transaksi: detail_transaksi
     };
-
+    $("#btn_simpan").attr("disabled", "disabled");
+    $("#btn_simpan").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    );
     // console.log(data);
     $.ajax({
         url: '<?= base_url('Admin/ATK/Transaksi/insertTransaksiMasuk') ?>',
@@ -267,6 +253,8 @@ $('#btn_simpan').click(function() {
                 $("#errorket_transaksi").removeClass('has-danger');
                 $("#errorket_transaksi").removeClass('has-success');
                 $("#ket_transaksi").removeClass('form-control-danger');
+                $("#btn_simpan").removeAttr("disabled");
+                $("#btn_simpan").html('Simpan');
             } else {
                 getSwall(response.status, response.data);
             }

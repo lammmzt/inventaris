@@ -106,10 +106,10 @@ $routes->group('Admin', function ($routes) {
         $routes->get('DataTablesKeluar', 'transaksiController::ajaxDataTablesKeluar');
 
         // transaksi masuk
-        $routes->get('FORM_MASUK', 'transaksiController::transaksi_masuk');
-        $routes->post('insertTransaksiMasuk', 'transaksiController::insertTransaksiMasuk');
-        $routes->post('fetchDetailTransByIdTrans', 'transaksiController::fetchDetailTransByIdTrans');
-        $routes->get('detail_trans_masuk', 'transaksiController::detail_trans_masuk');
+        $routes->get('Masuk', 'detailTransaksiController::transaksi_masuk');
+        $routes->post('insertTransaksiMasuk', 'detailTransaksiController::insertTransaksiMasuk');
+        $routes->post('fetchDetailTransByIdTrans', 'detailTransaksiController::fetchDetailTransByIdTrans');
+        $routes->get('Masuk/(:segment)', 'detailTransaksiController::edit_trans_masuk/$1');
 
         
         $routes->post('save', 'transaksiController::store');

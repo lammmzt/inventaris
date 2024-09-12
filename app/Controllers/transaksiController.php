@@ -33,7 +33,6 @@ class transaksiController extends BaseController
     }
     
 
-    // ==================== INDEX ====================
     public function ajaxDataTablesMasuk()
     {
         $builder = $this->transaksiModel->getTransaksiMasuk();
@@ -48,7 +47,8 @@ class transaksiController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
+                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
                         </div>
                 </div>
                 ';
@@ -85,78 +85,6 @@ class transaksiController extends BaseController
             'data' => $data,
             'status' => '200'
         ]);
-    }
-    
-
-    // ==================== TRANSAKSI MASUK ====================
-
-    public function transaksi_masuk()
-    {
-        $data = [
-            'main_menu' => 'transaksi',
-            'title' => 'Form Transaksi Masuk',
-            'active' => 'transaksi',
-        ];
-        return view('Admin/Transaksi/transaksi_masuk', $data);
-    }
-
-
-    // ==================== TRANSAKSI MASUK ====================
-    public function insertTransaksiMasuk(){
-        $ket_transaksi = $this->request->getPost('ket_transaksi');
-        $tgl_transaksi = $this->request->getPost('tgl_transaksi');
-
-        $data = [   
-            'id_transaksi' => Uuid::uuid4()->toString(),
-            // 'user_id' => session()->get('id_user'),
-            'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
-            'tipe_transaksi' => '0',
-            'ket_transaksi' => $ket_transaksi,
-            'status_transaksi' => '1',
-            'tanggal_transaksi' => $tgl_transaksi,
-        ];
-
-        $this->transaksiModel->insert($data);
-        
-        // insert detail transaksi
-        $detail_transaksi = $this->request->getPost('detail_transaksi');
-
-        for ($i=0; $i < count($detail_transaksi); $i++) { 
-            $dt_trx = [
-                'transaksi_id' => $data['id_transaksi'],
-                'atk_id' => $detail_transaksi[$i]['atk_id'],
-                'qty' => $detail_transaksi[$i]['qty'],
-                'status_detail_transaksi' => '1',
-            ];
-            $this->detailTransaksiModel->save($dt_trx);
-            $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $detail_transaksi[$i]['qty']]);
-        }
-
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => 'Data berhasil disimpan',
-            'status' => '200'
-        ]);
-    }
-
-    public function fetchDetailTransByIdTrans()
-    {
-        $id_transaksi = $this->request->getPost('id_transaksi');
-        $data = $this->detailTransaksiModel->getTransMasukByTransId($id_transaksi);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
-    }
-
-    public function detail_trans_masuk(){
-        $data = [
-            'main_menu' => 'transaksi',
-            'title' => 'Detail Transaksi Masuk',
-            'active' => 'transaksi',
-        ];
-        return view('Admin/Transaksi/detail_transaksi_masuk', $data);
     }
 
     public function edit()
