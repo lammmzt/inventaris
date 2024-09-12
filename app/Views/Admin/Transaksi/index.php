@@ -53,8 +53,7 @@
                                         <!-- <h4 class="text-blue h4">Data ATK</h4> -->
                                     </div>
                                     <div class="col-sm-6 text-right">
-                                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addatk"
-                                            type="button">
+                                        <a href="<?= base_url('Admin/ATK/Transaksi/Keluar') ?>" class="btn btn-primary">
                                             <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
                                         </a>
                                     </div>

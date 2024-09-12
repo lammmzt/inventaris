@@ -26,6 +26,16 @@ class usersController extends BaseController
         return view('Admin/Users/index', $data);
     }
 
+
+    public function fetchAll(){
+        $data = $this->userModel->getUser()->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+
     public function ajaxDataTables()
     {
         $builder = $this->userModel->getUser();

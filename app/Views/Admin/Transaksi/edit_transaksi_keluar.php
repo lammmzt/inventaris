@@ -12,20 +12,35 @@
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
-                <form id="form_tambah_transaksi_masuk" class="mt-3">
+                <form id="form_tambah_transaksi_keluar">
+                    <input type="hidden" name="id_transaksi" id="id_transaksi" value="<?= $id_transaksi; ?>">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="hidden" id="id_transaksi" name="id_transaksi" value="<?= $id_transaksi; ?>">
                             <div class="form-group row">
-                                <label for="tgl_transaksi" class="col-sm-4 col-form-label">Tanggal<span
+                                <label for="user_id" class="col-sm-4 col-form-label">Nama User<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control required" id="tgl_transaksi"
-                                        name="tgl_transaksi" value="<?= $tgl_transaksi; ?>">
-                                    <div class="form-control-feedback " id="errortgl_transaksi"></div>
+                                    <select class="custom-select2 form-control required" name="user_id" id="user_id"
+                                        style="width: 100%; height: 38px;">
+
+                                    </select>
+                                    <div class="form-control-feedback " id="erroruser_id"></div>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="tanggal_transaksi" class="col-sm-4 col-form-label">Tanggal<span
+                                        class="rq">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control required" id="tanggal_transaksi"
+                                        name="tanggal_transaksi" value="<?= $tanggal_transaksi; ?>">
+                                    <div class="form-control-feedback " id="errortanggal_transaksi"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <!-- ket -->
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -100,7 +115,7 @@ function dataTablesDetailBarang() {
         autoWidth: false,
         responsive: true,
         ajax: {
-            url: '<?= base_url('Admin/ATK/Transaksi/DataTablesEditTransMasuk') ?>',
+            url: '<?= base_url('Admin/ATK/Transaksi/DataTablesEditTransKeluar') ?>',
             type: 'POST',
             data: function(data) {
                 data.id_transaksi = $('#id_transaksi').val();
@@ -151,6 +166,29 @@ $(document).ready(function() {
     dataTablesDetailBarang();
 });
 
+// get data user
+function getUser() {
+    $.ajax({
+        url: '<?= base_url('Admin/User/fetchAll') ?>',
+        method: 'post',
+        dataType: 'json',
+        success: function(response) {
+            var html = '';
+            html += '<option value="">Pilih User</option>';
+            $.each(response.data, function(key, value) {
+                if (value.id_user == '<?= $user_id; ?>') {
+                    html += '<option value="' + value.id_user + '" selected>' + value.nama_user +
+                        '</option>';
+                } else {
+                    html += '<option value="' + value.id_user + '">' + value.nama_user +
+                        '</option>';
+                }
+            });
+            $('#user_id').html(html);
+        }
+    });
+};
+
 // get data tipe barang
 function getATK() {
     $.ajax({
@@ -174,7 +212,10 @@ function getATK() {
     });
 };
 
-getATK();
+$(document).ready(function() {
+    getUser();
+    getATK();
+});
 
 function getSwall(status, message) {
     swal({
@@ -188,7 +229,7 @@ function getSwall(status, message) {
 }
 
 // when click button delete
-$(document).on('click', '.deleteTransMasuk', function() {
+$(document).on('click', '.deleteTransKeluar', function() {
     const id = $(this).attr('id');
     // alert(id);
     swal({
@@ -203,7 +244,7 @@ $(document).on('click', '.deleteTransMasuk', function() {
     }).then((result) => {
         if (result.value) {
             $.ajax({
-                url: '<?= base_url('Admin/ATK/Transaksi/deleteTransMasuk') ?>',
+                url: '<?= base_url('Admin/ATK/Transaksi/deleteTransKeluar') ?>',
                 method: 'post',
                 data: {
                     id_detail_transaksi: id
@@ -235,7 +276,7 @@ $('#atk_id').change(function() {
 });
 
 // function to update detail
-function updatedDetailTransMasuk() {
+function updatedDetailTranskeluar() {
     var atk_id = $('#atk_id').val();
     var id_transaksi = $('#id_transaksi').val();
 
@@ -245,7 +286,7 @@ function updatedDetailTransMasuk() {
         qty: 1
     };
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateDetailATKMasuk') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/updateDetailATKKeluar') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
@@ -265,7 +306,7 @@ function updatedDetailTransMasuk() {
 
 // event click button plus
 $('#btn_plus').click(function() {
-    updatedDetailTransMasuk();
+    updatedDetailTranskeluar();
 });
 
 
@@ -282,7 +323,7 @@ $(document).on('focusout', '.input_qty', function() {
     // alert(data);
 
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateQtyMasuk') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/updateQtyKeluar') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
@@ -300,18 +341,19 @@ $(document).on('focusout', '.input_qty', function() {
 // event click button update
 $('#btn_update').click(function() {
     var id_transaksi = $('#id_transaksi').val();
-    var tanggal_transaksi = $('#tgl_transaksi').val();
+    var tanggal_transaksi = $('#tanggal_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
+    var user_id = $('#user_id').val();
 
-    // alert(tgl_transaksi);
     var data = {
         id_transaksi: id_transaksi,
         tanggal_transaksi: tanggal_transaksi,
-        ket_transaksi: ket_transaksi
+        ket_transaksi: ket_transaksi,
+        user_id: user_id
     };
 
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateTransMasuk') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/updateTransKeluar') ?>',
         method: 'post',
         data: data,
         dataType: 'json',

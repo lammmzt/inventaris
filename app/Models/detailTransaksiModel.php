@@ -39,7 +39,7 @@ class detailTransaksiModel extends Model
             ->first();
     }
 
-    public function getTransMasukByTransId($id)
+    public function getTransByTransId($id)
     {
         return $this
             ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.transaksi_id, detail_transaksi.atk_id, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, tipe_barang.nama_tipe_barang, barang.nama_barang, satuan.nama_satuan')

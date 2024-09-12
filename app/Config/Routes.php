@@ -35,6 +35,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('reset', 'usersController::reset');
         $routes->post('changeStatus', 'usersController::changeStatus');
         $routes->post('fetchDataUser', 'usersController::fetchDataUser');
+        $routes->post('fetchAll', 'usersController::fetchAll');
         $routes->post('updatePass', 'usersController::updatePass');
     });
 
@@ -104,6 +105,8 @@ $routes->group('Admin', function ($routes) {
         $routes->get('/', 'transaksiController::index');
         $routes->get('DataTablesMasuk', 'transaksiController::ajaxDataTablesMasuk');
         $routes->get('DataTablesKeluar', 'transaksiController::ajaxDataTablesKeluar');
+        $routes->post('updateTransMasuk', 'transaksiController::updateTransMasuk');
+        $routes->post('updateTransKeluar', 'transaksiController::updateTransKeluar');
 
         // transaksi masuk
         $routes->get('Masuk', 'detailTransaksiController::transaksi_masuk');
@@ -115,6 +118,16 @@ $routes->group('Admin', function ($routes) {
         $routes->post('deleteTransMasuk', 'detailTransaksiController::destroyTransMasuk');
         $routes->post('updateDetailATKMasuk', 'detailTransaksiController::updateDetailATKMasuk');
         $routes->post('updateQtyMasuk', 'detailTransaksiController::updateQtyMasuk');
+
+        // transaksi Keluar
+        $routes->get('Keluar', 'detailTransaksiController::transaksi_keluar');
+        $routes->post('insertTransaksiKeluar', 'detailTransaksiController::insertTransaksiKeluar');
+        $routes->get('Keluar/(:segment)', 'detailTransaksiController::edit_trans_keluar/$1');
+        // $routes->get('DataTablesEditTransKeluar', 'detailTransaksiController::ajaxDataTablesKeluar');
+        $routes->post('DataTablesEditTransKeluar', 'detailTransaksiController::ajaxDataTablesKeluar');
+        $routes->post('deleteTransKeluar', 'detailTransaksiController::destroyTransKeluar');
+        $routes->post('updateDetailATKKeluar', 'detailTransaksiController::updateDetailATKKeluar');
+        $routes->post('updateQtyKeluar', 'detailTransaksiController::updateQtyKeluar');
 
         
         $routes->post('save', 'transaksiController::store');
