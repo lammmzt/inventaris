@@ -5,13 +5,13 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20 card-box">
+                <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
-                <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5>
                 <form id="form_tambah_transaksi_masuk">
                     <div class="row">
                         <div class="col-md-6">
@@ -197,6 +197,7 @@ $('#btn_plus').click(function() {
 $(document).on('change', '.input_qty', function() {
     var index = $(this).attr('id').split('_')[1];
     detail_transaksi[index].qty = $(this).val();
+    renderDetailTransaksi();
 });
 
 // event click button simpan

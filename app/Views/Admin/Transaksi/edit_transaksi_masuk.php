@@ -5,22 +5,23 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20 card-box">
+                <h5 class="h4 text-blue mb-20">Form Edit Transaksi Masuk</h5>
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
-                <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5>
                 <form id="form_tambah_transaksi_masuk">
                     <div class="row">
                         <div class="col-md-6">
+                            <input type="hidden" id="id_transaksi" name="id_transaksi" value="<?= $id_transaksi; ?>">
                             <div class="form-group row">
                                 <label for="tgl_transaksi" class="col-sm-4 col-form-label">Tanggal<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="date" class="form-control required" id="tgl_transaksi"
-                                        name="tgl_transaksi">
+                                        name="tgl_transaksi" value="<?= $tgl_transaksi; ?>">
                                     <div class="form-control-feedback " id="errortgl_transaksi"></div>
                                 </div>
                             </div>
@@ -32,32 +33,48 @@
                                         class="rq">*</span></label></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control required" id="ket_transaksi" name="ket_transaksi"
-                                        placeholder="Masukan ket_transaksi transaksi"></textarea>
+                                        placeholder="Masukan ket_transaksi transaksi"><?= $ket_transaksi; ?></textarea>
                                     <div class="form-control-feedback " id="errorket_transaksi"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="atk_id" class="col-sm-2 col-form-label">Nama ATK<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-9">
+                            <select class="custom-select2 form-control" name="atk_id" id="atk_id"
+                                style="width: 100%; height: 38px;">
+
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <button type="button" class="btn btn-primary text-right d-flex align-items-center m-1"
+                                id="btn_plus" disabled>
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
 
                     <div class="table-responsive pt-4">
-                        <table class="table table table-striped">
+                        <table class="table table table-striped" id="tableDetailBarang">
                             <thead>
                                 <tr>
-                                    <th scope="col" class="text-center">#</th>
-                                    <th scope="col">Nama ATK</th>
-                                    <th scope="col" class="text-center" style="width: 250px;">QTY</th>
-                                    <th scope="col" class="text-center" style="width: 150px;">Action</th>
+                                    <th scope="col" class="text-center datatable-nosort">#</th>
+                                    <th scope="col" class="datatable-nosort">Nama ATK</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">QTY</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 150px;">Action
+                                    </th>
                                 </tr>
                             </thead>
-                            <tbody id="tbody_transaksi">
-
+                            <tbody>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="row mt-3">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-primary float-right" id="btn_simpan">Simpan</button>
+                            <button type="button" class="btn btn-primary float-right" id="btn_update">Update</button>
                         </div>
                     </div>
                 </form>
@@ -74,6 +91,66 @@
 <?= $this->section('dataTables');?>
 
 <script text="text/javascript">
+// dataTables trans Masuk
+function dataTablesDetailBarang() {
+    $('#tableDetailBarang').DataTable({
+        processing: true,
+        serverSide: true,
+        scrollCollapse: true,
+        autoWidth: false,
+        responsive: true,
+        ajax: {
+            url: '<?= base_url('Admin/ATK/Transaksi/DataTablesEditTransMasuk') ?>',
+            type: 'POST',
+            data: function(data) {
+                data.id_transaksi = $('#id_transaksi').val();
+            }
+        },
+        // "lengthMenu": [
+        //     [5, 10, 25, 50, -1],
+        //     [5, 10, 25, 50, "All"]
+        // ],
+
+        // search, paging, info false
+        searching: false,
+        paging: false,
+        info: false,
+
+        // remove order default sorting
+        order: [],
+
+        columns: [{
+                data: null,
+                class: "text-center",
+                render: function(data, type, row, meta) {
+                    return meta.row + meta.settings._iDisplayStart + 1;
+                }
+            },
+            {
+                data: 'nama_barang',
+                class: 'table-plus'
+            },
+            {
+                data: 'qty',
+                class: 'text-center'
+            },
+            {
+                data: 'action',
+                class: 'text-center'
+            },
+
+        ],
+        columnDefs: [{
+            targets: "datatable-nosort",
+            orderable: false,
+        }],
+    });
+}
+
+$(document).ready(function() {
+    dataTablesDetailBarang();
+});
+
 // get data tipe barang
 function getATK() {
     $.ajax({
@@ -110,7 +187,43 @@ function getSwall(status, message) {
     })
 }
 
-var detail_transaksi = [];
+// when click button delete
+$(document).on('click', '.deleteTransMasuk', function() {
+    const id = $(this).attr('id');
+    // alert(id);
+    swal({
+        title: 'Apakah anda yakin?',
+        text: "Data yang dihapus tidak dapat dikembalikan!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                url: '<?= base_url('Admin/ATK/Transaksi/deleteTransMasuk') ?>',
+                method: 'post',
+                data: {
+                    id_detail_transaksi: id
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status == '200') {
+                        getSwall(response.status, response.data);
+                        $('#tableDetailBarang').DataTable().ajax.reload();
+                    } else {
+                        getSwall(response.status, response.data);
+                    }
+                },
+                error: function(err) {
+                    console.log(err);
+                }
+            });
+        }
+    });
+});
 
 // event change tipe barang
 $('#atk_id').change(function() {
@@ -121,140 +234,25 @@ $('#atk_id').change(function() {
     }
 });
 
-// fungsi tambah detail transaksi
-function addDetailTransaksi() {
+// function to update detail
+function updatedDetailTransMasuk() {
     var atk_id = $('#atk_id').val();
-    var atk_text = $('#atk_id option:selected').text();
-    var qty = 1;
-    var index = detail_transaksi.findIndex(x => x.atk_id == atk_id);
-    if (index == -1) {
-        detail_transaksi.push({
-            atk_id: atk_id,
-            atk_text: atk_text,
-            qty: qty
-        });
-    } else {
-        detail_transaksi[index].qty = parseInt(detail_transaksi[index].qty) + 1;
-    }
-    renderDetailTransaksi();
-}
-
-
-// fungsi render detail transaksi
-function renderDetailTransaksi() {
-    var html = '';
-    $.each(detail_transaksi, function(key, value) {
-        html += '<tr>';
-        html += '<td class="text-center">' + (key + 1) + '</td>';
-        html += '<td>' + value.atk_text + '</td>';
-        html +=
-            '<td class="text-center"><input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' +
-            value
-            .qty +
-            '" id="qty_' + key + '"></td>';
-        html +=
-            '<td class="text-center"><button type="button" class="btn btn-danger" onclick="deleteDetailTransaksi(' +
-            key + ')">Hapus</button></td>';
-        html += '</tr>';
-    });
-    $('#tbody_transaksi').html(html);
-}
-
-// fungsi hapus detail transaksi
-function deleteDetailTransaksi(index) {
-    detail_transaksi.splice(index, 1);
-    renderDetailTransaksi();
-    if (detail_transaksi.length == 0) {
-        $('#tbody_transaksi').html(
-            '<tr><td colspan="4" class="text-center">Data Kosong</td></tr>');
-    }
-}
-
-// event click button simpan
-$('#btn_plus').click(function() {
-    addDetailTransaksi();
-});
-
-// event change input qty
-$(document).on('change', '.input_qty', function() {
-    var index = $(this).attr('id').split('_')[1];
-    detail_transaksi[index].qty = $(this).val();
-});
-
-// event click button simpan
-$('#btn_simpan').click(function() {
-    if (detail_transaksi.length == 0) {
-        swal({
-            title: 'Data Kosong',
-            type: 'error',
-            showCancelButton: false,
-            showConfirmButton: true,
-            timer: 1500
-        });
-        return;
-    }
-
-    var tgl_transaksi = $('#tgl_transaksi').val();
-    var ket_transaksi = $('#ket_transaksi').val();
-    if (tgl_transaksi == '') {
-        $("#tgl_transaksi").addClass('form-control-danger');
-        $("#errortgl_transaksi").addClass('has-danger');
-        $("#errortgl_transaksi").html("Tanggal transaksi tidak boleh kosong");
-        $('#tgl_transaksi').focus();
-        return false;
-    } else {
-        $('#errortgl_transaksi').html('');
-        $("#errortgl_transaksi").removeClass('has-danger');
-        $("#errortgl_transaksi").addClass('has-success');
-        $("#tgl_transaksi").removeClass('form-control-danger');
-    }
-
-    if (ket_transaksi == '') {
-        $("#ket_transaksi").addClass('form-control-danger');
-        $("#errorket_transaksi").addClass('has-danger');
-        $("#errorket_transaksi").html("Keterangan transaksi tidak boleh kosong");
-        $('#ket_transaksi').focus();
-        return false;
-    } else {
-        $('#errorket_transaksi').html('');
-        $("#errorket_transaksi").removeClass('has-danger');
-        $("#errorket_transaksi").addClass('has-success');
-        $("#ket_transaksi").removeClass('form-control-danger');
-    }
+    var id_transaksi = $('#id_transaksi').val();
 
     var data = {
-        tgl_transaksi: tgl_transaksi,
-        ket_transaksi: ket_transaksi,
-        detail_transaksi: detail_transaksi
+        atk_id: atk_id,
+        id_transaksi: id_transaksi,
+        qty: 1
     };
-    $("#btn_simpan").attr("disabled", "disabled");
-    $("#btn_simpan").html(
-        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-    );
-    // console.log(data);
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/insertTransaksiMasuk') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/saveDetailATKMasuk') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
                 getSwall(response.status, response.data);
-                $('#form_tambah_transaksi_masuk')[0].reset();
-                detail_transaksi = [];
-                renderDetailTransaksi();
-                $('#atk_id').val('');
-                $('#atk_id').trigger('change');
-                $('#errortgl_transaksi').html('');
-                $("#errortgl_transaksi").removeClass('has-danger');
-                $("#errortgl_transaksi").removeClass('has-success');
-                $("#tgl_transaksi").removeClass('form-control-danger');
-                $('#errorket_transaksi').html('');
-                $("#errorket_transaksi").removeClass('has-danger');
-                $("#errorket_transaksi").removeClass('has-success');
-                $("#ket_transaksi").removeClass('form-control-danger');
-                $("#btn_simpan").removeAttr("disabled");
-                $("#btn_simpan").html('Simpan');
+                $('#tableDetailBarang').DataTable().ajax.reload();
             } else {
                 getSwall(response.status, response.data);
             }
@@ -263,6 +261,24 @@ $('#btn_simpan').click(function() {
             console.log(err);
         }
     });
+}
+
+// event click button plus
+$('#btn_plus').click(function() {
+    updatedDetailTransMasuk();
+});
+
+// when change input qty detail lost
+$(document).on('change', '.input_qty_lost', function() {
+    var index = $(this).attr('id').split('_')[1];
+    detail_transaksi[index].qty_lost = $(this).val();
+});
+
+
+// event change input qty
+$(document).on('change', '.input_qty', function() {
+    var index = $(this).attr('id').split('_')[1];
+    detail_transaksi[index].qty = $(this).val();
 });
 </script>
 

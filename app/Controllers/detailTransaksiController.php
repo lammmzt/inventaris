@@ -22,35 +22,25 @@ class detailTransaksiController extends BaseController
         $this->atkModel = new atkModel();
     }
 
-    public function index()
-    {
-        $data = [
-            'main_menu' => 'transaksi',
-            'title' => 'Data transaksi',
-            'active' => 'transaksi',
-        ];
-        return view('Admin/Transaksi/index', $data);
-    }
-    
-
     // ==================== INDEX ====================
     public function ajaxDataTablesMasuk()
     {
-        $builder = $this->transaksiModel->getTransaksiMasuk();
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        // $id_transaksi = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
+            
+        $builder = $this->detailTransaksiModel->getTransMasukByTransId($id_transaksi);
         // dd($builder);
+        
         return DataTable::of($builder)
-             ->add('status_transaksi', function ($row) {
-                // jika status_transaksi = 1 maka label inventaris dan sebaliknya atk
-                return $row->status_transaksi == 1 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Prose</span>';
+            ->add('nama_barang', function ($row) {
+                return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
+            })
+             ->add('qty', function ($row) {
+                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="' . $row->id_detail_transaksi . '">';
             })
             ->add('action', function ($row) {   
                 return '
-                <div class="dropdown">
-                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
-                        </div>
-                </div>
+                <button type="button" class="btn btn-danger deleteTransMasuk" id="'. $row->id_detail_transaksi .'">Hapus</button> 
                 ';
             }, 'last')
             ->toJson(true);
@@ -87,15 +77,14 @@ class detailTransaksiController extends BaseController
         ]);
     }
 
-
     // ==================== TRANSAKSI MASUK ====================
 
     public function transaksi_masuk()
     {
         $data = [
-            'main_menu' => 'transaksi',
+            'main_menu' => 'Transaksi',
             'title' => 'Form Transaksi Masuk',
-            'active' => 'transaksi',
+            'active' => 'Transaksi',
         ];
         return view('Admin/Transaksi/transaksi_masuk', $data);
     }
@@ -137,8 +126,15 @@ class detailTransaksiController extends BaseController
                 'qty' => $detail_transaksi[$i]['qty'],
                 'status_detail_transaksi' => '1',
             ];
+
+            // insert detail transaksi
             $this->detailTransaksiModel->save($dt_trx);
-            $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $detail_transaksi[$i]['qty']]);
+            
+            // cari data atk
+            $data_atk = $this->atkModel->find($detail_transaksi[$i]['atk_id']);
+
+            // update qty atk
+            $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $detail_transaksi[$i]['qty']]);
         }
 
         return $this->response->setJSON([
@@ -148,24 +144,88 @@ class detailTransaksiController extends BaseController
         ]);
     }
 
-     public function edit_trans_masuk(){
+    public function edit_trans_masuk(){
         $id_transaksi = $this->request->getUri()->getSegment(5);
         // dd($id_transaksi);
         $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
-        $detail_transaksi = $this->detailTransaksiModel->getTransMasukByTransId($id_transaksi);
+
         $data = [
-            'main_menu' => 'transaksi',
-            'title' => 'Detail Transaksi Masuk',
-            'active' => 'transaksi',
-            'data_transaksi' => $data_transaksi,
-            'detail_transaksi' => $detail_transaksi,
+            'main_menu' => 'Transaksi',
+            'title' => 'Edit Transaksi Masuk',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tgl_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],    
         ];
         return view('Admin/Transaksi/edit_transaksi_masuk', $data);
     }
 
+    public function saveDetailATKMasuk(){
+        $transaksi_id = $this->request->getPost('id_transaksi');
+        $qty = $this->request->getPost('qty');
+        $atk_id = $this->request->getPost('atk_id');
+        
+        // find data atk
+        $data_atk = $this->atkModel->find($atk_id);
 
+        // find detail transaksi
+        $data_detail = $this->detailTransaksiModel->where('transaksi_id', $transaksi_id)->where('atk_id', $atk_id)->first();
 
+        if ($data_detail) {
+            // update qty
+            $this->detailTransaksiModel->update($data_detail['id_detail_transaksi'], ['qty' => $data_detail['qty'] + $qty]);
 
+            // update qty atk
+            $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
+
+            return $this->response->setJSON([
+                'error' => false,
+                'data' => 'Data berhasil diupdate',
+                'status' => '200'
+            ]);
+        }
+
+        $data = [
+            'transaksi_id' => $transaksi_id,
+            'atk_id' => $atk_id,
+            'qty' => $qty,
+            'status_detail_transaksi' => '1',
+        ];
+        // insert detail transaksi
+        $this->detailTransaksiModel->save($data);
+
+        // update qty atk
+        $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
+        
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
+    }
+
+    public function destroyTransMasuk()
+    {
+        $id_detail_transaksi = $this->request->getPost('id_detail_transaksi');
+        // cari data detail transaksi
+        $data_detail = $this->detailTransaksiModel->find($id_detail_transaksi);
+
+        // cari data atk
+        $data_atk = $this->atkModel->find($data_detail['atk_id']);
+
+        // update qty atk
+        $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
+        
+        // delete detail transaksi
+        $this->detailTransaksiModel->delete($id_detail_transaksi);
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil dihapus',
+            'status' => '200'
+        ]);
+    }
+
+    
     public function edit()
     {
         $id_transaksi = $this->request->getPost('id_transaksi');
@@ -244,45 +304,22 @@ class detailTransaksiController extends BaseController
         }
     }
 
-    public function destroy()
-    {
-        $id_transaksi = $this->request->getPost('id_transaksi');
-        $this->transaksiModel->delete($id_transaksi);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => 'Data berhasil dihapus',
-            'status' => '200'
-        ]);
-    }
 
     public function changeStatus()
     {
-        $id_transaksi = $this->request->getPost('id_transaksi');
+        $id_detail_transaksi = $this->request->getPost('id_detail_transaksi');
 
-        $status_transaksi = $this->transaksiModel->find($id_transaksi);
+        $status_transaksi = $this->detailTransaksiModel->find($id_detail_transaksi);
         $data = [
             'status_transaksi' => $status_transaksi['status_transaksi'] == '1' ? '0' : '1',
         ];
-        $this->transaksiModel->update($id_transaksi, $data);
+        $this->detailTransaksiModel->update($id_detail_transaksi, $data);
         return $this->response->setJSON([
             'error' => false,
             'data' => 'Status berhasil diubah',
             'status' => '200'
         ]);
     }
-
-    public function fetchDatatransaksi()
-    {
-        $id_transaksi = $this->request->getPost('id_transaksi');
-        $data = $this->transaksiModel->find($id_transaksi);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
-    }
-    
-
 }
 
 ?>

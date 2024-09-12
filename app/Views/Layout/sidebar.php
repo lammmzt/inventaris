@@ -48,7 +48,7 @@
                     </ul>
                 </li>
                 <li
-                    class="dropdown <?= $active == 'ATK' || $active == 'transaksi' || $active == 'ATK' ? 'show' : '' ?>">
+                    class="dropdown <?= $active == 'ATK' || $active == 'Transaksi' || $active == 'ATK' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-archive"></span><span class="mtext">ATK</span>
                     </a>
@@ -57,7 +57,7 @@
                                 ATK
                             </a></li>
                         <li><a href="<?= base_url('Admin/ATK/Transaksi') ?>"
-                                class="<?= $active == 'transaksi'  ? 'active' : '' ?>">
+                                class="<?= $active == 'Transaksi'  ? 'active' : '' ?>">
                                 Transakasi
                             </a></li>
                     </ul>

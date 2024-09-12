@@ -25,14 +25,13 @@ class transaksiController extends BaseController
     public function index()
     {
         $data = [
-            'main_menu' => 'transaksi',
+            'main_menu' => 'Transaksi',
             'title' => 'Data transaksi',
-            'active' => 'transaksi',
+            'active' => 'Transaksi',
         ];
         return view('Admin/Transaksi/index', $data);
     }
     
-
     public function ajaxDataTablesMasuk()
     {
         $builder = $this->transaksiModel->getTransaksiMasuk();
