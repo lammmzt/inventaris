@@ -35,7 +35,7 @@
                                     <table class="table hover multiple-select-row nowrap" id="tabelTransaksiMasuk">
                                         <thead>
                                             <tr>
-                                                <th class="table-plus">Nama User</th>
+                                                <th class="table-plus">Nama Pengguna</th>
                                                 <th class="table-plus">Tanggal</th>
                                                 <th class="">Status</th>
                                                 <th class="datatable-nosort">Action</th>
@@ -63,7 +63,7 @@
                                     <table class="table hover multiple-select-row nowrap" id="tabelTransaksiKeluar">
                                         <thead>
                                             <tr>
-                                                <th class="table-plus">Nama User</th>
+                                                <th class="table-plus">Nama Pemohon</th>
                                                 <th class="table-plus">Tanggal</th>
                                                 <th class="">Status</th>
                                                 <th class="datatable-nosort">Action</th>
@@ -108,7 +108,8 @@ function dataTablesTransMasuk() {
                     data: 'nama_user'
                 },
                 {
-                    data: 'tanggal_transaksi'
+                    data: 'tanggal_transaksi',
+                    class: 'text-center'
                 },
                 {
                     data: 'status_transaksi',
@@ -146,7 +147,8 @@ function dataTablesTransKeluar() {
                     data: 'nama_user'
                 },
                 {
-                    data: 'tanggal_transaksi'
+                    data: 'tanggal_transaksi',
+                    class: 'text-center'
                 },
                 {
                     data: 'status_transaksi',

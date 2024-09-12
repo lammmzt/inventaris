@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20 card-box">
-                <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5>
+                <!-- <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
@@ -84,6 +84,14 @@
         </div>
     </div>
 </div>
+
+<style>
+/* mx height table 500px and srroler down */
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+</style>
 
 <!-- ======================================== END transaksi ======================================== -->
 
@@ -200,7 +208,7 @@ $(document).on('change', '.input_qty', function() {
     renderDetailTransaksi();
 });
 
-// event click button simpan
+// event click button simpan                    
 $('#btn_simpan').click(function() {
     if (detail_transaksi.length == 0) {
         swal({

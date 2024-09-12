@@ -113,7 +113,8 @@ $routes->group('Admin', function ($routes) {
         // $routes->get('DataTablesEditTransMasuk', 'detailTransaksiController::ajaxDataTablesMasuk');
         $routes->post('DataTablesEditTransMasuk', 'detailTransaksiController::ajaxDataTablesMasuk');
         $routes->post('deleteTransMasuk', 'detailTransaksiController::destroyTransMasuk');
-        $routes->post('saveDetailATKMasuk', 'detailTransaksiController::saveDetailATKMasuk');
+        $routes->post('updateDetailATKMasuk', 'detailTransaksiController::updateDetailATKMasuk');
+        $routes->post('updateQtyMasuk', 'detailTransaksiController::updateQtyMasuk');
 
         
         $routes->post('save', 'transaksiController::store');

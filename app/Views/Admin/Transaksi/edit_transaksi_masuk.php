@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20 card-box">
-                <h5 class="h4 text-blue mb-20">Form Edit Transaksi Masuk</h5>
+                <!-- <h5 class="h4 text-blue mb-20">Form Edit Transaksi Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
@@ -106,15 +106,15 @@ function dataTablesDetailBarang() {
                 data.id_transaksi = $('#id_transaksi').val();
             }
         },
-        // "lengthMenu": [
-        //     [5, 10, 25, 50, -1],
-        //     [5, 10, 25, 50, "All"]
-        // ],
+        "lengthMenu": [
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, "All"]
+        ],
 
         // search, paging, info false
-        searching: false,
-        paging: false,
-        info: false,
+        // searching: false,
+        // paging: false,
+        // info: false,
 
         // remove order default sorting
         order: [],
@@ -245,7 +245,7 @@ function updatedDetailTransMasuk() {
         qty: 1
     };
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/saveDetailATKMasuk') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/updateDetailATKMasuk') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
@@ -268,17 +268,64 @@ $('#btn_plus').click(function() {
     updatedDetailTransMasuk();
 });
 
-// when change input qty detail lost
-$(document).on('change', '.input_qty_lost', function() {
-    var index = $(this).attr('id').split('_')[1];
-    detail_transaksi[index].qty_lost = $(this).val();
+
+// event focus lost input qty
+$(document).on('focusout', '.input_qty', function() {
+    const id = $(this).attr('id');
+    const qty = $(this).val();
+    // alert(qty);
+    var data = {
+        id_detail_transaksi: id,
+        qty: qty
+    };
+
+    // alert(data);
+
+    $.ajax({
+        url: '<?= base_url('Admin/ATK/Transaksi/updateQtyMasuk') ?>',
+        method: 'post',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status != '200') {
+                getSwall(response.status, response.data);
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
 });
 
+// event click button update
+$('#btn_update').click(function() {
+    var id_transaksi = $('#id_transaksi').val();
+    var tgl_transaksi = $('#tgl_transaksi').val();
+    var ket_transaksi = $('#ket_transaksi').val();
 
-// event change input qty
-$(document).on('change', '.input_qty', function() {
-    var index = $(this).attr('id').split('_')[1];
-    detail_transaksi[index].qty = $(this).val();
+    var data = {
+        id_transaksi: id_transaksi,
+        tgl_transaksi: tgl_transaksi,
+        ket_transaksi: ket_transaksi
+    };
+
+    $.ajax({
+        url: '<?= base_url('Admin/ATK/Transaksi/updateTransMasuk') ?>',
+        method: 'post',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status == '200') {
+                getSwall(response.status, response.data);
+                $('#tableDetailBarang').DataTable().ajax.reload();
+            } else {
+                getSwall(response.status, response.data);
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
 });
 </script>
 

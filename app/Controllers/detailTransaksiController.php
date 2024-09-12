@@ -36,7 +36,7 @@ class detailTransaksiController extends BaseController
                 return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
             })
              ->add('qty', function ($row) {
-                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="' . $row->id_detail_transaksi . '">';
+                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
             })
             ->add('action', function ($row) {   
                 return '
@@ -160,7 +160,7 @@ class detailTransaksiController extends BaseController
         return view('Admin/Transaksi/edit_transaksi_masuk', $data);
     }
 
-    public function saveDetailATKMasuk(){
+    public function updateDetailATKMasuk(){
         $transaksi_id = $this->request->getPost('id_transaksi');
         $qty = $this->request->getPost('qty');
         $atk_id = $this->request->getPost('atk_id');
@@ -202,6 +202,31 @@ class detailTransaksiController extends BaseController
             'data' => 'Data berhasil disimpan',
             'status' => '200'
         ]);
+    }
+
+    public function updateQtyMasuk(){
+        $id_detail_transaksi = $this->request->getPost('id_detail_transaksi');
+        $qty = $this->request->getPost('qty');
+
+        // cari data detail transaksi
+        $data_detail = $this->detailTransaksiModel->find($id_detail_transaksi);
+
+        // cari data atk
+        $data_atk = $this->atkModel->find($data_detail['atk_id']);
+
+        // update qty detail transaksi
+        $this->detailTransaksiModel->update($id_detail_transaksi, ['qty' => $qty]);
+        
+        // update qty atk
+        $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty'] + $qty]);
+
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil diupdate',
+            'status' => '200'
+        ]);
+        
+
     }
 
     public function destroyTransMasuk()

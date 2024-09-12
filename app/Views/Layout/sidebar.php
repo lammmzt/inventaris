@@ -63,10 +63,28 @@
                     </ul>
                 </li>
 
+                <li
+                    class="dropdown <?= $active == 'Inventaris' || $active == 'Pengecekan' || $active == 'Inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-box-seam">
+                        </span><span class="mtext">Inventaris</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Admin/Inventaris') ?>"
+                                class="<?= $active == 'Inventaris'  ? 'active' : '' ?>">Data
+                                Inventaris
+                            </a></li>
+                        <li><a href="<?= base_url('Admin/Inventaris/Pengecekan') ?>"
+                                class="<?= $active == 'Pengecekan'  ? 'active' : '' ?>">
+                                Pengecekan
+                            </a></li>
+                    </ul>
+                </li>
+
                 <li>
                     <a href="<?= base_url('Admin/User') ?>"
                         class="dropdown-toggle no-arrow <?= $active == 'Users'  ? 'active' : '' ?>">
-                        <span class="micon bi bi-person"></span>
+                        <span class="micon bi bi-people"></span>
                         <span class="mtext">Users
                             <img src="vendors/images/coming-soon.png" alt="" width="25" /></span>
                     </a>
@@ -77,17 +95,19 @@
                 //  endif; 
                 ?>
                 <li
-                    class="dropdown <?= $active == 'laporan_antrean' || $active == 'laporan_data_siswa' ? 'show' : '' ?>">
+                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_data_pengadaan' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-file-earmark-text">
 
                         </span><span class="mtext">Laporan</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="<?= base_url('Admin/Laporan/Antrean') ?>"
-                                class="<?= $active == 'laporan-antrean '  ? 'active' : '' ?>">Laporan Antrean</a></li>
-                        <li><a href="<?= base_url('Admin/laporan_siswa') ?>"
-                                class="<?= $active == 'laporan_siswa'  ? 'active' : '' ?>">Laporan Siswa</a></li>
+                        <li><a href="<?= base_url('Admin/Laporan/transaksi') ?>"
+                                class="<?= $active == 'laporan-transaksi '  ? 'active' : '' ?>">Laporan transaksi</a>
+                        </li>
+                        <li><a href="<?= base_url('Admin/laporan_pengadaan') ?>"
+                                class="<?= $active == 'laporan_pengadaan'  ? 'active' : '' ?>">Laporan pengadaan</a>
+                        </li>
                     </ul>
                 </li>
 
