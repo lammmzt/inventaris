@@ -181,7 +181,8 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Nama Pemohon</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="nama_pemohon" name="nama_pemohon" readonly>
+                                <input type="text" class="form-control" id="nama_pemohon_keluar"
+                                    name="nama_pemohon_keluar" readonly>
                             </div>
                         </div>
                     </div>
@@ -189,8 +190,8 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Tanggal Transaksi</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi"
-                                    readonly>
+                                <input type="text" class="form-control" id="tanggal_transaksi_keluar"
+                                    name="tanggal_transaksi" readonly>
                             </div>
                         </div>
                     </div>
@@ -198,7 +199,8 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Keterangan</label>
                             <div class="col-sm-8">
-                                <textarea class="form-control" id="keterangan" name="keterangan" readonly></textarea>
+                                <textarea class="form-control" id="keterangan_keluar" name="keterangan"
+                                    readonly></textarea>
                             </div>
                         </div>
                     </div>
@@ -206,7 +208,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Status</label>
                             <div class="col-sm-8">
-                                <div id="status"></div>
+                                <div id="status_keluar"></div>
                             </div>
                         </div>
                     </div>
@@ -412,10 +414,10 @@ $(document).on('click', '.detail_trans_keluar', function() {
         dataType: 'json',
         success: function(data) {
             // console.log(data);
-            $('#nama_pemohon').val(data.data.nama_user);
-            $('#tanggal_transaksi').val(data.data.tanggal_transaksi);
-            $('#keterangan').val(data.data.ket_transaksi);
-            $('#status').html(data.data.status_transaksi == 1 ?
+            $('#nama_pemohon_keluar').val(data.data.nama_user);
+            $('#tanggal_transaksi_keluar').val(data.data.tanggal_transaksi);
+            $('#keterangan_keluar').val(data.data.ket_transaksi);
+            $('#status_keluar').html(data.data.status_transaksi == 1 ?
                 '<span class="badge badge-success">Selesai</span>' :
                 '<span class="badge badge-warning">Proses</span>');
             $('#modalDetailTransKeluar').modal('show');

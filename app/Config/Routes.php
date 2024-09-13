@@ -141,9 +141,19 @@ $routes->group('Admin', function ($routes) {
         $routes->post('changeStatus', 'transaksiController::changeStatus');
         $routes->post('fetchDataTransaksi', 'transaksiController::fetchDataTransaksi');
         $routes->post('fetchDataTransaksiById', 'transaksiController::fetchDataTransaksiById');
-
-
     });
+
+    $routes->group('Inventaris', function ($routes) {
+        $routes->get('/', 'inventarisController::index');
+        $routes->get('DataTables', 'inventarisController::ajaxDataTables');
+        $routes->post('save', 'inventarisController::store');
+        $routes->post('delete', 'inventarisController::destroy');
+        $routes->post('edit', 'inventarisController::edit');
+        $routes->post('update', 'inventarisController::update');
+        $routes->post('changeStatus', 'inventarisController::changeStatus');
+        $routes->post('fetchDatainventaris', 'inventarisController::fetchDatainventaris');
+    });
+    
 
 
     $routes->group('Setting', function ($routes) {
