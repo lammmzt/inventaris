@@ -243,7 +243,6 @@ $(document).on('change', '.input_qty', function() {
     renderDetailTransaksi();
 });
 
-
 // event click button simpan                    
 $('#btn_simpan').click(function() {
     if (detail_transaksi.length == 0) {

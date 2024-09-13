@@ -129,6 +129,8 @@ $routes->group('Admin', function ($routes) {
         $routes->post('deleteTransKeluar', 'detailTransaksiController::destroyTransKeluar');
         $routes->post('updateDetailATKKeluar', 'detailTransaksiController::updateDetailATKKeluar');
         $routes->post('updateQtyKeluar', 'detailTransaksiController::updateQtyKeluar');
+        $routes->post('updatedCatatan', 'detailTransaksiController::updatedCatatan');
+        $routes->post('UpdateprosesTransKeluar', 'detailTransaksiController::UpdateprosesTransKeluar');
 
         
         $routes->post('save', 'transaksiController::store');

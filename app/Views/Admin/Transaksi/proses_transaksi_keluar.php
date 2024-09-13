@@ -59,7 +59,9 @@
                                 <tr>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
                                     <th scope="col" class="datatable-nosort">Nama ATK</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">QTY</th>
+                                    <th scope="col" class="text-center datatable-nosort">
+                                        Permintaan</th>
+                                    <th scope="col" class="text-center datatable-nosort">Stok</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 250px;">Catatan
                                     </th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 200px;">Action
@@ -82,7 +84,13 @@
         </div>
     </div>
 </div>
-
+<style>
+/* mx height table 500px and srroler down */
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+</style>
 <!-- ======================================== END transaksi ======================================== -->
 
 <?= $this->endSection('content');?>
@@ -105,15 +113,15 @@ function dataTablesDetailBarang() {
                 data.id_transaksi = $('#id_transaksi').val();
             }
         },
-        "lengthMenu": [
-            [5, 10, 25, 50, -1],
-            [5, 10, 25, 50, "All"]
-        ],
+        // "lengthMenu": [
+        //     [5, 10, 25, 50, -1],
+        //     [5, 10, 25, 50, "All"]
+        // ],
 
         // search, paging, info false
-        // searching: false,
-        // paging: false,
-        // info: false,
+        searching: false,
+        paging: false,
+        info: false,
 
         // remove order default sorting
         order: [],
@@ -130,7 +138,11 @@ function dataTablesDetailBarang() {
                 class: 'table-plus'
             },
             {
-                data: 'qty_proses',
+                data: 'qty',
+                class: 'text-center'
+            },
+            {
+                data: 'qty_atk',
                 class: 'text-center'
             },
             {
@@ -165,87 +177,6 @@ function getSwall(status, message) {
     })
 }
 
-// when click button delete
-$(document).on('click', '.deleteTransKeluar', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    swal({
-        title: 'Apakah anda yakin?',
-        text: "Data yang dihapus tidak dapat dikembalikan!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal',
-    }).then((result) => {
-        if (result.value) {
-            $.ajax({
-                url: '<?= base_url('Admin/ATK/Transaksi/deleteTransKeluar') ?>',
-                method: 'post',
-                data: {
-                    id_detail_transaksi: id
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == '200') {
-                        getSwall(response.status, response.data);
-                        $('#tableDetailBarang').DataTable().ajax.reload();
-                    } else {
-                        getSwall(response.status, response.data);
-                    }
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            });
-        }
-    });
-});
-
-// event change tipe barang
-$('#atk_id').change(function() {
-    if ($('#atk_id').val() !== '') {
-        $('#btn_plus').prop('disabled', false);
-    } else {
-        $('#btn_plus').attr('disabled', true);
-    }
-});
-
-// function to update detail
-function updatedDetailTranskeluar() {
-    var atk_id = $('#atk_id').val();
-    var id_transaksi = $('#id_transaksi').val();
-
-    var data = {
-        atk_id: atk_id,
-        id_transaksi: id_transaksi,
-        qty: 1
-    };
-    $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateDetailATKKeluar') ?>',
-        method: 'post',
-        data: data,
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == '200') {
-                getSwall(response.status, response.data);
-                $('#tableDetailBarang').DataTable().ajax.reload();
-            } else {
-                getSwall(response.status, response.data);
-            }
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    });
-}
-
-// event click button plus
-$('#btn_plus').click(function() {
-    updatedDetailTranskeluar();
-});
-
 
 // event focus lost input qty
 $(document).on('focusout', '.input_qty', function() {
@@ -275,30 +206,24 @@ $(document).on('focusout', '.input_qty', function() {
     });
 });
 
-// event click button update
-$('#btn_simpan').click(function() {
-    var id_transaksi = $('#id_transaksi').val();
-    var tanggal_transaksi = $('#tanggal_transaksi').val();
-    var ket_transaksi = $('#ket_transaksi').val();
-    var user_id = $('#user_id').val();
-
+// event focus lost input catatan
+$(document).on('focusout', '.input_catatan', function() {
+    const id = $(this).attr('id');
+    const catatan = $(this).val();
+    // alert(catatan);
     var data = {
-        id_transaksi: id_transaksi,
-        tanggal_transaksi: tanggal_transaksi,
-        ket_transaksi: ket_transaksi,
-        user_id: user_id
+        id_detail_transaksi: id,
+        catatan: catatan
     };
 
+    // alert(data);
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateTransKeluar') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/updatedCatatan') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
         success: function(response) {
-            if (response.status == '200') {
-                getSwall(response.status, response.data);
-                $('#tableDetailBarang').DataTable().ajax.reload();
-            } else {
+            if (response.status != '200') {
                 getSwall(response.status, response.data);
             }
         },
@@ -306,6 +231,55 @@ $('#btn_simpan').click(function() {
             console.log(err);
         }
     });
+});
+
+// event click button update
+$('#btn_simpan').click(function() {
+
+    // get all input_status value and id
+    var data = [];
+    $('.input_status').each(function() {
+        var id = $(this).attr('id');
+        var status = $(this).val();
+        if (status == '') {
+            $(this).focus();
+            getSwall('error', 'Status belum dipilih');
+            data = [];
+        } else {
+            data.push({
+                id: id,
+                status: status
+            });
+        }
+    });
+
+    // console.log(data);
+    // alert(data);
+
+    if (data.length > 0) {
+        $.ajax({
+            url: '<?= base_url('Admin/ATK/Transaksi/UpdateprosesTransKeluar') ?>',
+            method: 'post',
+            data: {
+                detail_data: data,
+                id_transaksi: $('#id_transaksi').val()
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status != '200') {
+                    getSwall(response.status, response.data);
+                } else {
+                    getSwall(response.status, response.data);
+                    setTimeout(function() {
+                        window.location.href = '<?= base_url('Admin/ATK/Transaksi'); ?>';
+                    }, 1500);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
 });
 </script>
 
