@@ -45,11 +45,11 @@
 <!-- modal addinventaris -->
 <div class="modal fade" id="addinventaris" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
     data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    Tambah inventaris
+                    Tambah Inventaris
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
@@ -70,12 +70,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="merek_inventaris" class="col-sm-4 col-form-label">Merek inventaris<span
+                        <label for="nama_inventaris" class="col-sm-4 col-form-label">Nama Inventaris<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="merek_inventaris"
-                                name="merek_inventaris" placeholder="Masukan Merek inventaris">
-                            <div class="form-control-feedback " id="errormerek_inventaris"></div>
+                            <input type="text" class="form-control required" id="nama_inventaris" name="nama_inventaris"
+                                placeholder="Masukan Merek inventaris">
+                            <div class="form-control-feedback " id="errornama_inventaris"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -88,7 +88,6 @@
                             </select>
                             <div class="form-control-feedback " id="errorsatuan_id"></div>
                         </div>
-
                     </div>
                     <div class="form-group row">
                         <label for="qty_inventaris" class="col-sm-4 col-form-label">QTY inventaris<span
@@ -97,6 +96,43 @@
                             <input type="number" class="form-control required" id="qty_inventaris" name="qty_inventaris"
                                 placeholder="Masukan Merek inventaris" min="0" value="0">
                             <div class="form-control-feedback " id="errorqty_inventaris"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="ruangan_id" class="col-sm-4 col-form-label">Ruangan<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <select class="custom-select2 form-control required" name="ruangan_id" id="ruangan_id"
+                                style="width: 100%; height: 38px;">
+                                <option value="">Pilih Ruangan</option>
+                            </select>
+                            <div class="form-control-feedback " id="errorruangan_id"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="spek_inventaris" class="col-sm-4 col-form-label">Spesifikasi
+                            inventaris</label></label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="spek_inventaris" name="spek_inventaris"
+                                style="height: 100px;" placeholder="Masukan Spesifikasi inventaris"></textarea>
+                            <div class="form-control-feedback " id="errorspek_inventaris"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="perolehan_inventaris" class="col-sm-4 col-form-label">Perolehan
+                            inventaris</label></label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="perolehan_inventaris"
+                                name="perolehan_inventaris" placeholder="Masukan Perolehan inventaris">
+                            <div class="form-control-feedback " id="errorperolehan_inventaris"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="sumber_inventaris" class="col-sm-4 col-form-label">Sumber inventaris</label></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="sumber_inventaris" name="sumber_inventaris"
+                                placeholder="Masukan Sumber inventaris">
+                            <div class="form-control-feedback " id="errorsumber_inventaris"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -115,7 +151,7 @@
 
 <!-- modal edit -->
 <div class="modal fade" id="editinventaris" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
@@ -140,12 +176,12 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="editmerek_inventaris" class="col-sm-4 col-form-label">Merek inventaris<span
+                        <label for="editnama_inventaris" class="col-sm-4 col-form-label">Merek inventaris<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control required" id="editmerek_inventaris"
-                                name="merek_inventaris">
-                            <div class="form-control-feedback " id="erroreditmerek_inventaris"></div>
+                            <input type="text" class="form-control required" id="editnama_inventaris"
+                                name="nama_inventaris">
+                            <div class="form-control-feedback " id="erroreditnama_inventaris"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -198,7 +234,7 @@ function dataTablesinventaris() {
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('Admin/inventaris/DataTables') ?>",
+            ajax: "<?php echo base_url('Admin/Inventaris/DataTables') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
@@ -207,7 +243,7 @@ function dataTablesinventaris() {
                     data: 'nama_barang'
                 },
                 {
-                    data: 'merek_inventaris'
+                    data: 'nama_inventaris'
                 },
                 {
                     data: 'qty_inventaris',
@@ -238,7 +274,7 @@ function getTipeBarang() {
         method: 'post',
         dataType: 'json',
         data: {
-            jenis_barang: '0'
+            jenis_barang: '1'
         },
         success: function(response) {
             var html = '';
@@ -271,6 +307,24 @@ function getSatuan() {
     });
 };
 
+// get data ruangan
+function getRuangan() {
+    $.ajax({
+        url: '<?= base_url('Admin/Ruangan/fetchAll') ?>',
+        method: 'post',
+        dataType: 'json',
+        success: function(response) {
+            var html = '';
+            html += '<option value="">Pilih Ruangan</option>';
+            $.each(response.data, function(key, value) {
+                html += '<option value="' + value.id_ruangan + '">' + value.nama_ruangan +
+                    '</option>';
+            });
+            $('#ruangan_id').html(html);
+        }
+    });
+};
+
 $(document).ready(function() {
     dataTablesinventaris();
 });
@@ -279,6 +333,7 @@ $(document).ready(function() {
 $('#addinventaris').on('shown.bs.modal', function() {
     getTipeBarang();
     getSatuan();
+    getRuangan();
 });
 
 function getSwall(status, message) {
@@ -296,11 +351,17 @@ function getSwall(status, message) {
 
 // DATA
 const inventaris = [
-    'merek_inventaris',
+    'nama_inventaris',
     'id_inventaris',
+    'kode_inventaris',
     'tipe_barang_id',
     'satuan_id',
-    'qty_inventaris'
+    'ruangan_id',
+    'qty_inventaris',
+    'spek_inventaris',
+    'status_inventaris',
+    'perolehan_inventaris',
+    'sumber_inventaris',
 ];
 
 // hapus error
@@ -333,7 +394,7 @@ $(function() {
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/inventaris/save') ?>',
+                url: '<?= base_url('Admin/Inventaris/save') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -374,39 +435,6 @@ $(function() {
         }
     });
 });
-
-// fungsi get data edit barang
-function getEditBarang($id_barang) {
-    $.ajax({
-        url: '<?= base_url('Admin/Barang/Detail/fetchTipeBarangByJenisBarang') ?>',
-        method: 'post',
-        dataType: 'json',
-        data: {
-            jenis_barang: '0'
-        },
-        success: function(response) {
-            var html = '';
-            // alert(old_id_tipe_barang);
-            $.each(response.data, function(key, value) {
-                if (value.id_tipe_barang == $id_barang) {
-                    // alert(value.id_tipe_barang);
-                    html += '<option value="' + value.id_tipe_barang +
-                        '" selected>' +
-                        value.nama_barang + ' - ' + value
-                        .nama_tipe_barang + '</option>';
-                } else {
-                    html += '<option value="' + value.id_tipe_barang +
-                        '">' +
-                        value.nama_barang + ' - ' + value
-                        .nama_tipe_barang +
-                        '</option>';
-                }
-            });
-
-            $('#edittipe_barang_id').html(html);
-        }
-    });
-}
 
 // edit inventaris
 $(document).on('click', '.edit_inventaris', function() {

@@ -6,6 +6,13 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Hermawan\DataTables\DataTable;
 use App\Models\inventarisModel;
 use Ramsey\Uuid\Uuid;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\Label\LabelAlignment;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\RoundBlockSizeMode;
 
 class inventarisController extends BaseController
 {
@@ -38,7 +45,7 @@ class inventarisController extends BaseController
 
     public function ajaxDataTables()
     {
-        $builder = $this->inventarisModel->getinventaris();
+        $builder = $this->inventarisModel->getInventaris();
         // dd($builder);
         return DataTable::of($builder)
             ->add('nama_barang', function ($row) {
@@ -66,28 +73,13 @@ class inventarisController extends BaseController
     public function store()
     {
         $validation =  \Config\Services::validation();
-
-        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
-        $merek_inventaris = $this->request->getPost('merek_inventaris');
-        $data_merk_by_tipe = $this->inventarisModel->where('tipe_barang_id', $tipe_barang_id)->where('merek_inventaris', $merek_inventaris)->countAllResults();
-        
-        // dd($data_merk_by_tipe);
-        
-        if($data_merk_by_tipe > 0){
-           $rules = 'required|is_unique[inventaris.merek_inventaris]';
-        }else{
-            $rules = 'required';
-        }
-
-        // dd($rules);  
         
         $validation->setRules([
-            'merek_inventaris' => [
-                'label' => 'Merek inventaris',
-                'rules' => $rules,
+            'nama_inventaris' => [
+                'label' => 'Nama inventaris',
+                'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
-                    'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
             'satuan_id' => [
@@ -111,7 +103,34 @@ class inventarisController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-
+            'spek_inventaris' => [
+                'label' => 'Spek inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'perolehan_inventaris' => [
+                'label' => 'Perolehan inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'sumber_inventaris' => [
+                'label' => 'Sumber inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'ruangan_id' => [
+                'label' => 'Ruangan',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -121,12 +140,38 @@ class inventarisController extends BaseController
                 'status' => '422'
             ]);
         } else {
-           
+           $kode_inventaris = 'BRG-'.date('Ymd').'-'.rand(100,999);
+           $result = Builder::create()
+                    ->writer(new PngWriter())
+                    ->writerOptions([])
+                    ->data($kode_inventaris)
+                    ->encoding(new Encoding('UTF-8'))
+                    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+                    ->size(300)
+                    ->margin(10)
+                    ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+                    ->logoPath('Assets/LOGO SMANSA.png')
+                    ->logoResizeToWidth(50)
+                    ->logoPunchoutBackground(true)
+                    ->labelText($kode_inventaris)
+                    ->labelFont(new NotoSans(20))
+                    ->labelAlignment(LabelAlignment::Center)
+                    ->validateResult(false)
+                    ->build();
+                    
+            $result->saveToFile('Assets/qr_code/' . $id_antrian . '.png');
             $data = [
                 'id_inventaris' => Uuid::uuid4()->toString(),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
+                'kode_inventaris' => $kode_inventaris,
+                'qty_inventaris' => $this->request->getPost('qty_inventaris'),
                 'satuan_id' => $this->request->getPost('satuan_id'),
-                'merek_inventaris' => $this->request->getPost('merek_inventaris'),
+                'ruangan_id' => $this->request->getPost('ruangan_id'),
+                'nama_inventaris' => $this->request->getPost('nama_inventaris'),
+                'spek_inventaris' => $this->request->getPost('spek_inventaris'),
+                'perolehan_inventaris' => $this->request->getPost('perolehan_inventaris'),
+                'sumber_inventaris' => $this->request->getPost('sumber_inventaris'),
+                'qr_code' => $kode_inventaris.'.png',
                 'status_inventaris' => '1',
             ];
             $this->inventarisModel->insert($data);
@@ -152,24 +197,24 @@ class inventarisController extends BaseController
     public function update()
     {
         $validation =  \Config\Services::validation();
-        $merek_inventaris_old = $this->inventarisModel->find($this->request->getPost('id_inventaris'));
+        $nama_inventaris_old = $this->inventarisModel->find($this->request->getPost('id_inventaris'));
         
         $tipe_barang_id = $this->request->getPost('tipe_barang_id');
-        $merek_inventaris = $this->request->getPost('merek_inventaris');
-        $data_merk_by_tipe = $this->inventarisModel->where('tipe_barang_id', $tipe_barang_id)->where('merek_inventaris', $merek_inventaris)->countAllResults();
+        $nama_inventaris = $this->request->getPost('nama_inventaris');
+        $data_merk_by_tipe = $this->inventarisModel->where('tipe_barang_id', $tipe_barang_id)->where('nama_inventaris', $nama_inventaris)->countAllResults();
         
-        if($merek_inventaris_old['merek_inventaris'] == $merek_inventaris){
+        if($nama_inventaris_old['nama_inventaris'] == $nama_inventaris){
             $is_unique = '';
         }else{
             if($data_merk_by_tipe > 0){
-                $is_unique = '|is_unique[inventaris.merek_inventaris]';
+                $is_unique = '|is_unique[inventaris.nama_inventaris]';
             }else{
                 $is_unique = '';
             }
         }
         $validation->setRules([
-            'merek_inventaris' => [
-                'label' => 'Merek inventaris',
+            'nama_inventaris' => [
+                'label' => 'Nama inventaris',
                 'rules' => 'required'.$is_unique,
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
@@ -205,7 +250,7 @@ class inventarisController extends BaseController
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
                 'qty_inventaris' => $this->request->getPost('qty_inventaris'),
                 'satuan_id' => $this->request->getPost('satuan_id'),
-                'merek_inventaris' => $this->request->getPost('merek_inventaris'),
+                'nama_inventaris' => $this->request->getPost('nama_inventaris'),
             ];
             $this->inventarisModel->save($data);
             return $this->response->setJSON([
