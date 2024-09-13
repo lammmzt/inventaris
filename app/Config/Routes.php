@@ -123,6 +123,7 @@ $routes->group('Admin', function ($routes) {
         $routes->get('Keluar', 'detailTransaksiController::transaksi_keluar');
         $routes->post('insertTransaksiKeluar', 'detailTransaksiController::insertTransaksiKeluar');
         $routes->get('Keluar/(:segment)', 'detailTransaksiController::edit_trans_keluar/$1');
+        $routes->get('Keluar/Proses/(:segment)', 'detailTransaksiController::proses_trans_keluar/$1');
         // $routes->get('DataTablesEditTransKeluar', 'detailTransaksiController::ajaxDataTablesKeluar');
         $routes->post('DataTablesEditTransKeluar', 'detailTransaksiController::ajaxDataTablesKeluar');
         $routes->post('deleteTransKeluar', 'detailTransaksiController::destroyTransKeluar');

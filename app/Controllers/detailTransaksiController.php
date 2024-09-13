@@ -58,8 +58,22 @@ class detailTransaksiController extends BaseController
             ->add('nama_barang', function ($row) {
                 return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
             })
-             ->add('qty', function ($row) {
+            ->add('qty', function ($row) {
                 return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
+            })
+            ->add('qty_proses', function ($row) {
+                return $row->qty;
+            })
+            ->add('status_detail_transaksi', function ($row) {
+                return '<select class="form-control input_status" id="'. $row->id_detail_transaksi .'">
+                            <option value="0" '. ($row->status_detail_transaksi == '0' ? 'selected' : '') .'>--Pilih Status--</option>
+                            <option value="1" '. ($row->status_detail_transaksi == '1' ? 'selected' : '') .'>Setuju</option>
+                            <option value="2" '. ($row->status_detail_transaksi == '2' ? 'selected' : '') .'>Tolak</option>
+                        </select>';
+            })
+            ->add('catatan_detail_transaksi', function ($row) {
+                return '<textarea class="form-control input_catatan" style="min-width: 100px; height: 50px;" placeholder="Catatan"
+                 id="'. $row->id_detail_transaksi .'">'. $row->catatan_detail_transaksi .'</textarea>';
             })
             ->add('action', function ($row) {   
                 return '
@@ -320,6 +334,23 @@ class detailTransaksiController extends BaseController
             'user_id' => $data_transaksi['user_id'],
         ];
         return view('Admin/Transaksi/edit_transaksi_keluar', $data);
+    }
+    
+    public function Proses_trans_keluar(){
+        $id_transaksi = $this->request->getUri()->getSegment(6);
+        // dd($id_transaksi);
+        $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
+
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Proses Transaksi Keluar',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tanggal_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],   
+            'nama_user' => $data_transaksi['nama_user'],
+        ];
+        return view('Admin/Transaksi/proses_transaksi_keluar', $data);
     }
 
     public function updateDetailATKKeluar(){
