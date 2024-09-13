@@ -25,15 +25,13 @@ class transaksiController extends BaseController
     public function index()
     {
         $data = [
-            'main_menu' => 'transaksi',
+            'main_menu' => 'Transaksi',
             'title' => 'Data transaksi',
-            'active' => 'transaksi',
+            'active' => 'Transaksi',
         ];
         return view('Admin/Transaksi/index', $data);
     }
     
-
-    // ==================== INDEX ====================
     public function ajaxDataTablesMasuk()
     {
         $builder = $this->transaksiModel->getTransaksiMasuk();
@@ -41,14 +39,15 @@ class transaksiController extends BaseController
         return DataTable::of($builder)
              ->add('status_transaksi', function ($row) {
                 // jika status_transaksi = 1 maka label inventaris dan sebaliknya atk
-                return $row->status_transaksi == 1 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Prose</span>';
+                return $row->status_transaksi == 1 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>';
             })
             ->add('action', function ($row) {   
                 return '
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
+                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
                         </div>
                 </div>
                 ';
@@ -63,15 +62,16 @@ class transaksiController extends BaseController
         return DataTable::of($builder)
             ->add('status_transaksi', function ($row) {
                 // jika status_transaksi = 1 maka label inventaris dan sebaliknya atk
-                return $row->status_transaksi == 1 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Prose</span>';
+                return $row->status_transaksi == 1 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>';
             })
             ->add('action', function ($row) {   
                 return '
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                            <button class="dropdown-item detail_trans_keluar" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
-                           </div>
+                        ' . ($row->status_transaksi == 1 ? '<button class="dropdown-item detail_trans_keluar" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>' : '
+                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>   ') . ' 
                 </div>
                 ';
             }, 'last')
@@ -86,78 +86,6 @@ class transaksiController extends BaseController
             'status' => '200'
         ]);
     }
-    
-
-    // ==================== TRANSAKSI MASUK ====================
-
-    public function transaksi_masuk()
-    {
-        $data = [
-            'main_menu' => 'transaksi',
-            'title' => 'Form Transaksi Masuk',
-            'active' => 'transaksi',
-        ];
-        return view('Admin/Transaksi/transaksi_masuk', $data);
-    }
-
-
-    // ==================== TRANSAKSI MASUK ====================
-    public function insertTransaksiMasuk(){
-        $ket_transaksi = $this->request->getPost('ket_transaksi');
-        $tgl_transaksi = $this->request->getPost('tgl_transaksi');
-
-        $data = [   
-            'id_transaksi' => Uuid::uuid4()->toString(),
-            // 'user_id' => session()->get('id_user'),
-            'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
-            'tipe_transaksi' => '0',
-            'ket_transaksi' => $ket_transaksi,
-            'status_transaksi' => '1',
-            'tanggal_transaksi' => $tgl_transaksi,
-        ];
-
-        $this->transaksiModel->insert($data);
-        
-        // insert detail transaksi
-        $detail_transaksi = $this->request->getPost('detail_transaksi');
-
-        for ($i=0; $i < count($detail_transaksi); $i++) { 
-            $dt_trx = [
-                'transaksi_id' => $data['id_transaksi'],
-                'atk_id' => $detail_transaksi[$i]['atk_id'],
-                'qty' => $detail_transaksi[$i]['qty'],
-                'status_detail_transaksi' => '1',
-            ];
-            $this->detailTransaksiModel->save($dt_trx);
-            $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $detail_transaksi[$i]['qty']]);
-        }
-
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => 'Data berhasil disimpan',
-            'status' => '200'
-        ]);
-    }
-
-    public function fetchDetailTransByIdTrans()
-    {
-        $id_transaksi = $this->request->getPost('id_transaksi');
-        $data = $this->detailTransaksiModel->getTransMasukByTransId($id_transaksi);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
-    }
-
-    public function detail_trans_masuk(){
-        $data = [
-            'main_menu' => 'transaksi',
-            'title' => 'Detail Transaksi Masuk',
-            'active' => 'transaksi',
-        ];
-        return view('Admin/Transaksi/detail_transaksi_masuk', $data);
-    }
 
     public function edit()
     {
@@ -170,48 +98,26 @@ class transaksiController extends BaseController
         ]);
     }
 
-    public function update()
+    public function updateTransMasuk()
     {
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        
         $validation =  \Config\Services::validation();
-        $merek_transaksi_old = $this->transaksiModel->find($this->request->getPost('id_transaksi'));
-        
-        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
-        $merek_transaksi = $this->request->getPost('merek_transaksi');
-        $data_merk_by_tipe = $this->transaksiModel->where('tipe_barang_id', $tipe_barang_id)->where('merek_transaksi', $merek_transaksi)->countAllResults();
-        
-        if($merek_transaksi_old['merek_transaksi'] == $merek_transaksi){
-            $is_unique = '';
-        }else{
-            if($data_merk_by_tipe > 0){
-                $is_unique = '|is_unique[transaksi.merek_transaksi]';
-            }else{
-                $is_unique = '';
-            }
-        }
         $validation->setRules([
-            'merek_transaksi' => [
-                'label' => 'Merek transaksi',
-                'rules' => 'required'.$is_unique,
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                    'is_unique' => '{field} sudah ada di tipe barang yang sama',
-                ],
-            ],
-            'satuan_id' => [
-                'label' => 'Satuan',
+            'ket_transaksi' => [
+                'label' => 'Keterangan Transaksi',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'tipe_barang_id' => [
-                'label' => 'Tipe Barang',
+            'tanggal_transaksi' => [
+                'label' => 'Tanggal Transaksi',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -222,16 +128,65 @@ class transaksiController extends BaseController
             ]);
         } else {
             $data = [
-                'id_transaksi' => $this->request->getPost('id_transaksi'),
-                'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
-                'qty_transaksi' => $this->request->getPost('qty_transaksi'),
-                'satuan_id' => $this->request->getPost('satuan_id'),
-                'merek_transaksi' => $this->request->getPost('merek_transaksi'),
+                'ket_transaksi' => $this->request->getPost('ket_transaksi'),
+                'tanggal_transaksi' => $this->request->getPost('tanggal_transaksi'),
             ];
-            $this->transaksiModel->save($data);
+            
+            $this->transaksiModel->update($id_transaksi, $data);
             return $this->response->setJSON([
                 'error' => false,
-                'data' => 'Data berhasil diupdate',
+                'data' => 'Data berhasil diubah',
+                'status' => '200'
+            ]);
+        }
+    }
+
+    public function updateTransKeluar()
+    {
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        
+        $validation =  \Config\Services::validation();
+        $validation->setRules([
+            'ket_transaksi' => [
+                'label' => 'Keterangan Transaksi',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'tanggal_transaksi' => [
+                'label' => 'Tanggal Transaksi',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'user_id' => [
+                'label' => 'Nama Pengguna',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => $validation->getErrors(),
+                'status' => '422'
+            ]);
+        } else {
+            $data = [
+                'user_id' => $this->request->getPost('user_id'),
+                'ket_transaksi' => $this->request->getPost('ket_transaksi'),
+                'tanggal_transaksi' => $this->request->getPost('tanggal_transaksi'),
+            ];
+            
+            $this->transaksiModel->update($id_transaksi, $data);
+            return $this->response->setJSON([
+                'error' => false,
+                'data' => 'Data berhasil diubah',
                 'status' => '200'
             ]);
         }

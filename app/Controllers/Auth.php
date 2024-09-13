@@ -33,6 +33,7 @@ class Auth extends BaseController
             if(password_verify($password, $user['password'])){
                 $ses_data = [
                     'username' => $user['username'],
+                    'id_user' => $user['id_user'],
                     'nama_user' => $user['nama_user'],
                     'role' => $user['role'],
                     'logged_in' => TRUE,

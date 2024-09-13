@@ -16,6 +16,7 @@ class usersController extends BaseController
     {
         $this->userModel = new usersModel();
     }
+    
     public function index()
     {
         $data = [
@@ -24,6 +25,15 @@ class usersController extends BaseController
             'active' => 'Users',
         ];
         return view('Admin/Users/index', $data);
+    }
+
+    public function fetchAll(){
+        $data = $this->userModel->getUser()->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
     }
 
     public function ajaxDataTables()
@@ -208,7 +218,7 @@ class usersController extends BaseController
             'title' => 'Setting',
             'active' => 'Dashboard',
         ];
-        return view('Admin/Setting/index', $data);
+        return view('Setting/index', $data);
     }
 
     public function updatePass()

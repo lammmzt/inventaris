@@ -5,14 +5,14 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20 card-box">
+                <!-- <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
-                <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5>
-                <form id="form_tambah_transaksi_masuk">
+                <form id="form_tambah_transaksi_masuk" class="mt-3">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -84,6 +84,14 @@
         </div>
     </div>
 </div>
+
+<style>
+/* mx height table 500px and srroler down */
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+</style>
 
 <!-- ======================================== END transaksi ======================================== -->
 
@@ -197,9 +205,10 @@ $('#btn_plus').click(function() {
 $(document).on('change', '.input_qty', function() {
     var index = $(this).attr('id').split('_')[1];
     detail_transaksi[index].qty = $(this).val();
+    renderDetailTransaksi();
 });
 
-// event click button simpan
+// event click button simpan                    
 $('#btn_simpan').click(function() {
     if (detail_transaksi.length == 0) {
         swal({
@@ -211,6 +220,7 @@ $('#btn_simpan').click(function() {
         });
         return;
     }
+
     var tgl_transaksi = $('#tgl_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
     if (tgl_transaksi == '') {
@@ -244,7 +254,10 @@ $('#btn_simpan').click(function() {
         ket_transaksi: ket_transaksi,
         detail_transaksi: detail_transaksi
     };
-
+    $("#btn_simpan").attr("disabled", "disabled");
+    $("#btn_simpan").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    );
     // console.log(data);
     $.ajax({
         url: '<?= base_url('Admin/ATK/Transaksi/insertTransaksiMasuk') ?>',
@@ -267,6 +280,8 @@ $('#btn_simpan').click(function() {
                 $("#errorket_transaksi").removeClass('has-danger');
                 $("#errorket_transaksi").removeClass('has-success');
                 $("#ket_transaksi").removeClass('form-control-danger');
+                $("#btn_simpan").removeAttr("disabled");
+                $("#btn_simpan").html('Simpan');
             } else {
                 getSwall(response.status, response.data);
             }

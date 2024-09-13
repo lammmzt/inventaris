@@ -20,4 +20,5 @@ class usersModel extends Model
         }
         return $this->where(['id_user' => $id])->first();
     }
+
 }

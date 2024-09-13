@@ -151,43 +151,41 @@
 <script text="text/javascript">
 // dataTables barang
 function dataTablesTipeBarang() {
-    $(document).ready(function() {
-        $('#tableTipeBarang').DataTable({
-            processing: true,
-            serverSide: true,
-            scrollCollapse: true,
-            autoWidth: false,
-            responsive: true,
-            ajax: {
-                url: '<?= base_url('Admin/Barang/Detail/DataTables') ?>',
-                type: 'POST',
-                data: function(data) {
-                    data.id_barang = $('#id_barang').val();
-                }
+    $('#tableTipeBarang').DataTable({
+        processing: true,
+        serverSide: true,
+        scrollCollapse: true,
+        autoWidth: false,
+        responsive: true,
+        ajax: {
+            url: '<?= base_url('Admin/Barang/Detail/DataTables') ?>',
+            type: 'POST',
+            data: function(data) {
+                data.id_barang = $('#id_barang').val();
+            }
+        },
+        "lengthMenu": [
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, "All"]
+        ],
+        columns: [{
+                data: 'nama_tipe_barang',
+                class: 'table-plus'
             },
-            "lengthMenu": [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "All"]
-            ],
-            columns: [{
-                    data: 'nama_tipe_barang',
-                    class: 'table-plus'
-                },
-                {
-                    data: 'status_tipe_barang',
-                    class: 'text-center'
-                },
-                {
-                    data: 'action',
-                    class: 'datatable-nosort text-center'
-                },
+            {
+                data: 'status_tipe_barang',
+                class: 'text-center'
+            },
+            {
+                data: 'action',
+                class: 'datatable-nosort text-center'
+            },
 
-            ],
-            columnDefs: [{
-                targets: "datatable-nosort",
-                orderable: false,
-            }],
-        });
+        ],
+        columnDefs: [{
+            targets: "datatable-nosort",
+            orderable: false,
+        }],
     });
 }
 

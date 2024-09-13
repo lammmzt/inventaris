@@ -35,6 +35,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('reset', 'usersController::reset');
         $routes->post('changeStatus', 'usersController::changeStatus');
         $routes->post('fetchDataUser', 'usersController::fetchDataUser');
+        $routes->post('fetchAll', 'usersController::fetchAll');
         $routes->post('updatePass', 'usersController::updatePass');
     });
 
@@ -104,12 +105,33 @@ $routes->group('Admin', function ($routes) {
         $routes->get('/', 'transaksiController::index');
         $routes->get('DataTablesMasuk', 'transaksiController::ajaxDataTablesMasuk');
         $routes->get('DataTablesKeluar', 'transaksiController::ajaxDataTablesKeluar');
+        $routes->post('updateTransMasuk', 'transaksiController::updateTransMasuk');
+        $routes->post('edit', 'transaksiController::edit');
+        $routes->post('updateTransKeluar', 'transaksiController::updateTransKeluar');
 
         // transaksi masuk
-        $routes->get('FORM_MASUK', 'transaksiController::transaksi_masuk');
-        $routes->post('insertTransaksiMasuk', 'transaksiController::insertTransaksiMasuk');
-        $routes->post('fetchDetailTransByIdTrans', 'transaksiController::fetchDetailTransByIdTrans');
-        $routes->get('detail_trans_masuk', 'transaksiController::detail_trans_masuk');
+        $routes->get('Masuk', 'detailTransaksiController::transaksi_masuk');
+        $routes->post('insertTransaksiMasuk', 'detailTransaksiController::insertTransaksiMasuk');
+        $routes->post('fetchDetailTransByIdTrans', 'detailTransaksiController::fetchDetailTransByIdTrans');
+        $routes->get('Masuk/(:segment)', 'detailTransaksiController::edit_trans_masuk/$1');
+        // $routes->get('DataTablesEditTransMasuk', 'detailTransaksiController::ajaxDataTablesMasuk');
+        $routes->post('DataTablesEditTransMasuk', 'detailTransaksiController::ajaxDataTablesMasuk');
+        $routes->post('deleteTransMasuk', 'detailTransaksiController::destroyTransMasuk');
+        $routes->post('updateDetailATKMasuk', 'detailTransaksiController::updateDetailATKMasuk');
+        $routes->post('updateQtyMasuk', 'detailTransaksiController::updateQtyMasuk');
+
+        // transaksi Keluar
+        $routes->get('Keluar', 'detailTransaksiController::transaksi_keluar');
+        $routes->post('insertTransaksiKeluar', 'detailTransaksiController::insertTransaksiKeluar');
+        $routes->get('Keluar/(:segment)', 'detailTransaksiController::edit_trans_keluar/$1');
+        $routes->get('Keluar/Proses/(:segment)', 'detailTransaksiController::proses_trans_keluar/$1');
+        // $routes->get('DataTablesEditTransKeluar', 'detailTransaksiController::ajaxDataTablesKeluar');
+        $routes->post('DataTablesEditTransKeluar', 'detailTransaksiController::ajaxDataTablesKeluar');
+        $routes->post('deleteTransKeluar', 'detailTransaksiController::destroyTransKeluar');
+        $routes->post('updateDetailATKKeluar', 'detailTransaksiController::updateDetailATKKeluar');
+        $routes->post('updateQtyKeluar', 'detailTransaksiController::updateQtyKeluar');
+        $routes->post('updatedCatatan', 'detailTransaksiController::updatedCatatan');
+        $routes->post('UpdateprosesTransKeluar', 'detailTransaksiController::UpdateprosesTransKeluar');
 
         
         $routes->post('save', 'transaksiController::store');
@@ -119,9 +141,19 @@ $routes->group('Admin', function ($routes) {
         $routes->post('changeStatus', 'transaksiController::changeStatus');
         $routes->post('fetchDataTransaksi', 'transaksiController::fetchDataTransaksi');
         $routes->post('fetchDataTransaksiById', 'transaksiController::fetchDataTransaksiById');
-
-
     });
+
+    $routes->group('Inventaris', function ($routes) {
+        $routes->get('/', 'inventarisController::index');
+        $routes->get('DataTables', 'inventarisController::ajaxDataTables');
+        $routes->post('save', 'inventarisController::store');
+        $routes->post('delete', 'inventarisController::destroy');
+        $routes->post('edit', 'inventarisController::edit');
+        $routes->post('update', 'inventarisController::update');
+        $routes->post('changeStatus', 'inventarisController::changeStatus');
+        $routes->post('fetchDatainventaris', 'inventarisController::fetchDatainventaris');
+    });
+    
 
 
     $routes->group('Setting', function ($routes) {

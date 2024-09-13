@@ -5,15 +5,28 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20 card-box">
+                <!-- <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
                         <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
-                <h5 class="h4 text-blue mb-20">Form Transaksi Masuk</h5>
-                <form id="form_tambah_transaksi_masuk">
+                <form id="form_tambah_transaksi_keluar" class="mt-3">
                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="user_id" class="col-sm-4 col-form-label">Nama Pemohon<span
+                                        class="rq">*</span></label>
+                                <div class="col-sm-8">
+                                    <select class="custom-select2 form-control required" name="user_id" id="user_id"
+                                        style="width: 100%; height: 38px;">
+
+                                    </select>
+                                    <div class="form-control-feedback " id="erroruser_id"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group row">
                                 <label for="tgl_transaksi" class="col-sm-4 col-form-label">Tanggal<span
@@ -25,6 +38,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <!-- ket -->
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -85,6 +100,14 @@
     </div>
 </div>
 
+<style>
+/* mx height table 500px and srroler down */
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+</style>
+
 <!-- ======================================== END transaksi ======================================== -->
 
 <?= $this->endSection('content');?>
@@ -92,6 +115,23 @@
 <?= $this->section('dataTables');?>
 
 <script text="text/javascript">
+// get data user
+function getUser() {
+    $.ajax({
+        url: '<?= base_url('Admin/User/fetchAll') ?>',
+        method: 'post',
+        dataType: 'json',
+        success: function(response) {
+            var html = '';
+            html += '<option value="">Pilih User</option>';
+            $.each(response.data, function(key, value) {
+                html += '<option value="' + value.id_user + '">' + value.nama_user + '</option>';
+            });
+            $('#user_id').html(html);
+        }
+    });
+};
+
 // get data tipe barang
 function getATK() {
     $.ajax({
@@ -115,7 +155,10 @@ function getATK() {
     });
 };
 
-getATK();
+$(document).ready(function() {
+    getUser();
+    getATK();
+});
 
 function getSwall(status, message) {
     swal({
@@ -197,9 +240,10 @@ $('#btn_plus').click(function() {
 $(document).on('change', '.input_qty', function() {
     var index = $(this).attr('id').split('_')[1];
     detail_transaksi[index].qty = $(this).val();
+    renderDetailTransaksi();
 });
 
-// event click button simpan
+// event click button simpan                    
 $('#btn_simpan').click(function() {
     if (detail_transaksi.length == 0) {
         swal({
@@ -211,8 +255,31 @@ $('#btn_simpan').click(function() {
         });
         return;
     }
+
     var tgl_transaksi = $('#tgl_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
+    var user_id = $('#user_id').val();
+
+    var data = {
+        tgl_transaksi: tgl_transaksi,
+        ket_transaksi: ket_transaksi,
+        detail_transaksi: detail_transaksi,
+        user_id: user_id
+    };
+
+    if (user_id == '') {
+        $("#user_id").addClass('form-control-danger');
+        $("#erroruser_id").addClass('has-danger');
+        $("#erroruser_id").html("User tidak boleh kosong");
+        $('#user_id').focus();
+        return false;
+    } else {
+        $('#erroruser_id').html('');
+        $("#erroruser_id").removeClass('has-danger');
+        $("#erroruser_id").addClass('has-success');
+        $("#user_id").removeClass('form-control-danger');
+    }
+
     if (tgl_transaksi == '') {
         $("#tgl_transaksi").addClass('form-control-danger');
         $("#errortgl_transaksi").addClass('has-danger');
@@ -239,26 +306,31 @@ $('#btn_simpan').click(function() {
         $("#ket_transaksi").removeClass('form-control-danger');
     }
 
-    var data = {
-        tgl_transaksi: tgl_transaksi,
-        ket_transaksi: ket_transaksi,
-        detail_transaksi: detail_transaksi
-    };
-
+    $("#btn_simpan").attr("disabled", "disabled");
+    $("#btn_simpan").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    );
     // console.log(data);
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/insertTransaksiMasuk') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/insertTransaksiKeluar') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
                 getSwall(response.status, response.data);
-                $('#form_tambah_transaksi_masuk')[0].reset();
+                $('#form_tambah_transaksi_keluar')[0].reset();
                 detail_transaksi = [];
                 renderDetailTransaksi();
+                $('#user_id').val('');
+                $('#user_id').trigger('change');
                 $('#atk_id').val('');
                 $('#atk_id').trigger('change');
+                $('#tgl_transaksi').val('');
+                $('#ket_transaksi').val('');
+                $('#erroruser_id').html('');
+                $("#erroruser_id").removeClass('has-danger');
+                $("#erroruser_id").removeClass('has-success');
                 $('#errortgl_transaksi').html('');
                 $("#errortgl_transaksi").removeClass('has-danger');
                 $("#errortgl_transaksi").removeClass('has-success');
@@ -267,6 +339,8 @@ $('#btn_simpan').click(function() {
                 $("#errorket_transaksi").removeClass('has-danger');
                 $("#errorket_transaksi").removeClass('has-success');
                 $("#ket_transaksi").removeClass('form-control-danger');
+                $("#btn_simpan").removeAttr("disabled");
+                $("#btn_simpan").html('Simpan');
             } else {
                 getSwall(response.status, response.data);
             }

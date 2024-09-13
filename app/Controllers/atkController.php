@@ -41,6 +41,9 @@ class atkController extends BaseController
         $builder = $this->atkModel->getatk();
         // dd($builder);
         return DataTable::of($builder)
+            ->add('nama_barang', function ($row) {
+                return $row->nama_barang. ' - ' .$row->nama_tipe_barang;
+            })
             ->add('status_atk', function ($row) {
                 return '<div class="custom-control custom-switch"> <input type="checkbox" 
                 '.($row->status_atk == 1 ? 'checked' : '').' 
