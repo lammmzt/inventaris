@@ -16,6 +16,7 @@ class usersController extends BaseController
     {
         $this->userModel = new usersModel();
     }
+    
     public function index()
     {
         $data = [
@@ -25,7 +26,6 @@ class usersController extends BaseController
         ];
         return view('Admin/Users/index', $data);
     }
-
 
     public function fetchAll(){
         $data = $this->userModel->getUser()->findAll();

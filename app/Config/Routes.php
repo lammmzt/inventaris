@@ -106,6 +106,7 @@ $routes->group('Admin', function ($routes) {
         $routes->get('DataTablesMasuk', 'transaksiController::ajaxDataTablesMasuk');
         $routes->get('DataTablesKeluar', 'transaksiController::ajaxDataTablesKeluar');
         $routes->post('updateTransMasuk', 'transaksiController::updateTransMasuk');
+        $routes->post('edit', 'transaksiController::edit');
         $routes->post('updateTransKeluar', 'transaksiController::updateTransKeluar');
 
         // transaksi masuk

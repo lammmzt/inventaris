@@ -16,7 +16,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label for="user_id" class="col-sm-4 col-form-label">Nama User<span
+                                <label for="user_id" class="col-sm-4 col-form-label">Nama Pemohon<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
                                     <select class="custom-select2 form-control required" name="user_id" id="user_id"
@@ -263,7 +263,8 @@ $('#btn_simpan').click(function() {
     var data = {
         tgl_transaksi: tgl_transaksi,
         ket_transaksi: ket_transaksi,
-        detail_transaksi: detail_transaksi
+        detail_transaksi: detail_transaksi,
+        user_id: user_id
     };
 
     if (user_id == '') {

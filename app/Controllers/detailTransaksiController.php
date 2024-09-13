@@ -104,7 +104,7 @@ class detailTransaksiController extends BaseController
     public function fetchDetailTransByIdTrans()
     {
         $id_transaksi = $this->request->getPost('id_transaksi');
-        $data = $this->detailTransaksiModel->getTransMasukByTransId($id_transaksi);
+        $data = $this->detailTransaksiModel->getTransByTransId($id_transaksi)->findAll();
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,
