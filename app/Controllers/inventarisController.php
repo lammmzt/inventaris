@@ -82,13 +82,6 @@ class inventarisController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'satuan_id' => [
-                'label' => 'Satuan',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                ],
-            ],
             'tipe_barang_id' => [
                 'label' => 'Tipe Barang',
                 'rules' => 'required',
@@ -159,13 +152,12 @@ class inventarisController extends BaseController
                     ->validateResult(false)
                     ->build();
                     
-            $result->saveToFile('Assets/qr_code/' . $id_antrian . '.png');
+            $result->saveToFile('Assets/qr_code/' . $kode_inventaris . '.png');
             $data = [
                 'id_inventaris' => Uuid::uuid4()->toString(),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
                 'kode_inventaris' => $kode_inventaris,
                 'qty_inventaris' => $this->request->getPost('qty_inventaris'),
-                'satuan_id' => $this->request->getPost('satuan_id'),
                 'ruangan_id' => $this->request->getPost('ruangan_id'),
                 'nama_inventaris' => $this->request->getPost('nama_inventaris'),
                 'spek_inventaris' => $this->request->getPost('spek_inventaris'),
@@ -221,13 +213,7 @@ class inventarisController extends BaseController
                     'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
-            'satuan_id' => [
-                'label' => 'Satuan',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                ],
-            ],
+            
             'tipe_barang_id' => [
                 'label' => 'Tipe Barang',
                 'rules' => 'required',
@@ -249,7 +235,6 @@ class inventarisController extends BaseController
                 'id_inventaris' => $this->request->getPost('id_inventaris'),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
                 'qty_inventaris' => $this->request->getPost('qty_inventaris'),
-                'satuan_id' => $this->request->getPost('satuan_id'),
                 'nama_inventaris' => $this->request->getPost('nama_inventaris'),
             ];
             $this->inventarisModel->save($data);

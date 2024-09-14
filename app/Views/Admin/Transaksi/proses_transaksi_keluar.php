@@ -238,11 +238,17 @@ $('#btn_simpan').click(function() {
 
     // get all input_status value and id
     var data = [];
+    $("#btn_simpan").attr("disabled", "disabled");
+    $("#btn_simpan").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    );
     $('.input_status').each(function() {
         var id = $(this).attr('id');
         var status = $(this).val();
         if (status == '') {
             $(this).focus();
+            $("#btn_simpan").removeAttr("disabled");
+            $("#btn_simpan").html('Simpan');
             getSwall('error', 'Status belum dipilih');
             data = [];
         } else {
@@ -271,6 +277,8 @@ $('#btn_simpan').click(function() {
                 } else {
                     getSwall(response.status, response.data);
                     setTimeout(function() {
+                        $("#btn_simpan").removeAttr("disabled");
+                        $("#btn_simpan").html('Simpan');
                         window.location.href = '<?= base_url('Admin/ATK/Transaksi'); ?>';
                     }, 1500);
                 }

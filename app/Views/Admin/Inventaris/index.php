@@ -55,7 +55,8 @@
                     ×
                 </button>
             </div>
-            <form id="form_tambah_inventaris">
+            <!-- <form id="form_tambah_inventaris"> -->
+            <form action="<?= base_url('Admin/Inventaris/save') ?>" method="post">
                 <!-- <form action="<?= base_url('Admin/inventaris/save') ?>" method="post"> -->
                 <div class="modal-body">
                     <div class="form-group row">

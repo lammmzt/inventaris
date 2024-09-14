@@ -302,7 +302,10 @@ $('#btn_update').click(function() {
     var id_transaksi = $('#id_transaksi').val();
     var tanggal_transaksi = $('#tgl_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
-
+    $("#btn_update").attr("disabled", "disabled");
+    $("#btn_update").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    );
     // alert(tgl_transaksi);
     var data = {
         id_transaksi: id_transaksi,
@@ -318,6 +321,8 @@ $('#btn_update').click(function() {
         success: function(response) {
             if (response.status == '200') {
                 getSwall(response.status, response.data);
+                $("#btn_update").removeAttr("disabled");
+                $("#btn_update").html('Update');
                 $('#tableDetailBarang').DataTable().ajax.reload();
             } else {
                 getSwall(response.status, response.data);

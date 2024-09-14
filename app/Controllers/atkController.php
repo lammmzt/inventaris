@@ -90,13 +90,6 @@ class atkController extends BaseController
                     'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
-            'satuan_id' => [
-                'label' => 'Satuan',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                ],
-            ],
             'tipe_barang_id' => [
                 'label' => 'Tipe Barang',
                 'rules' => 'required',
@@ -125,7 +118,6 @@ class atkController extends BaseController
             $data = [
                 'id_atk' => Uuid::uuid4()->toString(),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
-                'satuan_id' => $this->request->getPost('satuan_id'),
                 'merek_atk' => $this->request->getPost('merek_atk'),
                 'status_atk' => '1',
             ];
@@ -176,13 +168,6 @@ class atkController extends BaseController
                     'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
-            'satuan_id' => [
-                'label' => 'Satuan',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                ],
-            ],
             'tipe_barang_id' => [
                 'label' => 'Tipe Barang',
                 'rules' => 'required',
@@ -204,7 +189,6 @@ class atkController extends BaseController
                 'id_atk' => $this->request->getPost('id_atk'),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
                 'qty_atk' => $this->request->getPost('qty_atk'),
-                'satuan_id' => $this->request->getPost('satuan_id'),
                 'merek_atk' => $this->request->getPost('merek_atk'),
             ];
             $this->atkModel->save($data);
