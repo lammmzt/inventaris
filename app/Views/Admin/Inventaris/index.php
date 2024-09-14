@@ -10,6 +10,10 @@
                         <h4 class="text-blue h4">Data Inventaris</h4>
                     </div>
                     <div class="col-sm-6 text-right">
+                        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#importDataInventaris"
+                            type="button">
+                            <i class="icon-copy fa fa-upload" aria-hidden="true"></i>
+                        </a>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addinventaris"
                             type="button">
                             <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
@@ -18,9 +22,9 @@
                 </div>
                 <!-- cetak qr code -->
                 <div class="row mb-4">
+                    <!-- 2 button import and cetak qr code -->
                     <div class="col-sm-6">
-                        <a href="<?= base_url('Admin/Inventaris/cetakQrCode') ?>" class="btn btn-primary"
-                            target="_blank">
+                        <a href="<?= base_url('Admin/Inventaris/cetakQrCode') ?>" class="btn btn-primary" type="button">
                             <i class="icon-copy fa fa-print" aria-hidden="true"></i> Cetak QR Code
                         </a>
                     </div>
@@ -36,9 +40,9 @@
                                         <span class="dt-checkbox-label"></span>
                                     </div>
                                 </th>
-                                <th class="table-plus">Nama Barang</th>
+                                <th class="table-plus">Kode Inventaris</th>
                                 <th class="table-plus">Nama Inventaris</th>
-                                <th class="table-plus">QTY</th>
+                                <th class="table-plus">Ruangan</th>
                                 <th class="">Status inventaris</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
@@ -110,7 +114,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="spek_inventaris" class="col-sm-4 col-form-label">Spesifikasi
-                            Inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <textarea class="form-control" id="spek_inventaris" name="spek_inventaris"
                                 style="height: 100px;" placeholder="Masukan Spesifikasi Inventaris"></textarea>
@@ -119,7 +123,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="perolehan_inventaris" class="col-sm-4 col-form-label">Perolehan
-                            Inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <input type="date" class="form-control" id="perolehan_inventaris"
                                 name="perolehan_inventaris" placeholder="Masukan Perolehan Inventaris">
@@ -128,7 +132,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="sumber_inventaris" class="col-sm-4 col-form-label">Sumber
-                            Inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="sumber_inventaris" name="sumber_inventaris"
                                 placeholder="Masukan Sumber Inventaris">
@@ -166,7 +170,7 @@
                     <input type="hidden" id="editid_inventaris" name="id_inventaris">
                     <div class="form-group row">
                         <label for="edittipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
-                                class="rq">*</span></label></label>
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="tipe_barang_id"
                                 id="edittipe_barang_id" style="width: 100%; height: 38px;">
@@ -177,7 +181,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="editnama_inventaris" class="col-sm-4 col-form-label">Nama inventaris<span
-                                class="rq">*</span></label></label>
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control required" id="editnama_inventaris"
                                 name="nama_inventaris">
@@ -187,7 +191,7 @@
 
                     <div class="form-group row">
                         <label for="editqty_inventaris" class="col-sm-4 col-form-label">QTY inventaris<span
-                                class="rq">*</span></label></label>
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control required" id="editqty_inventaris"
                                 name="qty_inventaris" placeholder="Masukan Nama inventaris" min="0" value="0">
@@ -196,7 +200,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="editruangan_id" class="col-sm-4 col-form-label">Ruangan<span
-                                class="rq">*</span></label></label>
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="ruangan_id" id="editruangan_id"
                                 style="width: 100%; height: 38px;">
@@ -207,7 +211,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="editspek_inventaris" class="col-sm-4 col-form-label">Spesifikasi
-                            Inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <textarea class="form-control" id="editspek_inventaris" name="spek_inventaris"
                                 style="height: 100px;" placeholder="Masukan Spesifikasi Inventaris"></textarea>
@@ -216,7 +220,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="editperolehan_inventaris" class="col-sm-4 col-form-label">Perolehan
-                            Inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <input type="date" class="form-control" id="editperolehan_inventaris"
                                 name="perolehan_inventaris" placeholder="Masukan Perolehan Inventaris">
@@ -225,7 +229,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="editsumber_inventaris" class="col-sm-4 col-form-label">Sumber
-                            Inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="editsumber_inventaris" name="sumber_inventaris"
                                 placeholder="Masukan Sumber Inventaris">
@@ -234,10 +238,10 @@
                     </div>
                     <div class="form-group row">
                         <label for="editstatus_inventaris" class="col-sm-4 col-form-label">Status
-                            Inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="status_inventaris"
-                                id="editstatus_inventaris" style="width: 100%; height: 38px;">
+                            <select class="form-control required" name="status_inventaris" id="editstatus_inventaris"
+                                style="width: 100%; height: 38px;">
                             </select>
                         </div>
                     </div>
@@ -254,6 +258,65 @@
         </div>
     </div>
 </div>
+
+<!-- modal import data siswa -->
+<div class="modal fade" id="importDataInventaris" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    Import Data Inventaris
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <form id="form_import">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="file" class="col-sm-4 col-form-label">File Template</label>
+                        <div class="col-sm-8">
+                            <input type="file" class="form-control" id="file" name="file" required>
+                            <div class="form-control-feedback mb-4" id="errorfile"></div>
+
+                            <small class="text-danger">* File Excel harus sesuai dengan template yang telah disediakan
+                                <a href="#" id="downloadTemplate">Download Template</a>
+                            </small>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <label for="file" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <a href="<?= base_url('Assets/Template/TemplateDataSiswa.xlsx') ?>" class="btn btn-success"
+                                download>
+                                <i class="fa fa-download"></i> Download Template
+                            </a>
+                        </div>
+                    </div> -->
+                    <!-- <div class="form-group row">
+                        <label for="file" class="col-sm-4 col-form-label"></label>
+                        <div class="col-sm-8">
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btn_tambah_user">
+                        Import
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 <!-- ======================================== END inventaris ======================================== -->
 
@@ -281,14 +344,14 @@ function dataTablesinventaris() {
 
                 },
                 {
+                    data: 'kode_inventaris'
+                },
+                {
                     data: 'nama_barang'
                 },
                 {
-                    data: 'nama_inventaris'
-                },
-                {
-                    data: 'qty_inventaris',
-                    class: 'text-center'
+                    data: 'nama_ruangan'
+
                 },
                 {
                     data: 'status_inventaris',
@@ -575,6 +638,7 @@ $(document).on('click', '.edit_inventaris', function() {
                 html += '<option value="1">Aktif</option>';
                 html += '<option value="0" selected>Tidak Aktif</option>';
             }
+            $('#editstatus_inventaris').html(html);
         }
     });
 });
@@ -593,7 +657,7 @@ $(function() {
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/inventaris/update') ?>',
+                url: '<?= base_url('Admin/Inventaris/update') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -657,7 +721,7 @@ $(document).on('click', '.delete_inventaris', function() {
         .then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: '<?= base_url('Admin/inventaris/delete') ?>',
+                    url: '<?= base_url('Admin/Inventaris/delete') ?>',
                     method: 'post',
                     data: {
                         id_inventaris: id
@@ -670,27 +734,6 @@ $(document).on('click', '.delete_inventaris', function() {
                 });
             }
         });
-});
-
-
-
-
-// change status
-$(document).on('click', '.change_status_inventaris', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    $.ajax({
-        url: '<?= base_url('Admin/inventaris/changeStatus') ?>',
-        method: 'post',
-        data: {
-            id_inventaris: id
-        },
-        dataType: 'json',
-        success: function(response) {
-            // inventaris').DataTable().ajax.reload();
-            getSwall(response.status, response.data);
-        }
-    });
 });
 </script>
 

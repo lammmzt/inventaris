@@ -56,9 +56,18 @@ class inventarisController extends BaseController
                 return $row->nama_barang. ' - ' .$row->nama_tipe_barang. '('.$row->nama_inventaris.')';
             })
             ->add('status_inventaris', function ($row) {
-                return '<div class="custom-control custom-switch"> <input type="checkbox" 
-                '.($row->status_inventaris == 1 ? 'checked' : '').' 
-                class="custom-control-input switch-btn change_status_inventaris" data-size="small" data-color="#0099ff" id="'.$row->id_inventaris.'"> <label class="custom-control-label" for="'.$row->id_inventaris.'"></label> </div>';
+                // jika status 0 tidak aktif, 1 aktif, 2 rusak dan 3 hilang
+                if ($row->status_inventaris == '0') {
+                    return '<span class="badge badge-pill badge-warning">Tidak Aktif</span>';
+                } elseif ($row->status_inventaris == '1') {
+                    return '<span class="badge badge-pill badge-success">Aktif</span>';
+                } elseif ($row->status_inventaris == '2') {
+                    return '<span class="badge badge-pill badge-danger">Rusak</span>';
+                } elseif ($row->status_inventaris == '3') {
+                    return '<span class="badge badge-pill badge-danger">Hilang</span>';
+                }
+
+                return $row->status_inventaris;
             })
             ->add('action', function ($row) {   
                 return '
@@ -196,26 +205,12 @@ class inventarisController extends BaseController
         $validation =  \Config\Services::validation();
         $nama_inventaris_old = $this->inventarisModel->find($this->request->getPost('id_inventaris'));
         
-        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
-        $nama_inventaris = $this->request->getPost('nama_inventaris');
-        $data_merk_by_tipe = $this->inventarisModel->where('tipe_barang_id', $tipe_barang_id)->where('nama_inventaris', $nama_inventaris)->countAllResults();
-        
-        if($nama_inventaris_old['nama_inventaris'] == $nama_inventaris){
-            $is_unique = '';
-        }else{
-            if($data_merk_by_tipe > 0){
-                $is_unique = '|is_unique[inventaris.nama_inventaris]';
-            }else{
-                $is_unique = '';
-            }
-        }
         $validation->setRules([
             'nama_inventaris' => [
                 'label' => 'Nama inventaris',
-                'rules' => 'required'.$is_unique,
+                'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
-                    'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
             
@@ -226,7 +221,48 @@ class inventarisController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            
+            'qty_inventaris' => [
+                'label' => 'Qyt inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'spek_inventaris' => [
+                'label' => 'Spek inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'perolehan_inventaris' => [
+                'label' => 'Perolehan inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'sumber_inventaris' => [
+                'label' => 'Sumber inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'ruangan_id' => [
+                'label' => 'Ruangan',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'status_inventaris' => [
+                'label' => 'status_inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+            ],
+        ],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -240,7 +276,12 @@ class inventarisController extends BaseController
                 'id_inventaris' => $this->request->getPost('id_inventaris'),
                 'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
                 'qty_inventaris' => $this->request->getPost('qty_inventaris'),
+                'ruangan_id' => $this->request->getPost('ruangan_id'),
                 'nama_inventaris' => $this->request->getPost('nama_inventaris'),
+                'spek_inventaris' => $this->request->getPost('spek_inventaris'),
+                'perolehan_inventaris' => $this->request->getPost('perolehan_inventaris'),
+                'sumber_inventaris' => $this->request->getPost('sumber_inventaris'),
+                'status_inventaris' => $this->request->getPost('status_inventaris'),
             ];
             $this->inventarisModel->save($data);
             return $this->response->setJSON([
@@ -254,26 +295,14 @@ class inventarisController extends BaseController
     public function destroy()
     {
         $id_inventaris = $this->request->getPost('id_inventaris');
+        $data = $this->inventarisModel->find($id_inventaris);
+        if ($data['qr_code'] != '') {
+            unlink('Assets/qr_code/' . $data['qr_code']);
+        }
         $this->inventarisModel->delete($id_inventaris);
         return $this->response->setJSON([
             'error' => false,
             'data' => 'Data berhasil dihapus',
-            'status' => '200'
-        ]);
-    }
-
-    public function changeStatus()
-    {
-        $id_inventaris = $this->request->getPost('id_inventaris');
-
-        $status_inventaris = $this->inventarisModel->find($id_inventaris);
-        $data = [
-            'status_inventaris' => $status_inventaris['status_inventaris'] == '1' ? '0' : '1',
-        ];
-        $this->inventarisModel->update($id_inventaris, $data);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => 'Status berhasil diubah',
             'status' => '200'
         ]);
     }
