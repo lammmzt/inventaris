@@ -48,8 +48,12 @@ class inventarisController extends BaseController
         $builder = $this->inventarisModel->getInventaris();
         // dd($builder);
         return DataTable::of($builder)
+            ->add('id_inventaris', function ($row) {
+                return '<div class="dt-checkbox"><input class="check_select_item" type="checkbox" name="select_item" value="1" id="' . $row->id_inventaris . '">
+                <span class="dt-checkbox-label"></span></div>';
+            })
             ->add('nama_barang', function ($row) {
-                return $row->nama_barang. ' - ' .$row->nama_tipe_barang;
+                return $row->nama_barang. ' - ' .$row->nama_tipe_barang. '('.$row->nama_inventaris.')';
             })
             ->add('status_inventaris', function ($row) {
                 return '<div class="custom-control custom-switch"> <input type="checkbox" 
@@ -178,9 +182,10 @@ class inventarisController extends BaseController
     public function edit()
     {
         $id_inventaris = $this->request->getPost('id_inventaris');
-        $data = $this->inventarisModel->getinventaris($id_inventaris);
+        $data = $this->inventarisModel->getInventaris($id_inventaris);
+        // dd($data);
         return $this->response->setJSON([
-            'error' => false,
+            'error' => false,   
             'data' => $data,
             'status' => '200'
         ]);

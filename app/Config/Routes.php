@@ -148,7 +148,7 @@ $routes->group('Admin', function ($routes) {
         $routes->get('DataTables', 'inventarisController::ajaxDataTables');
         $routes->post('save', 'inventarisController::store');
         $routes->post('delete', 'inventarisController::destroy');
-        $routes->post('edit', 'inventarisController::edit');
+        $routes->post('edit', 'inventarisController::edit');    
         $routes->post('update', 'inventarisController::update');
         $routes->post('changeStatus', 'inventarisController::changeStatus');
         $routes->post('fetchDatainventaris', 'inventarisController::fetchDatainventaris');

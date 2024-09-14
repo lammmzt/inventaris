@@ -276,9 +276,9 @@ $('#btn_simpan').click(function() {
                     getSwall(response.status, response.data);
                 } else {
                     getSwall(response.status, response.data);
+                    $("#btn_simpan").removeAttr("disabled");
+                    $("#btn_simpan").html('Simpan');
                     setTimeout(function() {
-                        $("#btn_simpan").removeAttr("disabled");
-                        $("#btn_simpan").html('Simpan');
                         window.location.href = '<?= base_url('Admin/ATK/Transaksi'); ?>';
                     }, 1500);
                 }
