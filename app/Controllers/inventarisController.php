@@ -56,7 +56,6 @@ class inventarisController extends BaseController
         ]);
     }
     
-
     public function ajaxDataTables()
     {
         $builder = $this->inventarisModel->getInventaris();
@@ -72,13 +71,13 @@ class inventarisController extends BaseController
             ->add('status_inventaris', function ($row) {
                 // jika status 0 tidak aktif, 1 aktif, 2 rusak dan 3 hilang
                 if ($row->status_inventaris == '0') {
-                    return '<span class="badge badge-pill badge-warning">Tidak Aktif</span>';
+                    return '<span class="badge badge badge-warning">Tidak Aktif</span>';
                 } elseif ($row->status_inventaris == '1') {
-                    return '<span class="badge badge-pill badge-success">Aktif</span>';
+                    return '<span class="badge badge badge-success">Aktif</span>';
                 } elseif ($row->status_inventaris == '2') {
-                    return '<span class="badge badge-pill badge-danger">Rusak</span>';
+                    return '<span class="badge badge badge-danger">Rusak</span>';
                 } elseif ($row->status_inventaris == '3') {
-                    return '<span class="badge badge-pill badge-danger">Hilang</span>';
+                    return '<span class="badge badge badge-danger">Hilang</span>';
                 }
 
                 return $row->status_inventaris;
@@ -410,9 +409,10 @@ class inventarisController extends BaseController
             $qty_inventaris = $col[7];
             $perolehan_inventaris = $col[8];
             $sumber_inventaris = $col[9];
+            
 
             // check data barang
-            if($nama_barang != '' && $tipe_barang != '' && $nama_inventaris != '' && $nama_ruangan != '' && $spek_inventaris != '' && $satuan != '' && $qty_inventaris != '' ){
+            if($nama_barang != '' && $nama_tipe_barang != '' && $nama_inventaris != '' && $nama_ruangan != '' && $spek_inventaris != '' && $satuan != '' && $qty_inventaris != '' ){
                 // check if data nama_tipe_barang exist
                 if (!array_key_exists($nama_tipe_barang, $tipe_barang)) {
                     // check nama barang exist
@@ -425,7 +425,7 @@ class inventarisController extends BaseController
                             'jenis_barang' => '1',
                             'status_barang' => '1',
                         ];
-                        $this->barangModel->insert($data_barang);
+                        $this->barangModel->insert($data);
                         $barang[$nama_barang] = $data['id_barang'];
                     }
                     // check nama satuan exist
@@ -434,8 +434,10 @@ class inventarisController extends BaseController
                             'nama_satuan' => $satuan,
                             'status_satuan' => '1',
                         ];
-                        $this->satuanModel->save($data_satuan);
-                        $data_satuan[$satuan] = $data['id_satuan'];
+                        $this->satuanModel->insert($data);
+                        // RELAOD DATA SATUAN
+                        $data_satuan = $this->satuanModel->findAll();
+                        $data_satuan = array_column($data_satuan, 'id_satuan', 'nama_satuan');
                     }
                     // insert data tipe barang
                     $data_tipe_barang = [
@@ -461,32 +463,54 @@ class inventarisController extends BaseController
                     $ruangan[$nama_ruangan] = $data_ruangan['id_ruangan'];
                 }
 
+                $kode_inventaris =( $kode_inventaris == '') ? 'BRG-'.date('Ymd').'-'.rand(100,9999) : $kode_inventaris;
                 // check if data inventaris exist
                 if (!$this->inventarisModel->where(['kode_inventaris' => $kode_inventaris])->first()) {
+
+                    $result = Builder::create()
+                    ->writer(new PngWriter())
+                    ->writerOptions([])
+                    ->data($kode_inventaris)
+                    ->encoding(new Encoding('UTF-8'))
+                    ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+                    ->size(300)
+                    ->margin(10)
+                    ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
+                    ->logoPath('Assets/LOGO SMANSA.png')
+                    ->logoResizeToWidth(50)
+                    ->logoPunchoutBackground(true)
+                    ->labelText($kode_inventaris)
+                    ->labelFont(new NotoSans(20))
+                    ->labelAlignment(LabelAlignment::Center)
+                    ->validateResult(false)
+                    ->build();
+                    
+                    $result->saveToFile('Assets/qr_code/' . $kode_inventaris . '.png');
+                    // insert data inventaris
                     $data_inventaris = [
                         'id_inventaris' => Uuid::uuid4()->toString(),
                         'tipe_barang_id' => $tipe_barang[$nama_tipe_barang],
                         'ruangan_id' => $ruangan[$nama_ruangan],
-                        'kode_inventaris' => ($kode_inventaris == '') ? 'BRG-'.date('Ymd').'-'.rand(100,9999) : $kode_inventaris,
+                        'kode_inventaris' => $kode_inventaris,
                         'nama_inventaris' => $nama_inventaris,
                         'spek_inventaris' => $spek_inventaris,
                         'qty_inventaris' => $qty_inventaris,
                         'perolehan_inventaris' => $perolehan_inventaris,
                         'sumber_inventaris' => $sumber_inventaris,
-                        'qr_code' => '',
+                        'qr_code' => $kode_inventaris.'.png',
                         'status_inventaris' => '1',
                     ];
                     $this->inventarisModel->insert($data_inventaris);
                     $success++;
                 } else {
                     $failed[] = [
-                        'kode_inventaris' => $kode_inventaris,
+                        'kode_inventaris' => $kode_inventaris.'-'.$nama_barang.'-'.$nama_tipe_barang.'-'.$nama_inventaris,
                         'message' => 'Kode inventaris sudah ada'
                     ];
                 }
             } else {
             $failed[] = [
-                'kode_inventaris' => ($kode_inventaris == '') ? $nama_barang.'-'.$nama_tipe_barang.'-'.$nama_inventaris : $kode_inventaris,
+                'kode_inventaris' => $kode_inventaris.'-'.$nama_barang.'-'.$nama_tipe_barang.'-'.$nama_inventaris,
                 'message' => 'Data tidak lengkap'
             ];
             }
@@ -510,6 +534,19 @@ class inventarisController extends BaseController
                 'total_success' => $success,
                 'data_failed' => $failed
         ]);
+    }
+
+    public function pritnQrCode()
+    {
+        $data_inventaris = $this->inventarisModel->findAll();
+        $data = [
+            'main_menu' => 'Inventaris',
+            'title' => 'Print QR Code',
+            'active' => 'Print QR Code',
+            'data' => $data_inventaris
+        ];
+        // dd($data);
+        return view('Admin/Inventaris/print_qr_code', $data);
     }
     
 

@@ -454,7 +454,7 @@ $(document).ready(function() {
 
 // download format import template_import.xlsx
 $('#downloadTemplate').on('click', function() {
-    window.location.href = '<?= base_url('Admin/Inventaris/getFormatImport') ?>';
+    window.location.href = '<?= base_url('Assets/Files/template_import.xlsx') ?>';
 });
 
 // ketika modal tambah inventaris muncul
