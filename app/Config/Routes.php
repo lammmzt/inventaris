@@ -152,6 +152,8 @@ $routes->group('Admin', function ($routes) {
         $routes->post('update', 'inventarisController::update');
         $routes->post('changeStatus', 'inventarisController::changeStatus');
         $routes->post('fetchDatainventaris', 'inventarisController::fetchDatainventaris');
+        $routes->post('Import', 'inventarisController::importData');
+        $routes->get('getFormatImport', 'inventarisController::getFormatImport');
     });
     
 

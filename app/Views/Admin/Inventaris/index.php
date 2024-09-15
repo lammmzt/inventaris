@@ -285,24 +285,31 @@
                             </small>
                         </div>
                     </div>
-                    <!-- <div class="form-group row">
-                        <label for="file" class="col-sm-4 col-form-label"></label>
-                        <div class="col-sm-8">
-                            <a href="<?= base_url('Assets/Template/TemplateDataSiswa.xlsx') ?>" class="btn btn-success"
-                                download>
-                                <i class="fa fa-download"></i> Download Template
-                            </a>
-                        </div>
-                    </div> -->
-                    <!-- <div class="form-group row">
-                        <label for="file" class="col-sm-4 col-form-label"></label>
-                        <div class="col-sm-8">
+
+                    <div class="row mx-2">
+                        <div class="col-sm-12">
                             <div class="progress" style="height: 20px;">
                                 <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"
                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                             </div>
                         </div>
-                    </div> -->
+                    </div>
+                    <div class="row mx-2 mt-2">
+                        <p class="text-center">Detail Import</p>
+                        <div class="table-responsive">
+                            <table class="table table table-striped" id="detailImport">
+                                <thead>
+                                    <th scope="col" class="text-center datatable-nosort">#</th>
+                                    <th scope="col" class="datatable-nosort">Kode Transaksi</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" class="text-center">Belum ada data</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -317,7 +324,13 @@
     </div>
 </div>
 
-
+<style>
+/* mx height table 500px and srroler down */
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+</style>
 <!-- ======================================== END inventaris ======================================== -->
 
 <?= $this->endSection('content');?>
@@ -428,6 +441,11 @@ function getRuangan() {
 
 $(document).ready(function() {
     dataTablesinventaris();
+});
+
+// download format import template_import.xlsx
+$('#downloadTemplate').on('click', function() {
+    window.location.href = '<?= base_url('Admin/Inventaris/getFormatImport') ?>';
 });
 
 // ketika modal tambah inventaris muncul
@@ -683,11 +701,43 @@ $(function() {
                                 $("#erroredit" + key).removeClass('has-danger');
                             }
                         });
+                    }
+                    if (response.status == '201') {
+                        //         'data' => [
+                        // 'total_data' => $total_data,
+                        // 'success' => $success,
+                        //     // 'failed' => $failed
+                        // ]
+                        // parse data to progress bar and table
+                        var total_data = response.data.total_data;
+                        var success = response.data.success;
+                        var failed = response.data.failed;
+                        var percent = (success / total_data) * 100;
+                        alert(percent);
+                        $('#progressBar').css('width', percent + '%');
+                        $('#progressBar').html(percent + '%');
+                        var html = '';
+
+                        if (failed.length > 0) {
+                            $.each(failed, function(key, value) {
+                                html += '<tr>';
+                                html += '<td>' + (key + 1) + '</td>';
+                                html += '<td>' + value + '</td>';
+                                html += '</tr>';
+                            });
+                        } else {
+                            html += '<tr>';
+                            html +=
+                                '<td colspan="2" class="text-center">Belum ada data</td>';
+                            html += '</tr>';
+                        }
+
+                        $('#detailImport').html(html);
                     } else {
                         $("#form_edit_inventaris")[0].reset();
-                        $("#editinventaris").modal('hide');
+                        // $("#editinventaris").modal('hide');
                         $('#tableInventaris').DataTable().ajax.reload();
-                        getSwall(response.status, response.data);
+                        // getSwall(response.status, response.data);
                         inventaris.forEach(function(item) {
                             $("#edit" + item).removeClass(
                                 'form-control-danger');
@@ -696,6 +746,7 @@ $(function() {
                             $("#erroredit" + item).html('');
                             $("#erroredit" + item).removeClass('has-danger');
                         });
+
                     }
                     $("#btn_edit_inventaris").removeAttr("disabled");
                     $("#btn_edit_inventaris").html("Edit");
@@ -734,6 +785,62 @@ $(document).on('click', '.delete_inventaris', function() {
                 });
             }
         });
+});
+
+// import data inventaris
+$(function() {
+    $("#form_import").submit(function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        if (!this.checkValidity()) {
+            e.preventDefault();
+            $(this).addClass('form-control-success');
+        } else {
+            $("#btn_tambah_user").attr("disabled", "disabled");
+            $("#btn_tambah_user").html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+            );
+            $.ajax({
+                url: '<?= base_url('Admin/Inventaris/Import') ?>',
+                method: 'post',
+                data: formData,
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.error) {
+                        // foeach error 
+                        $.each(response.data, function(key, value) {
+                            if (value != '') {
+                                $("#" + key).addClass('form-control-danger');
+                                $("#error" + key).addClass('has-danger');
+                                $("#error" + key).html(value);
+                            } else {
+                                $("#" + key).removeClass('form-control-danger');
+                                $("#" + key).addClass('form-control-success');
+                                $("#error" + key).html('');
+                                $("#error" + key).removeClass('has-danger');
+                            }
+                        });
+                    } else {
+                        $("#form_import")[0].reset();
+                        $("#importDataInventaris").modal('hide');
+                        $('#tableInventaris').DataTable().ajax.reload();
+                        getSwall(response.status, response.data);
+                        inventaris.forEach(function(item) {
+                            $("#" + item).removeClass('form-control-danger');
+                            $("#" + item).removeClass('form-control-success');
+                            $("#error" + item).html('');
+                            $("#error" + item).removeClass('has-danger');
+                        });
+                    }
+                    $("#btn_tambah_user").removeAttr("disabled");
+                    $("#btn_tambah_user").html("Import");
+                }
+            });
+        }
+    });
 });
 </script>
 
