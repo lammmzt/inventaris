@@ -37,6 +37,7 @@
                                         value="<?= ($jenis_barang == '1') ? 'Inventaris' : 'ATK'; ?>" />
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="col-sm-1 text-right d-flex align-items-center">
@@ -51,6 +52,7 @@
                         <thead>
                             <tr>
                                 <th class="">Nama Tipe Barang</th>
+                                <th class="">Satuan</th>
                                 <th class="">Status Tipe Barang</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
@@ -86,6 +88,17 @@
                             <input type="text" class="form-control required" id="nama_tipe_barang"
                                 name="nama_tipe_barang" placeholder="Masukan nama tipe barang">
                             <div class="form-control-feedback " id="errornama_tipe_barang"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="satuan_id" class="col-sm-4 col-form-label">Satuan<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <select class="custom-select2 form-control required" name="satuan_id" id="satuan_id"
+                                style="width: 100%; height: 38px;">
+                                <option value="">Pilih Satuan</option>
+                            </select>
+                            <div class="form-control-feedback " id="errorsatuan_id"></div>
                         </div>
                     </div>
                 </div>
@@ -127,6 +140,18 @@
                             <div class="form-control-feedback " id="erroreditnama_tipe_barang"></div>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="editsatuan_id" class="col-sm-4 col-form-label">Satuan<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <select class="custom-select2 form-control required" name="satuan_id" id="editsatuan_id"
+                                style="width: 100%; height: 38px;">
+                                <option value="">Pilih Satuan</option>
+                            </select>
+                            <div class="form-control-feedback " id="erroreditsatuan_id"></div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -173,6 +198,10 @@ function dataTablesTipeBarang() {
                 class: 'table-plus'
             },
             {
+                data: 'nama_satuan',
+                class: 'text-center'
+            },
+            {
                 data: 'status_tipe_barang',
                 class: 'text-center'
             },
@@ -210,9 +239,32 @@ function getSwall(status, message) {
 const barang = [
     'nama_tipe_barang',
     'id_barang',
-    'id_tipe_barang'
+    'id_tipe_barang',
+    'satuan_id',
 ];
 
+// get data satuan
+function getSatuan() {
+    $.ajax({
+        url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
+        method: 'post',
+        dataType: 'json',
+        success: function(response) {
+            var html = '';
+            html += '<option value="">Pilih Satuan</option>';
+            $.each(response.data, function(key, value) {
+                html += '<option value="' + value.id_satuan + '">' + value.nama_satuan +
+                    '</option>';
+            });
+            $('#satuan_id').html(html);
+        }
+    });
+};
+
+// when modal show
+$('#addBarang').on('show.bs.modal', function() {
+    getSatuan();
+});
 
 // tambah 
 $(function() {
@@ -294,6 +346,30 @@ $(document).on('click', '.edit_tipe_barang', function() {
             $('#edit_tipe_barang').modal('show');
             $.each(response.data, function(key, value) {
                 $('#edit' + key).val(value);
+            });
+            const old_satuan_id = response.data.satuan_id;
+            // alert(old_id_tipe_barang);
+            $.ajax({
+                url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
+                method: 'post',
+                dataType: 'json',
+                success: function(response) {
+                    var html = '';
+                    $.each(response.data, function(key, value) {
+                        if (value.id_satuan == old_satuan_id) {
+                            // alert(value.id_satuan);
+                            html += '<option value="' + value
+                                .id_satuan +
+                                '" selected>' + value.nama_satuan +
+                                '</option>';
+                        } else {
+                            html += '<option value="' + value.id_satuan +
+                                '">' + value.nama_satuan +
+                                '</option>';
+                        }
+                    });
+                    $('#editsatuan_id').html(html);
+                }
             });
         }
     });

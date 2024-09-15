@@ -401,6 +401,7 @@ $(document).on('click', '.detail_trans_masuk', function() {
 
     });
 });
+
 // edit detail_trans_keluar
 $(document).on('click', '.detail_trans_keluar', function() {
     const id = $(this).attr('id');

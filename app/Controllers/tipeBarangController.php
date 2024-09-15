@@ -129,6 +129,13 @@ class tipeBarangController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
+            'satuan_id' => [
+                'label' => 'Satuan',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
 
         ]);
 
@@ -143,6 +150,7 @@ class tipeBarangController extends BaseController
                 'id_tipe_barang' => Uuid::uuid4()->toString(),
                 'barang_id' => $this->request->getPost('barang_id'),
                 'nama_tipe_barang' => $this->request->getPost('nama_tipe_barang'),
+                'satuan_id' => $this->request->getPost('satuan_id'),
                 'status_tipe_barang' => '1',
             ];
             $this->tipeBarangModel->insert($data);
@@ -176,6 +184,13 @@ class tipeBarangController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
+            'satuan_id' => [
+                'label' => 'Satuan',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -188,6 +203,7 @@ class tipeBarangController extends BaseController
             $data = [
                 'id_tipe_barang' => $this->request->getPost('id_tipe_barang'),
                 'nama_tipe_barang' => $this->request->getPost('nama_tipe_barang'),
+                'satuan_id' => $this->request->getPost('satuan_id'),
             ];
             $this->tipeBarangModel->save($data);
             return $this->response->setJSON([

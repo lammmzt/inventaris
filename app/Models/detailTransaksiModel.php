@@ -47,7 +47,7 @@ class detailTransaksiModel extends Model
             ->join('atk', 'atk.id_atk = detail_transaksi.atk_id')
             ->join('tipe_barang', 'tipe_barang.id_tipe_barang = atk.tipe_barang_id')
             ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
-            ->join('satuan', 'satuan.id_satuan = atk.satuan_id')
+            ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
             ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.transaksi_id')
             ->where(['transaksi_id' => $id]);
     }

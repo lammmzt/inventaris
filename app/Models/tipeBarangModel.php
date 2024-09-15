@@ -11,6 +11,7 @@ class tipeBarangModel extends Model
     protected $allowedFields = [
         'id_tipe_barang',
         'barang_id',
+        'satuan_id',
         'nama_tipe_barang',
         'status_tipe_barang',
         'created_at',
@@ -25,12 +26,15 @@ class tipeBarangModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang')
+                ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang, satuan.nama_satuan')
+                ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
                 ->join('barang', 'barang.id_barang = tipe_barang.barang_id');
+
         }
         return $this
-            ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang')
+            ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang , barang.kode_barang, satuan.nama_satuan')
             ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
+            ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
             ->where(['id_tipe_barang' => $id])
             ->first();
     }
@@ -39,15 +43,17 @@ class tipeBarangModel extends Model
     public function getTipeBarangByBarang($id)
     {
         return $this
-            ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang')
+            ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang, satuan.nama_satuan')
             ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
+            ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
             ->where(['barang_id' => $id]);
     }
 
     public function getTipeBarangByJenisBarang($id){
         return $this
-            ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang')
+            ->select('tipe_barang.id_tipe_barang, tipe_barang.barang_id, tipe_barang.nama_tipe_barang, tipe_barang.status_tipe_barang, barang.nama_barang, barang.kode_barang, satuan.nama_satuan')
             ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
+            ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
             ->where(['barang.jenis_barang' => $id])
             ->findAll();
     }

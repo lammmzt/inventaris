@@ -174,7 +174,7 @@ function getUser() {
         dataType: 'json',
         success: function(response) {
             var html = '';
-            html += '<option value="">Pilih User</option>';
+            html += '<option value="">Pilih Pemohon</option>';
             $.each(response.data, function(key, value) {
                 if (value.id_user == '<?= $user_id; ?>') {
                     html += '<option value="' + value.id_user + '" selected>' + value.nama_user +
@@ -344,7 +344,10 @@ $('#btn_update').click(function() {
     var tanggal_transaksi = $('#tanggal_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
     var user_id = $('#user_id').val();
-
+    $("#btn_update").attr("disabled", "disabled");
+    $("#btn_update").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    );
     var data = {
         id_transaksi: id_transaksi,
         tanggal_transaksi: tanggal_transaksi,
@@ -361,6 +364,8 @@ $('#btn_update').click(function() {
             if (response.status == '200') {
                 getSwall(response.status, response.data);
                 $('#tableDetailBarang').DataTable().ajax.reload();
+                $("#btn_update").removeAttr("disabled");
+                $("#btn_update").html('Update');
             } else {
                 getSwall(response.status, response.data);
             }

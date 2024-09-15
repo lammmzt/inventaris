@@ -10,9 +10,22 @@
                         <h4 class="text-blue h4">Data Inventaris</h4>
                     </div>
                     <div class="col-sm-6 text-right">
+                        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#importDataInventaris"
+                            type="button">
+                            <i class="icon-copy fa fa-upload" aria-hidden="true"></i>
+                        </a>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addinventaris"
                             type="button">
                             <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- cetak qr code -->
+                <div class="row mb-4">
+                    <!-- 2 button import and cetak qr code -->
+                    <div class="col-sm-6">
+                        <a href="<?= base_url('Admin/Inventaris/cetakQrCode') ?>" class="btn btn-primary" type="button">
+                            <i class="icon-copy fa fa-print" aria-hidden="true"></i> Cetak QR Code
                         </a>
                     </div>
                 </div>
@@ -21,15 +34,15 @@
                         id="tableInventaris">
                         <thead>
                             <tr>
-                                <th>
-                                    <!-- <div class="dt-checkbox">
-                                        <input type="checkbox" name="select_all" value="1" id="example-select-all" />
+                                <th class="datatable-nosort">
+                                    <div class="dt-checkbox">
+                                        <input type="checkbox" name="select_all" value="1" id="select_all_data" />
                                         <span class="dt-checkbox-label"></span>
-                                    </div> -->
+                                    </div>
                                 </th>
-                                <th class="table-plus">Nama Barang</th>
-                                <th class="table-plus">Merek Inventaris</th>
-                                <th class="table-plus">QTY</th>
+                                <th class="table-plus">Kode Inventaris</th>
+                                <th class="table-plus">Nama Inventaris</th>
+                                <th class="table-plus">Ruangan</th>
                                 <th class="">Status inventaris</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
@@ -74,27 +87,17 @@
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control required" id="nama_inventaris" name="nama_inventaris"
-                                placeholder="Masukan Merek inventaris">
+                                placeholder="Masukan Nama inventaris">
                             <div class="form-control-feedback " id="errornama_inventaris"></div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="satuan_id" class="col-sm-4 col-form-label">Satuan<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="satuan_id" id="satuan_id"
-                                style="width: 100%; height: 38px;">
-                                <option value="">Pilih Satuan</option>
-                            </select>
-                            <div class="form-control-feedback " id="errorsatuan_id"></div>
-                        </div>
-                    </div>
+
                     <div class="form-group row">
                         <label for="qty_inventaris" class="col-sm-4 col-form-label">QTY inventaris<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control required" id="qty_inventaris" name="qty_inventaris"
-                                placeholder="Masukan Merek inventaris" min="0" value="0">
+                                placeholder="Masukan Nama inventaris" min="1" value="1">
                             <div class="form-control-feedback " id="errorqty_inventaris"></div>
                         </div>
                     </div>
@@ -111,27 +114,28 @@
                     </div>
                     <div class="form-group row">
                         <label for="spek_inventaris" class="col-sm-4 col-form-label">Spesifikasi
-                            inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <textarea class="form-control" id="spek_inventaris" name="spek_inventaris"
-                                style="height: 100px;" placeholder="Masukan Spesifikasi inventaris"></textarea>
+                                style="height: 100px;" placeholder="Masukan Spesifikasi Inventaris"></textarea>
                             <div class="form-control-feedback " id="errorspek_inventaris"></div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="perolehan_inventaris" class="col-sm-4 col-form-label">Perolehan
-                            inventaris</label></label>
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <input type="date" class="form-control" id="perolehan_inventaris"
-                                name="perolehan_inventaris" placeholder="Masukan Perolehan inventaris">
+                                name="perolehan_inventaris" placeholder="Masukan Perolehan Inventaris">
                             <div class="form-control-feedback " id="errorperolehan_inventaris"></div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="sumber_inventaris" class="col-sm-4 col-form-label">Sumber inventaris</label></label>
+                        <label for="sumber_inventaris" class="col-sm-4 col-form-label">Sumber
+                            Inventaris<span class="rq">*</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="sumber_inventaris" name="sumber_inventaris"
-                                placeholder="Masukan Sumber inventaris">
+                                placeholder="Masukan Sumber Inventaris">
                             <div class="form-control-feedback " id="errorsumber_inventaris"></div>
                         </div>
                     </div>
@@ -166,7 +170,7 @@
                     <input type="hidden" id="editid_inventaris" name="id_inventaris">
                     <div class="form-group row">
                         <label for="edittipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
-                                class="rq">*</span></label></label>
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="tipe_barang_id"
                                 id="edittipe_barang_id" style="width: 100%; height: 38px;">
@@ -176,32 +180,69 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="editnama_inventaris" class="col-sm-4 col-form-label">Merek inventaris<span
-                                class="rq">*</span></label></label>
+                        <label for="editnama_inventaris" class="col-sm-4 col-form-label">Nama inventaris<span
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control required" id="editnama_inventaris"
                                 name="nama_inventaris">
                             <div class="form-control-feedback " id="erroreditnama_inventaris"></div>
                         </div>
                     </div>
+
                     <div class="form-group row">
-                        <label for="editsatuan_id" class="col-sm-4 col-form-label">Satuan<span
-                                class="rq">*</span></label></label>
+                        <label for="editqty_inventaris" class="col-sm-4 col-form-label">QTY inventaris<span
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="satuan_id" id="editsatuan_id"
-                                style="width: 100%; height: 38px;">
-                                <option value="">Pilih Satuan</option>
-                            </select>
-                            <div class="form-control-feedback " id="erroreditsatuan_id"></div>
+                            <input type="number" class="form-control required" id="editqty_inventaris"
+                                name="qty_inventaris" placeholder="Masukan Nama inventaris" min="0" value="0">
+                            <div class="form-control-feedback " id="erroreditqty_inventaris"></div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="editqty_inventaris" class="col-sm-4 col-form-label">QTY inventaris<span
-                                class="rq">*</span></label></label>
+                        <label for="editruangan_id" class="col-sm-4 col-form-label">Ruangan<span
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
-                            <input type="number" class="form-control required" id="editqty_inventaris"
-                                name="qty_inventaris" placeholder="Masukan Merek inventaris" min="0" value="0">
-                            <div class="form-control-feedback " id="erroreditqty_inventaris"></div>
+                            <select class="custom-select2 form-control required" name="ruangan_id" id="editruangan_id"
+                                style="width: 100%; height: 38px;">
+                                <option value="">Pilih Ruangan</option>
+                            </select>
+                            <div class="form-control-feedback " id="erroreditruangan_id"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editspek_inventaris" class="col-sm-4 col-form-label">Spesifikasi
+                            Inventaris<span class="rq">*</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="editspek_inventaris" name="spek_inventaris"
+                                style="height: 100px;" placeholder="Masukan Spesifikasi Inventaris"></textarea>
+                            <div class="form-control-feedback " id="erroreditspek_inventaris"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editperolehan_inventaris" class="col-sm-4 col-form-label">Perolehan
+                            Inventaris<span class="rq">*</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="editperolehan_inventaris"
+                                name="perolehan_inventaris" placeholder="Masukan Perolehan Inventaris">
+                            <div class="form-control-feedback " id="erroreditperolehan_inventaris"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editsumber_inventaris" class="col-sm-4 col-form-label">Sumber
+                            Inventaris<span class="rq">*</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="editsumber_inventaris" name="sumber_inventaris"
+                                placeholder="Masukan Sumber Inventaris">
+                            <div class="form-control-feedback " id="erroreditsumber_inventaris"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editstatus_inventaris" class="col-sm-4 col-form-label">Status
+                            Inventaris<span class="rq">*</label>
+                        <div class="col-sm-8">
+                            <select class="form-control required" name="status_inventaris" id="editstatus_inventaris"
+                                style="width: 100%; height: 38px;">
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -218,6 +259,85 @@
     </div>
 </div>
 
+<!-- modal import data siswa -->
+<div class="modal fade" id="importDataInventaris" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    Import Data Inventaris
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <form id="form_import">
+                <!-- <form action="<?= base_url('Admin/Inventaris/Import') ?>" method="post" enctype="multipart/form-data"> -->
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="file" class="col-sm-4 col-form-label">File Template</label>
+                        <div class="col-sm-8">
+                            <input type="file" class="form-control" id="file" name="file" required>
+                            <div class="form-control-feedback mb-4" id="errorfile"></div>
+
+                            <small class="text-danger">* File Excel harus sesuai dengan template yang telah disediakan
+                                <a href="#" id="downloadTemplate">Download Template</a>
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row mx-2">
+                        <div class="col-sm-12">
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row mt-2 justify-content-center" id="statusImport" style="display: none;">
+                        <div class="col-sm-4">
+                            <p>Total Data : <span id="totalData">0</span></p>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>Sukses : <span id="totalSukses">0</span></p>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>Gagal : <span id="totalGagal">0</span></p>
+                        </div>
+                    </div>
+                    <div class="row mx-2 mt-1" id="detailImportData" style="display: none;">
+                        <!-- <p class="text-center">Detail Import</p>  -->
+                        <div class="table-responsive pagging">
+                            <table class="table table table-striped" id="tableImport">
+                                <thead>
+                                    <th scope="col" class="text-center datatable-nosort">#</th>
+                                    <th scope="col" class="text-center">Kode Transaksi</th>
+                                    <th scope="col" class="text-center">Pesan</th>
+                                </thead>
+                                <tbody id="detailData">
+                                    <!-- <tr>
+                                        <td colspan="2" class="text-center">Belum ada data</td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- detail total data dan yang succes filed -->
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btn_tambah_user">
+                        Import
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- ======================================== END inventaris ======================================== -->
 
 <?= $this->endSection('content');?>
@@ -240,14 +360,18 @@ function dataTablesinventaris() {
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
+                    data: 'id_inventaris',
+
+                },
+                {
+                    data: 'kode_inventaris'
+                },
+                {
                     data: 'nama_barang'
                 },
                 {
-                    data: 'nama_inventaris'
-                },
-                {
-                    data: 'qty_inventaris',
-                    class: 'text-center'
+                    data: 'nama_ruangan'
+
                 },
                 {
                     data: 'status_inventaris',
@@ -259,13 +383,30 @@ function dataTablesinventaris() {
                 },
 
             ],
+
+            // check box select dont change when pagination and search data 
+            drawCallback: function() {
+                $(".check_select_item").on('change', function() {
+                    var total = $('.check_select_item').length;
+                    var number = $('.check_select_item:checked').length;
+                    if (number == total) {
+                        $('#select_all_data').prop('checked', true);
+                    } else {
+                        $('#select_all_data').prop('checked', false);
+                    }
+                });
+            },
+
             columnDefs: [{
                 targets: "datatable-nosort",
                 orderable: false,
             }],
+
         });
     });
 }
+
+
 
 // get data tipe barang
 function getTipeBarang() {
@@ -285,24 +426,6 @@ function getTipeBarang() {
                     '</option>';
             });
             $('#tipe_barang_id').html(html);
-        }
-    });
-};
-
-// get data satuan
-function getSatuan() {
-    $.ajax({
-        url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
-        method: 'post',
-        dataType: 'json',
-        success: function(response) {
-            var html = '';
-            html += '<option value="">Pilih Satuan</option>';
-            $.each(response.data, function(key, value) {
-                html += '<option value="' + value.id_satuan + '">' + value.nama_satuan +
-                    '</option>';
-            });
-            $('#satuan_id').html(html);
         }
     });
 };
@@ -329,10 +452,14 @@ $(document).ready(function() {
     dataTablesinventaris();
 });
 
+// download format import template_import.xlsx
+$('#downloadTemplate').on('click', function() {
+    window.location.href = '<?= base_url('Admin/Inventaris/getFormatImport') ?>';
+});
+
 // ketika modal tambah inventaris muncul
 $('#addinventaris').on('shown.bs.modal', function() {
     getTipeBarang();
-    getSatuan();
     getRuangan();
 });
 
@@ -355,13 +482,13 @@ const inventaris = [
     'id_inventaris',
     'kode_inventaris',
     'tipe_barang_id',
-    'satuan_id',
     'ruangan_id',
     'qty_inventaris',
     'spek_inventaris',
     'status_inventaris',
     'perolehan_inventaris',
     'sumber_inventaris',
+    'status_inventaris'
 ];
 
 // hapus error
@@ -378,6 +505,20 @@ inventaris.forEach(function(item) {
         $("#erroredit" + item).html('');
         $("#erroredit" + item).removeClass('has-danger');
     });
+});
+
+// chekbox all
+$('#select_all_data').on('click', function() {
+    // alert('ok');
+    if (this.checked) {
+        $('.check_select_item').each(function() {
+            this.checked = true;
+        });
+    } else {
+        $('.check_select_item').each(function() {
+            this.checked = false;
+        });
+    }
 });
 
 // tambah 
@@ -436,11 +577,69 @@ $(function() {
     });
 });
 
+// fungsi get data edit barang
+function getEditBarang($id_barang) {
+    $.ajax({
+        url: '<?= base_url('Admin/Barang/Detail/fetchTipeBarangByJenisBarang') ?>',
+        method: 'post',
+        dataType: 'json',
+        data: {
+            jenis_barang: '1'
+        },
+        success: function(response) {
+            var html = '';
+            // alert(old_id_tipe_barang);
+            $.each(response.data, function(key, value) {
+                if (value.id_tipe_barang == $id_barang) {
+                    // alert(value.id_tipe_barang);
+                    html += '<option value="' + value.id_tipe_barang +
+                        '" selected>' +
+                        value.nama_barang + ' - ' + value
+                        .nama_tipe_barang + '</option>';
+                } else {
+                    html += '<option value="' + value.id_tipe_barang +
+                        '">' +
+                        value.nama_barang + ' - ' + value
+                        .nama_tipe_barang +
+                        '</option>';
+                }
+            });
+
+            $('#edittipe_barang_id').html(html);
+        }
+    });
+}
+
+// fungsi get data edit ruangan
+function getEditRuangan($id_ruangan) {
+    $.ajax({
+        url: '<?= base_url('Admin/Ruangan/fetchAll') ?>',
+        method: 'post',
+        dataType: 'json',
+        success: function(response) {
+            var html = '';
+            $.each(response.data, function(key, value) {
+                if (value.id_ruangan == $id_ruangan) {
+                    html += '<option value="' + value.id_ruangan +
+                        '" selected>' +
+                        value.nama_ruangan + '</option>';
+                } else {
+                    html += '<option value="' + value.id_ruangan +
+                        '">' +
+                        value.nama_ruangan + '</option>';
+                }
+            });
+            $('#editruangan_id').html(html);
+        }
+    });
+}
+
 // edit inventaris
 $(document).on('click', '.edit_inventaris', function() {
     const id = $(this).attr('id');
+    // alert(id);
     $.ajax({
-        url: '<?= base_url('Admin/inventaris/edit') ?>',
+        url: '<?= base_url('Admin/Inventaris/edit') ?>',
         method: 'post',
         data: {
             id_inventaris: id
@@ -452,31 +651,21 @@ $(document).on('click', '.edit_inventaris', function() {
                 $('#edit' + key).val(value);
             });
             const old_tipe_barang_id = response.data.tipe_barang_id;
-            const old_satuan_id = response.data.satuan_id;
-            // alert(old_id_tipe_barang);
+            // alert(old_tipe_barang_id);
             getEditBarang(old_tipe_barang_id);
-            $.ajax({
-                url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
-                method: 'post',
-                dataType: 'json',
-                success: function(response) {
-                    var html = '';
-                    $.each(response.data, function(key, value) {
-                        if (value.id_satuan == old_satuan_id) {
-                            // alert(value.id_satuan);
-                            html += '<option value="' + value
-                                .id_satuan +
-                                '" selected>' + value.nama_satuan +
-                                '</option>';
-                        } else {
-                            html += '<option value="' + value.id_satuan +
-                                '">' + value.nama_satuan +
-                                '</option>';
-                        }
-                    });
-                    $('#editsatuan_id').html(html);
-                }
-            });
+            const old_ruangan_id = response.data.ruangan_id;
+            getEditRuangan(old_ruangan_id);
+
+            // status inventaris
+            var html = '';
+            if (response.data.status_inventaris == '1') {
+                html += '<option value="1" selected>Aktif</option>';
+                html += '<option value="0">Tidak Aktif</option>';
+            } else {
+                html += '<option value="1">Aktif</option>';
+                html += '<option value="0" selected>Tidak Aktif</option>';
+            }
+            $('#editstatus_inventaris').html(html);
         }
     });
 });
@@ -495,7 +684,7 @@ $(function() {
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
-                url: '<?= base_url('Admin/inventaris/update') ?>',
+                url: '<?= base_url('Admin/Inventaris/update') ?>',
                 method: 'post',
                 data: formData,
                 contentType: false,
@@ -508,12 +697,15 @@ $(function() {
                         // foeach error 
                         $.each(response.data, function(key, value) {
                             if (value != '') {
-                                $("#edit" + key).addClass('form-control-danger');
+                                $("#edit" + key).addClass(
+                                    'form-control-danger');
                                 $("#erroredit" + key).addClass('has-danger');
                                 $("#erroredit" + key).html(value);
                             } else {
-                                $("#edit" + key).removeClass('form-control-danger');
-                                $("#edit" + key).addClass('form-control-success');
+                                $("#edit" + key).removeClass(
+                                    'form-control-danger');
+                                $("#edit" + key).addClass(
+                                    'form-control-success');
                                 $("#erroredit" + key).html('');
                                 $("#erroredit" + key).removeClass('has-danger');
                             }
@@ -529,6 +721,7 @@ $(function() {
                             $("#erroredit" + item).html('');
                             $("#erroredit" + item).removeClass('has-danger');
                         });
+
                     }
                     $("#btn_edit_inventaris").removeAttr("disabled");
                     $("#btn_edit_inventaris").html("Edit");
@@ -554,7 +747,7 @@ $(document).on('click', '.delete_inventaris', function() {
         .then((result) => {
             if (result.value) {
                 $.ajax({
-                    url: '<?= base_url('Admin/inventaris/delete') ?>',
+                    url: '<?= base_url('Admin/Inventaris/delete') ?>',
                     method: 'post',
                     data: {
                         id_inventaris: id
@@ -569,23 +762,119 @@ $(document).on('click', '.delete_inventaris', function() {
         });
 });
 
+// when close modal import data
+$('#importDataInventaris').on('hidden.bs.modal', function() {
+    $("#form_import")[0].reset();
+    $("#statusImport").hide();
+    $("#detailImportData").hide();
+    $('#tableImport').DataTable().destroy();
+});
 
 
+// import data inventaris
+$(function() {
+    $("#form_import").submit(function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        if (!this.checkValidity()) {
+            e.preventDefault();
+            $(this).addClass('form-control-success');
+        } else {
+            $("#btn_tambah_user").attr("disabled", "disabled");
+            $("#btn_tambah_user").html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+            );
+            $.ajax({
+                url: '<?= base_url('Admin/Inventaris/Import') ?>',
+                method: 'post',
+                data: formData,
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.error) {
+                        // foeach error 
+                        $.each(response.data, function(key, value) {
+                            if (value != '') {
+                                $("#" + key).addClass('form-control-danger');
+                                $("#error" + key).addClass('has-danger');
+                                $("#error" + key).html(value);
+                            } else {
+                                $("#" + key).removeClass('form-control-danger');
+                                $("#" + key).addClass('form-control-success');
+                                $("#error" + key).html('');
+                                $("#error" + key).removeClass('has-danger');
+                            }
+                        });
+                        $("#btn_tambah_user").removeAttr("disabled");
+                        $("#btn_tambah_user").html("Import");
+                    } else {
+                        // alert(response.data);
+                        $("#totalData").html(response.total_data);
+                        $("#totalSukses").html(response.total_success);
+                        getSwall(response.status, response.data);
 
-// change status
-$(document).on('click', '.change_status_inventaris', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    $.ajax({
-        url: '<?= base_url('Admin/inventaris/changeStatus') ?>',
-        method: 'post',
-        data: {
-            id_inventaris: id
-        },
-        dataType: 'json',
-        success: function(response) {
-            // inventaris').DataTable().ajax.reload();
-            getSwall(response.status, response.data);
+                        if (response.data_failed.length > 0) {
+                            // datatables import
+                            $('#tableImport').DataTable({
+                                scrollCollapse: true,
+                                autoWidth: false,
+                                responsive: true,
+                                columnDefs: [{
+                                    targets: "datatable-nosort",
+                                    orderable: false,
+                                }],
+                                "lengthMenu": [
+                                    [5, 10, 25, 50, -1],
+                                    [5, 10, 25, 50, "All"]
+                                ],
+                                dom: 'Bfrtip',
+                                buttons: [
+                                    'excel', 'pdf'
+                                ],
+
+                                data: response.data_failed,
+                                columns: [{
+                                        data: null,
+                                        render: function(data, type, row,
+                                            meta) {
+                                            return meta.row + meta.settings
+                                                ._iDisplayStart + 1;
+                                        }
+                                    },
+                                    {
+                                        data: 'kode_inventaris'
+                                    },
+                                    {
+                                        data: 'message'
+                                    }
+                                ],
+                                "language": {
+                                    "info": "_START_-_END_ of _TOTAL_ entries",
+                                    searchPlaceholder: "Search",
+                                    paginate: {
+                                        next: '<i class="ion-chevron-right"></i>',
+                                        previous: '<i class="ion-chevron-left"></i>'
+                                    }
+                                },
+                            });
+                        }
+
+                        $("#totalGagal").html(response.data_failed.length);
+                        $("#form_import")[0].reset();
+                        $("#btn_tambah_user").removeAttr("disabled");
+                        $("#btn_tambah_user").html("Import");
+                        $('#tableInventaris').DataTable().ajax.reload();
+                        $("#statusImport").show();
+                        $("#detailImportData").show();
+                        $('#tableInventaris').DataTable().ajax.reload();
+                        // clear error
+                        $("#errorfile").html('');
+                        $("#errorfile").removeClass('has-danger');
+                    }
+                }
+            });
         }
     });
 });

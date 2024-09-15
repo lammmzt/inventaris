@@ -70,18 +70,7 @@
                             <div class="form-control-feedback " id="errormerek_atk"></div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="satuan_id" class="col-sm-4 col-form-label">Satuan<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="satuan_id" id="satuan_id"
-                                style="width: 100%; height: 38px;">
-                                <option value="">Pilih Satuan</option>
-                            </select>
-                            <div class="form-control-feedback " id="errorsatuan_id"></div>
-                        </div>
 
-                    </div>
                     <div class="form-group row">
                         <label for="qty_atk" class="col-sm-4 col-form-label">QTY ATK<span
                                 class="rq">*</span></label></label>
@@ -139,17 +128,7 @@
                             <div class="form-control-feedback " id="erroreditmerek_atk"></div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label for="editsatuan_id" class="col-sm-4 col-form-label">Satuan<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="satuan_id" id="editsatuan_id"
-                                style="width: 100%; height: 38px;">
-                                <option value="">Pilih Satuan</option>
-                            </select>
-                            <div class="form-control-feedback " id="erroreditsatuan_id"></div>
-                        </div>
-                    </div>
+
                     <div class="form-group row">
                         <label for="editqty_atk" class="col-sm-4 col-form-label">QTY ATK<span
                                 class="rq">*</span></label></label>
@@ -244,23 +223,7 @@ function getTipeBarang() {
     });
 };
 
-// get data satuan
-function getSatuan() {
-    $.ajax({
-        url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
-        method: 'post',
-        dataType: 'json',
-        success: function(response) {
-            var html = '';
-            html += '<option value="">Pilih Satuan</option>';
-            $.each(response.data, function(key, value) {
-                html += '<option value="' + value.id_satuan + '">' + value.nama_satuan +
-                    '</option>';
-            });
-            $('#satuan_id').html(html);
-        }
-    });
-};
+
 
 $(document).ready(function() {
     dataTablesatk();
@@ -269,7 +232,6 @@ $(document).ready(function() {
 // ketika modal tambah atk muncul
 $('#addatk').on('shown.bs.modal', function() {
     getTipeBarang();
-    getSatuan();
 });
 
 function getSwall(status, message) {
@@ -290,7 +252,6 @@ const atk = [
     'merek_atk',
     'id_atk',
     'tipe_barang_id',
-    'satuan_id',
     'qty_atk'
 ];
 
@@ -415,31 +376,7 @@ $(document).on('click', '.edit_atk', function() {
                 $('#edit' + key).val(value);
             });
             const old_tipe_barang_id = response.data.tipe_barang_id;
-            const old_satuan_id = response.data.satuan_id;
-            // alert(old_id_tipe_barang);
             getEditBarang(old_tipe_barang_id);
-            $.ajax({
-                url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
-                method: 'post',
-                dataType: 'json',
-                success: function(response) {
-                    var html = '';
-                    $.each(response.data, function(key, value) {
-                        if (value.id_satuan == old_satuan_id) {
-                            // alert(value.id_satuan);
-                            html += '<option value="' + value
-                                .id_satuan +
-                                '" selected>' + value.nama_satuan +
-                                '</option>';
-                        } else {
-                            html += '<option value="' + value.id_satuan +
-                                '">' + value.nama_satuan +
-                                '</option>';
-                        }
-                    });
-                    $('#editsatuan_id').html(html);
-                }
-            });
         }
     });
 });

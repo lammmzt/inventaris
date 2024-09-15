@@ -123,7 +123,7 @@ function getUser() {
         dataType: 'json',
         success: function(response) {
             var html = '';
-            html += '<option value="">Pilih User</option>';
+            html += '<option value="">Pilih Pemohon</option>';
             $.each(response.data, function(key, value) {
                 html += '<option value="' + value.id_user + '">' + value.nama_user + '</option>';
             });
