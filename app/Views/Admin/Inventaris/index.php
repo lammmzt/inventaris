@@ -261,7 +261,7 @@
 
 <!-- modal import data siswa -->
 <div class="modal fade" id="importDataInventaris" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+    aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -273,6 +273,7 @@
                 </button>
             </div>
             <form id="form_import">
+                <!-- <form action="<?= base_url('Admin/Inventaris/Import') ?>" method="post" enctype="multipart/form-data"> -->
                 <div class="modal-body">
                     <div class="form-group row">
                         <label for="file" class="col-sm-4 col-form-label">File Template</label>
@@ -286,30 +287,44 @@
                         </div>
                     </div>
 
-                    <div class="row mx-2">
+                    <!-- <div class="row mx-2">
                         <div class="col-sm-12">
                             <div class="progress" style="height: 20px;">
                                 <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"
                                     aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
                             </div>
                         </div>
+                    </div> -->
+                    <div class="row mt-2 justify-content-center" id="statusImport" style="display: none;">
+                        <div class="col-sm-4">
+                            <p>Total Data : <span id="totalData">0</span></p>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>Sukses : <span id="totalSukses">0</span></p>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>Gagal : <span id="totalGagal">0</span></p>
+                        </div>
                     </div>
-                    <div class="row mx-2 mt-2">
-                        <p class="text-center">Detail Import</p>
-                        <div class="table-responsive">
-                            <table class="table table table-striped" id="detailImport">
+                    <div class="row mx-2 mt-1" id="detailImportData" style="display: none;">
+                        <!-- <p class="text-center">Detail Import</p>  -->
+                        <div class="table-responsive pagging">
+                            <table class="table table table-striped" id="tableImport">
                                 <thead>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
-                                    <th scope="col" class="datatable-nosort">Kode Transaksi</th>
+                                    <th scope="col" class="text-center">Kode Transaksi</th>
+                                    <th scope="col" class="text-center">Pesan</th>
                                 </thead>
-                                <tbody>
-                                    <tr>
+                                <tbody id="detailData">
+                                    <!-- <tr>
                                         <td colspan="2" class="text-center">Belum ada data</td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
+                        <!-- detail total data dan yang succes filed -->
                     </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -323,14 +338,6 @@
         </div>
     </div>
 </div>
-
-<style>
-/* mx height table 500px and srroler down */
-.table-responsive {
-    max-height: 400px;
-    overflow-y: auto;
-}
-</style>
 <!-- ======================================== END inventaris ======================================== -->
 
 <?= $this->endSection('content');?>
@@ -398,6 +405,8 @@ function dataTablesinventaris() {
         });
     });
 }
+
+
 
 // get data tipe barang
 function getTipeBarang() {
@@ -701,48 +710,14 @@ $(function() {
                                 $("#erroredit" + key).removeClass('has-danger');
                             }
                         });
-                    }
-                    if (response.status == '201') {
-                        //         'data' => [
-                        // 'total_data' => $total_data,
-                        // 'success' => $success,
-                        //     // 'failed' => $failed
-                        // ]
-                        // parse data to progress bar and table
-                        var total_data = response.data.total_data;
-                        var success = response.data.success;
-                        var failed = response.data.failed;
-                        var percent = (success / total_data) * 100;
-                        alert(percent);
-                        $('#progressBar').css('width', percent + '%');
-                        $('#progressBar').html(percent + '%');
-                        var html = '';
-
-                        if (failed.length > 0) {
-                            $.each(failed, function(key, value) {
-                                html += '<tr>';
-                                html += '<td>' + (key + 1) + '</td>';
-                                html += '<td>' + value + '</td>';
-                                html += '</tr>';
-                            });
-                        } else {
-                            html += '<tr>';
-                            html +=
-                                '<td colspan="2" class="text-center">Belum ada data</td>';
-                            html += '</tr>';
-                        }
-
-                        $('#detailImport').html(html);
                     } else {
                         $("#form_edit_inventaris")[0].reset();
-                        // $("#editinventaris").modal('hide');
+                        $("#editinventaris").modal('hide');
                         $('#tableInventaris').DataTable().ajax.reload();
-                        // getSwall(response.status, response.data);
+                        getSwall(response.status, response.data);
                         inventaris.forEach(function(item) {
-                            $("#edit" + item).removeClass(
-                                'form-control-danger');
-                            $("#edit" + item).removeClass(
-                                'form-control-success');
+                            $("#edit" + item).removeClass('form-control-danger');
+                            $("#edit" + item).removeClass('form-control-success');
                             $("#erroredit" + item).html('');
                             $("#erroredit" + item).removeClass('has-danger');
                         });
@@ -787,6 +762,15 @@ $(document).on('click', '.delete_inventaris', function() {
         });
 });
 
+// when close modal import data
+$('#importDataInventaris').on('hidden.bs.modal', function() {
+    $("#form_import")[0].reset();
+    $("#statusImport").hide();
+    $("#detailImportData").hide();
+    $('#tableImport').DataTable().destroy();
+});
+
+
 // import data inventaris
 $(function() {
     $("#form_import").submit(function(e) {
@@ -823,20 +807,72 @@ $(function() {
                                 $("#error" + key).removeClass('has-danger');
                             }
                         });
+                        $("#btn_tambah_user").removeAttr("disabled");
+                        $("#btn_tambah_user").html("Import");
                     } else {
-                        $("#form_import")[0].reset();
-                        $("#importDataInventaris").modal('hide');
-                        $('#tableInventaris').DataTable().ajax.reload();
+                        // alert(response.data);
+                        $("#totalData").html(response.total_data);
+                        $("#totalSukses").html(response.total_success);
                         getSwall(response.status, response.data);
-                        inventaris.forEach(function(item) {
-                            $("#" + item).removeClass('form-control-danger');
-                            $("#" + item).removeClass('form-control-success');
-                            $("#error" + item).html('');
-                            $("#error" + item).removeClass('has-danger');
-                        });
+
+                        if (response.data_failed.length > 0) {
+                            // datatables import
+                            $('#tableImport').DataTable({
+                                scrollCollapse: true,
+                                autoWidth: false,
+                                responsive: true,
+                                columnDefs: [{
+                                    targets: "datatable-nosort",
+                                    orderable: false,
+                                }],
+                                "lengthMenu": [
+                                    [5, 10, 25, 50, -1],
+                                    [5, 10, 25, 50, "All"]
+                                ],
+                                dom: 'Bfrtip',
+                                buttons: [
+                                    'excel', 'pdf'
+                                ],
+
+                                data: response.data_failed,
+                                columns: [{
+                                        data: null,
+                                        render: function(data, type, row,
+                                            meta) {
+                                            return meta.row + meta.settings
+                                                ._iDisplayStart + 1;
+                                        }
+                                    },
+                                    {
+                                        data: 'kode_inventaris'
+                                    },
+                                    {
+                                        data: 'message'
+                                    }
+                                ],
+                                "language": {
+                                    "info": "_START_-_END_ of _TOTAL_ entries",
+                                    searchPlaceholder: "Search",
+                                    paginate: {
+                                        next: '<i class="ion-chevron-right"></i>',
+                                        previous: '<i class="ion-chevron-left"></i>'
+                                    }
+                                },
+                            });
+                        }
+
+                        $("#totalGagal").html(response.data_failed.length);
+                        $("#form_import")[0].reset();
+                        $("#btn_tambah_user").removeAttr("disabled");
+                        $("#btn_tambah_user").html("Import");
+                        $('#tableInventaris').DataTable().ajax.reload();
+                        $("#statusImport").show();
+                        $("#detailImportData").show();
+                        $('#tableInventaris').DataTable().ajax.reload();
+                        // clear error
+                        $("#errorfile").html('');
+                        $("#errorfile").removeClass('has-danger');
                     }
-                    $("#btn_tambah_user").removeAttr("disabled");
-                    $("#btn_tambah_user").html("Import");
                 }
             });
         }

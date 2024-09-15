@@ -321,40 +321,6 @@ class inventarisController extends BaseController
         ]);
     }
 
-    public function getFormatImport(){
-        // excel format import
-        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        // * nama satuan harus sesuai dengan data satuan yang ada pada kolom l di baris pertama
-        $sheet->setCellValue('A1', 'Kode Inventaris');
-        $sheet->setCellValue('B1', 'Nama Barang');
-        $sheet->setCellValue('C1', 'Tipe Barang');
-        $sheet->setCellValue('D1', 'Nama Inventaris');
-        $sheet->setCellValue('E1', 'Ruangan');
-        $sheet->setCellValue('F1', 'Spek Inventaris');
-        $sheet->setCellValue('G1', 'Qty Inventaris');
-        $sheet->setCellValue('H1', 'Satuan');
-        $sheet->setCellValue('I1', 'Perolehan Inventaris');
-        $sheet->setCellValue('J1', 'Sumber Inventaris');
-        $sheet->setCellValue('L1', 'Format Nama Satuan');
-
-        $satuan = $this->satuanModel->findAll();
-        $no = 2;
-        foreach ($satuan as $row) {
-            $sheet->setCellValue('L' . $no, $row['nama_satuan']);
-            $no++;
-        }
-
-        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-        $filename = 'Format Import Inventaris.xlsx';
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="' . $filename . '"');
-        header('Cache-Control: max-age=0');
-        $writer->save('php://output');
-        
-
-    }
-
     public function fetchDatainventaris()
     {
         $id_inventaris = $this->request->getPost('id_inventaris');
@@ -406,10 +372,6 @@ class inventarisController extends BaseController
         // get data satuan
         $data_satuan = $this->satuanModel->findAll();
         $data_satuan = array_column($data_satuan, 'id_satuan', 'nama_satuan');
-
-        // get data inventaris
-        $inventaris = $this->inventarisModel->findAll();
-        $inventaris = array_column($inventaris, 'id_inventaris', 'kode_inventaris');
 
         // Initialize the PhpSpreadsheet reader based on the file extension
         $ext = $file_excel->getClientExtension();
@@ -484,6 +446,7 @@ class inventarisController extends BaseController
                         'status_tipe_barang' => '1',
                     ];
                     $this->tipeBarangModel->insert($data_tipe_barang);
+                    $tipe_barang[$nama_tipe_barang] = $data_tipe_barang['id_tipe_barang'];
                 }
 
                 // check if data ruangan exist
@@ -499,7 +462,7 @@ class inventarisController extends BaseController
                 }
 
                 // check if data inventaris exist
-                if (!array_key_exists($kode_inventaris, $inventaris)) {
+                if (!$this->inventarisModel->where(['kode_inventaris' => $kode_inventaris])->first()) {
                     $data_inventaris = [
                         'id_inventaris' => Uuid::uuid4()->toString(),
                         'tipe_barang_id' => $tipe_barang[$nama_tipe_barang],
@@ -516,10 +479,16 @@ class inventarisController extends BaseController
                     $this->inventarisModel->insert($data_inventaris);
                     $success++;
                 } else {
-                    $failed[] = $kode_inventaris;
+                    $failed[] = [
+                        'kode_inventaris' => $kode_inventaris,
+                        'message' => 'Kode inventaris sudah ada'
+                    ];
                 }
             } else {
-            $failed[] = $kode_inventaris;
+            $failed[] = [
+                'kode_inventaris' => ($kode_inventaris == '') ? $nama_barang.'-'.$nama_tipe_barang.'-'.$nama_inventaris : $kode_inventaris,
+                'message' => 'Data tidak lengkap'
+            ];
             }
             
             $this->response->setJSON([
@@ -531,7 +500,6 @@ class inventarisController extends BaseController
                     'failed' => $failed
                 ]
             ]);
-
         }
         
         return $this->response->setJSON([
@@ -539,8 +507,8 @@ class inventarisController extends BaseController
                 'status' => '200',
                 'data' => 'Data berhasil diimport',
                 'total_data' => $total_data,
-                'success' => $success,
-                'failed' => $failed
+                'total_success' => $success,
+                'data_failed' => $failed
         ]);
     }
     
