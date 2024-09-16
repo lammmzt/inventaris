@@ -170,10 +170,12 @@ video {
                             <table class="table table-bordered table-hover" id="table_history_pengecekan">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Tanggal Pengecekan</th>
-                                        <th>Keterangan</th>
-                                        <th>Status Pengecekan</th>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Pelapor</th>
+                                        <th class="text-center">Tanggal Pengecekan</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Foto</th>
+                                        <th class="text-center" style="width: 100px;">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -241,10 +243,18 @@ function getDataInventaris(id) {
                     $.each(response.data.pelaporan, function(index, value) {
                         $('#table_history_pengecekan tbody').append(
                             '<tr>' +
-                            '<td>' + (index + 1) + '</td>' +
-                            '<td>' + value.tanggal_pengecekan + '</td>' +
+                            '<td class="text-center">' + (index + 1) + '</td>' +
+                            '<td>' + value.nama_user + '</td>' +
+                            '<td class="text-center">' + value.created_at + '</td>' +
                             '<td>' + value.ket_pengecekan + '</td>' +
-                            '<td>' + (value.status_pengecekan == '1' ?
+                            '<td class="text-center">' + (value.foto_pengecekan == '' ?
+                                'Tidak ada foto' :
+                                '<a href="<?= base_url('Assets/uploads/pengecekan/') ?>' +
+                                value.foto_pengecekan +
+                                '" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></a>' +
+                                '</td>') +
+                            '<td class="text-center">' + (value.status_pengecekan ==
+                                '1' ?
                                 '<span class="badge badge-success">Baik</span>' :
                                 (value.status_pengecekan == '2' ?
                                     '<span class="badge badge-warning">Rusak</span>' :
@@ -269,7 +279,7 @@ function getDataInventaris(id) {
     });
 }
 
-// verifikasi berkas
+// submit form
 $("#form_tambah_pelaporan").submit(function(e) {
     e.preventDefault();
     $("#btn_tambah").attr("disabled", "disabled");
@@ -304,9 +314,6 @@ $("#form_tambah_pelaporan").submit(function(e) {
         }
     });
 });
-
-
-
 
 // script.js file
 const result = document.getElementById("qr-result");

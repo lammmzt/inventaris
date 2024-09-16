@@ -71,15 +71,14 @@ class inventarisController extends BaseController
             ->add('status_inventaris', function ($row) {
                 // jika status 0 tidak aktif, 1 aktif, 2 rusak dan 3 hilang
                 if ($row->status_inventaris == '0') {
-                    return '<span class="badge badge badge-warning">Tidak Aktif</span>';
-                } elseif ($row->status_inventaris == '1') {
-                    return '<span class="badge badge badge-success">Aktif</span>';
-                } elseif ($row->status_inventaris == '2') {
-                    return '<span class="badge badge badge-danger">Rusak</span>';
-                } elseif ($row->status_inventaris == '3') {
                     return '<span class="badge badge badge-danger">Hilang</span>';
+                } elseif ($row->status_inventaris == '1') {
+                    return '<span class="badge badge badge-success">Baik</span>';
+                } elseif ($row->status_inventaris == '2') {
+                    return '<span class="badge badge badge-warning">Rusak</span>';
+                } elseif ($row->status_inventaris == '3') {
+                    return '<span class="badge badge badge-secondary">Proses Perbaikan</span>';
                 }
-
                 return $row->status_inventaris;
             })
             ->add('action', function ($row) {   
@@ -89,6 +88,7 @@ class inventarisController extends BaseController
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                             <button class="dropdown-item edit_inventaris" id="' . $row->id_inventaris . '"><i class="dw dw-edit2"></i> Edit</button>
                             <button class="dropdown-item delete_inventaris" id="' . $row->id_inventaris . '"><i class="dw dw-delete-3"></i> Delete</button>
+                            '.($row->status_inventaris == '2' || $row->status_inventaris == '3' ? '<button class="dropdown-item perbaiki_inventaris" id="' . $row->kode_inventaris . '"><i class="dw dw-warning"></i> Perbaiki</button>' : '').'
                         </div>
                 </div>
                 ';

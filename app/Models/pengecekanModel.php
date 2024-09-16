@@ -27,12 +27,12 @@ class pengecekanModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('pengecekan.id_pengecekan, pengecekan.user_id, pengecekan.inventaris_id, pengecekan.ket_pengecekan, pengecekan.foto_pengecekan, pengecekan.status_pengecekan, users.nama_user, inventaris.nama_inventaris')
+                ->select('pengecekan.id_pengecekan, pengecekan.user_id, pengecekan.inventaris_id, pengecekan.ket_pengecekan, pengecekan.foto_pengecekan, pengecekan.status_pengecekan, pengecekan.created_at, users.nama_user, inventaris.nama_inventaris')
                 ->join('users', 'users.id_user = pengecekan.user_id')
                 ->join('inventaris', 'inventaris.id_inventaris = pengecekan.inventaris_id');
         }
         return $this
-            ->select('pengecekan.id_pengecekan, pengecekan.user_id, pengecekan.inventaris_id, pengecekan.ket_pengecekan, pengecekan.status_pengecekan, pengecekan.foto_pengecekan, users.nama_user, inventaris.nama_inventaris')
+            ->select('pengecekan.id_pengecekan, pengecekan.user_id, pengecekan.inventaris_id, pengecekan.ket_pengecekan, pengecekan.status_pengecekan, pengecekan.foto_pengecekan, users.nama_user,pengecekan.created_at, inventaris.nama_inventaris')
             ->join('users', 'users.id_user = pengecekan.user_id')
             ->join('inventaris', 'inventaris.id_inventaris = pengecekan.inventaris_id')
             ->where(['id_pengecekan' => $id])->first();

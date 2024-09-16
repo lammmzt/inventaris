@@ -341,6 +341,131 @@
         </div>
     </div>
 </div>
+
+<!-- modalDetail -->
+<div class="modal fade" id="editPelaporan" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+    data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    Tindak Lanjut Pelaporan
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <form id="form_tambah_pelaporan" enctype="multipart/form-data">
+                <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
+                    enctype="multipart/form-data"> -->
+                <div class="modal-body">
+                    <input type="hidden" name="inventaris_id" id="inventaris_id_pelaporan">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Kode Inventaris</label><input type="text" class="form-control"
+                                    id="kode_inventaris" name="kode_inventaris" placeholder="Kode Inventaris" required
+                                    readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Nama Inventaris</label><input type="text" class="form-control"
+                                    id="nama_inventaris_pelaporan" name="nama_inventaris" placeholder="Nama Barang"
+                                    required readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Ruangan</label><input type="text" class="form-control"
+                                    id="nama_ruangan_pelaporan" name="nama_ruangan" placeholder="Kode Inventaris"
+                                    required readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Status Inventaris</label>
+                                <input type="text" class="form-control" id="status_inventaris_pelaporan"
+                                    name="status_inventaris" placeholder="Nama Barang" required readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Keterangan <span class="rq">*</span></label>
+                                <textarea type="text" class="form-control required" id="ket_pengecekan"
+                                    name="ket_pengecekan" style="height: 50px;"
+                                    placeholder="Masukan keterangan pengecekan" required></textarea>
+                                <div class="form-control-feedback " id="errorket_pengecekan"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label>Status Pengecekan <span class="rq">*</span></label>
+                                <select class="form-control required" id="status_pengecekan" name="status_pengecekan"
+                                    required>
+                                    <option value="">Pilih Status Pengecekan</option>
+                                    <option value="1">Baik</option>
+                                    <option value="2">Rusak</option>
+                                    <option value="3">Perbaikan</option>
+                                    <option value="0">Hilang</option>
+                                </select>
+                                <div class="form-control-feedback" id="errorstatus_pengecekan"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- upload gambar -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label for="foto_pengecekan" class="col-sm-4 col-form-label">Upload Gambar</label>
+                                <div class="col-sm-8">
+                                    <input type="file" class="form-control" id="foto_pengecekan" name="foto_pengecekan"
+                                        accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="text-blue h4">History Pengecekan</h4>
+                            <table class="table table-bordered table-hover" id="table_history_pengecekan">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Pelapor</th>
+                                        <th class="text-center">Tanggal Pengecekan</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Foto</th>
+                                        <th class="text-center" style="width: 100px;">
+                                            Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="btn_tindak_lanjut_pelaporan">
+                            Simpan
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- ======================================== END inventaris ======================================== -->
 
 <?= $this->endSection('content');?>
@@ -362,6 +487,7 @@ function dataTablesinventaris() {
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
             ],
+
             columns: [{
                     data: 'id_inventaris',
 
@@ -374,7 +500,6 @@ function dataTablesinventaris() {
                 },
                 {
                     data: 'nama_ruangan'
-
                 },
                 {
                     data: 'status_inventaris',
@@ -386,19 +511,14 @@ function dataTablesinventaris() {
                 },
 
             ],
+            "order": [
+                [4, "desc"]
+            ],
 
-            // check box select dont change when pagination and search data 
             drawCallback: function() {
-                $(".check_select_item").on('change', function() {
-                    var total = $('.check_select_item').length;
-                    var number = $('.check_select_item:checked').length;
-                    if (number == total) {
-                        $('#select_all_data').prop('checked', true);
-                    } else {
-                        $('#select_all_data').prop('checked', false);
-                    }
-                });
+                $('#select_all_data').prop('checked', false);
             },
+
 
             columnDefs: [{
                 targets: "datatable-nosort",
@@ -663,13 +783,18 @@ $(document).on('click', '.edit_inventaris', function() {
 
             // status inventaris
             var html = '';
-            if (response.data.status_inventaris == '1') {
-                html += '<option value="1" selected>Aktif</option>';
-                html += '<option value="0">Tidak Aktif</option>';
-            } else {
-                html += '<option value="1">Aktif</option>';
-                html += '<option value="0" selected>Tidak Aktif</option>';
-            }
+            html += '<option value="1" ' + (response.data.status_inventaris == 1 ? 'selected' :
+                '') +
+                '>Baik</option>';
+            html += '<option value="2" ' + (response.data.status_inventaris == 2 ? 'selected' :
+                '') +
+                '>Rusak</option>';
+            html += '<option value="3" ' + (response.data.status_inventaris == 3 ? 'selected' :
+                '') +
+                '>Perbaikan</option>';
+            html += '<option value="0" ' + (response.data.status_inventaris == 0 ? 'selected' :
+                '') +
+                '>Hilang</option>';
             $('#editstatus_inventaris').html(html);
         }
     });
@@ -721,8 +846,10 @@ $(function() {
                         $('#tableInventaris').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
                         inventaris.forEach(function(item) {
-                            $("#edit" + item).removeClass('form-control-danger');
-                            $("#edit" + item).removeClass('form-control-success');
+                            $("#edit" + item).removeClass(
+                                'form-control-danger');
+                            $("#edit" + item).removeClass(
+                                'form-control-success');
                             $("#erroredit" + item).html('');
                             $("#erroredit" + item).removeClass('has-danger');
                         });
@@ -780,6 +907,7 @@ $('#importDataInventaris').on('hidden.bs.modal', function() {
 
 
 var data_qr_code = [];
+
 // import data inventaris
 $(function() {
     $("#form_import").submit(function(e) {
@@ -848,7 +976,8 @@ $(function() {
                                         data: null,
                                         render: function(data, type, row,
                                             meta) {
-                                            return meta.row + meta.settings
+                                            return meta.row + meta
+                                                .settings
                                                 ._iDisplayStart + 1;
                                         }
                                     },
@@ -942,6 +1071,113 @@ $('#print_qr_code').on('click', function() {
         // alert(qr_code);
         pritnQrCode(qr_code);
     }
+});
+
+
+
+// perbaiki inventaris
+$(document).on('click', '.perbaiki_inventaris', function() {
+    const id = $(this).attr('id');
+    // alert(id);
+    $.ajax({
+        url: '<?= base_url('Admin/Inventaris/fetchInventarisByKodeInventaris') ?>',
+        method: 'post',
+        data: {
+            kode_inventaris: id
+        },
+        dataType: 'json',
+        success: function(response) {
+            if (response.status == '200') {
+                $('#editPelaporan').modal('show');
+                $('#inventaris_id_pelaporan').val(response.data.inventaris.id_inventaris);
+                $('#kode_inventaris_pelaporan').val(response.data.inventaris.kode_inventaris);
+                $('#nama_inventaris_pelaporan').val(response.data.inventaris.nama_inventaris);
+                $('#nama_ruangan_pelaporan').val(response.data.inventaris.nama_ruangan);
+                if (response.data.inventaris.status_inventaris == '1') {
+                    $('#status_inventaris_pelaporan').val('Baik');
+                } else if (response.data.inventaris.status_inventaris == '2') {
+                    $('#status_inventaris').val('Rusak');
+                } else if (response.data.inventaris.status_inventaris == '3') {
+                    $('#status_inventaris_pelaporan').val('Dalam proses');
+                } else {
+                    $('#status_inventaris_pelaporan').val('Hilang');
+                }
+                if (response.data.pelaporan.length > 0) {
+                    $('#table_history_pengecekan tbody').empty();
+                    $.each(response.data.pelaporan, function(index, value) {
+                        $('#table_history_pengecekan tbody').append(
+                            '<tr>' +
+                            '<td class="text-center">' + (index + 1) + '</td>' +
+                            '<td>' + value.nama_user + '</td>' +
+                            '<td class="text-center">' + value.created_at + '</td>' +
+                            '<td>' + value.ket_pengecekan + '</td>' +
+                            '<td class="text-center">' + (value.foto_pengecekan == '' ?
+                                'Tidak ada foto' :
+                                '<a href="<?= base_url('Assets/uploads/pengecekan/') ?>' +
+                                value.foto_pengecekan +
+                                '" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></a>' +
+                                '</td>') +
+                            '<td class="text-center">' + (value.status_pengecekan ==
+                                '1' ?
+                                '<span class="badge badge-success">Baik</span>' :
+                                (value.status_pengecekan == '2' ?
+                                    '<span class="badge badge-warning">Rusak</span>' :
+                                    '<span class="badge badge-danger">Hilang</span>')) +
+                            '</td>' +
+                            '</tr>'
+                        );
+                    });
+                } else {
+                    $('#table_history_pengecekan tbody').empty();
+                    $('#table_history_pengecekan tbody').append(
+                        '<tr>' +
+                        '<td colspan="4" class="text-center">Tidak ada data</td>' +
+                        '</tr>'
+                    );
+                }
+
+            } else {
+                getSwall(response.status, response.data);
+            }
+        }
+    });
+});
+
+// submit form
+$("#form_tambah_pelaporan").submit(function(e) {
+    e.preventDefault();
+    $("#btn_tindak_lanjut_pelaporan").attr("disabled", "disabled");
+    $("#btn_tindak_lanjut_pelaporan").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
+    $.ajax({
+        url: '<?= base_url('Admin/Inventaris/Pelaporan/save') ?>',
+        method: 'post',
+        data: new FormData(this),
+        contentType: false,
+        cache: false,
+        processData: false,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status == '200') {
+                getSwall(response.status, response.data);
+                $('#form_tambah_pelaporan')[0].reset();
+                $('#table_history_pengecekan tbody').empty();
+                $('#table_history_pengecekan tbody').append(
+                    '<tr>' +
+                    '<td colspan="4" class="text-center">Tidak ada data</td>' +
+                    '</tr>'
+                );
+                $('#tableInventaris').DataTable().ajax.reload();
+                $('#editPelaporan').modal('hide');
+                $("#btn_tindak_lanjut_pelaporan").removeAttr("disabled");
+                $("#btn_tindak_lanjut_pelaporan").html('Simpan');
+            } else {
+                getSwall(response.status, response.data);
+                $("#btn_tindak_lanjut_pelaporan").removeAttr("disabled");
+                $("#btn_tindak_lanjut_pelaporan").html('Simpan');
+            }
+        }
+    });
 });
 </script>
 
