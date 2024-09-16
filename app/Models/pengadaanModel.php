@@ -13,7 +13,8 @@ class pengadaanModel extends Model
         'user_id',
         'ket_pengadaan',
         'status_pengadaan',
-        'tanggal_pengajuan',
+        'tanggal_proses',
+        'jenis_pengadaan',
         'created_at',
         'updated_at'
     ];
@@ -25,11 +26,11 @@ class pengadaanModel extends Model
     public function getPengadaan($id = false)
     {
         if ($id == false) {
-            return $this->select('pengadaan.id_pengadaan, pengadaan.user_id, pengadaan.ket_pengadaan, pengadaan.status_pengadaan, pengadaan.tanggal_pengajuan, users.nama_user')
+            return $this->select('pengadaan.id_pengadaan, pengadaan.user_id, pengadaan.ket_pengadaan, pengadaan.status_pengadaan, pengadaan.jenis_pengadaan, pengadaan.created_at, pengadaan.tanggal_proses, users.nama_user')
                 ->join('users', 'users.id_user = pengadaan.user_id');
         }
         return $this
-            ->select('pengadaan.id_pengadaan, pengadaan.user_id, pengadaan.ket_pengadaan, pengadaan.status_pengadaan, pengadaan.tanggal_pengajuan, users.nama_user')
+            ->select('pengadaan.id_pengadaan, pengadaan.user_id, pengadaan.ket_pengadaan, pengadaan.status_pengadaan, pengadaan.jenis_pengadaan, pengadaan.created_at, pengadaan.tanggal_proses, users.nama_user')
             ->join('users', 'users.id_user = pengadaan.user_id')
             ->where(['id_pengadaan' => $id])->first();
     }

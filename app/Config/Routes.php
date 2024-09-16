@@ -153,10 +153,25 @@ $routes->group('Admin', function ($routes) {
         $routes->post('changeStatus', 'inventarisController::changeStatus');
         $routes->post('fetchDatainventaris', 'inventarisController::fetchDatainventaris');
         $routes->post('Import', 'inventarisController::importData');
-        $routes->get('getFormatImport', 'inventarisController::getFormatImport');
+        $routes->post('pritnQrCode', 'inventarisController::pritnQrCode');
+        $routes->get('Pelaporan', 'pengecekanController::Pelaporan');
+        $routes->post('fetchInventarisByKodeInventaris', 'pengecekanController::fetchInventarisByKodeInventaris');
+        $routes->post('Pelaporan/save', 'pengecekanController::store');
+    });
+
+    $routes->group('Pengadaan', function ($routes) {
+        $routes->get('/', 'pengadaanController::index');
+        $routes->get('Tambah', 'pengadaanController::tambah_pengadaan');
+        $routes->get('DataTables', 'pengadaanController::ajaxDataTables');
+        $routes->post('save', 'pengadaanController::store');
+        $routes->post('delete', 'pengadaanController::destroy');
+        $routes->post('edit', 'pengadaanController::edit');
+        $routes->post('update', 'pengadaanController::update');
+        $routes->post('changeStatus', 'pengadaanController::changeStatus');
+        $routes->post('fetchAll', 'pengadaanController::fetchAll');
+        $routes->post('fetchDatapengadaan', 'pengadaanController::fetchDatapengadaan');
     });
     
-
 
     $routes->group('Setting', function ($routes) {
         $routes->get('/', 'usersController::Setting');

@@ -74,11 +74,17 @@
                                 class="<?= $active == 'Inventaris'  ? 'active' : '' ?>">Data
                                 Inventaris
                             </a></li>
-                        <li><a href="<?= base_url('Admin/Inventaris/Pengecekan') ?>"
-                                class="<?= $active == 'Pengecekan'  ? 'active' : '' ?>">
-                                Pengecekan
+                        <li><a href="<?= base_url('Admin/Inventaris/Pelaporan') ?>"
+                                class="<?= $active == 'Pelaporan'  ? 'active' : '' ?>">
+                                Pelaporan
                             </a></li>
                     </ul>
+                </li>
+                <li>
+                    <a href="<?= base_url('Admin/Pengadaan') ?>"
+                        class="dropdown-toggle no-arrow <?= $active == 'Pengadaan'  ? 'active' : '' ?>">
+                        <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
+                    </a>
                 </li>
 
                 <li>
