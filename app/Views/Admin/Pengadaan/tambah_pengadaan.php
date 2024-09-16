@@ -115,7 +115,7 @@ function getTipeBarang(jenis_barang) {
         dataType: 'json',
         success: function(response) {
             var html = '';
-            html += '<option value="">Pilih ATK</option>';
+            html += '<option value="">Pilih Barang</option>';
             if (response.status == '200') {
                 $.each(response.data, function(key, value) {
                     html += '<option value="' + value.id_tipe_barang + '">' + value

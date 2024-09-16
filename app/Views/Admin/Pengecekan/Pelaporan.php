@@ -166,7 +166,7 @@ video {
                     <hr>
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 class="text-blue h4">History Pengecekan</h4>
+                            <h4 class="text-blue h4">Histori Pelaporan</h4>
                             <table class="table table-bordered table-hover" id="table_history_pengecekan">
                                 <thead>
                                     <tr>
@@ -235,6 +235,8 @@ function getDataInventaris(id) {
                     $('#status_inventaris').val('Baik');
                 } else if (response.data.inventaris.status_inventaris == '2') {
                     $('#status_inventaris').val('Rusak');
+                } else if (response.data.inventaris.status_inventaris == '3') {
+                    $('#status_inventaris').val('Perbaikan');
                 } else {
                     $('#status_inventaris').val('Hilang');
                 }
@@ -253,12 +255,16 @@ function getDataInventaris(id) {
                                 value.foto_pengecekan +
                                 '" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></a>' +
                                 '</td>') +
-                            '<td class="text-center">' + (value.status_pengecekan ==
+                            '<td class="text-center">' +
+                            (value.status_pengecekan ==
                                 '1' ?
                                 '<span class="badge badge-success">Baik</span>' :
-                                (value.status_pengecekan == '2' ?
-                                    '<span class="badge badge-warning">Rusak</span>' :
-                                    '<span class="badge badge-danger">Hilang</span>')) +
+                                value.status_pengecekan == '2' ?
+                                '<span class="badge badge-warning">Rusak</span>' :
+                                value.status_pengecekan == '3' ?
+                                '<span class="badge badge-info">Perbaikan</span>' :
+                                '<span class="badge badge-danger">Hilang</span>') +
+
                             '</td>' +
                             '</tr>'
                         );
@@ -267,7 +273,7 @@ function getDataInventaris(id) {
                     $('#table_history_pengecekan tbody').empty();
                     $('#table_history_pengecekan tbody').append(
                         '<tr>' +
-                        '<td colspan="4" class="text-center">Tidak ada data</td>' +
+                        '<td colspan="6" class="text-center">Tidak ada data</td>' +
                         '</tr>'
                     );
                 }

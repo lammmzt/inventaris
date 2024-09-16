@@ -433,7 +433,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 class="text-blue h4">History Pengecekan</h4>
+                            <h4 class="text-blue h4">Histori Pelaporan</h4>
                             <table class="table table-bordered table-hover" id="table_history_pengecekan">
                                 <thead>
                                     <tr>
@@ -1120,9 +1120,11 @@ $(document).on('click', '.perbaiki_inventaris', function() {
                             '<td class="text-center">' + (value.status_pengecekan ==
                                 '1' ?
                                 '<span class="badge badge-success">Baik</span>' :
-                                (value.status_pengecekan == '2' ?
-                                    '<span class="badge badge-warning">Rusak</span>' :
-                                    '<span class="badge badge-danger">Hilang</span>')) +
+                                value.status_pengecekan == '2' ?
+                                '<span class="badge badge-warning">Rusak</span>' :
+                                value.status_pengecekan == '3' ?
+                                '<span class="badge badge-info">Perbaikan</span>' :
+                                '<span class="badge badge-danger">Hilang</span>') +
                             '</td>' +
                             '</tr>'
                         );
@@ -1131,7 +1133,7 @@ $(document).on('click', '.perbaiki_inventaris', function() {
                     $('#table_history_pengecekan tbody').empty();
                     $('#table_history_pengecekan tbody').append(
                         '<tr>' +
-                        '<td colspan="4" class="text-center">Tidak ada data</td>' +
+                        '<td colspan="6" class="text-center">Tidak ada data</td>' +
                         '</tr>'
                     );
                 }
