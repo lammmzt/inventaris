@@ -159,6 +159,20 @@ $routes->group('Admin', function ($routes) {
         $routes->post('Pelaporan/save', 'pengecekanController::store');
     });
 
+    $routes->group('Pengadaan', function ($routes) {
+        $routes->get('/', 'pengadaanController::index');
+        $routes->get('Tambah', 'pengadaanController::tambah_pengadaan');
+        $routes->get('DataTables', 'pengadaanController::ajaxDataTables');
+        $routes->post('save', 'pengadaanController::store');
+        $routes->post('delete', 'pengadaanController::destroy');
+        $routes->post('edit', 'pengadaanController::edit');
+        $routes->post('update', 'pengadaanController::update');
+        $routes->post('changeStatus', 'pengadaanController::changeStatus');
+        $routes->post('fetchAll', 'pengadaanController::fetchAll');
+        $routes->post('fetchDatapengadaan', 'pengadaanController::fetchDatapengadaan');
+    });
+    
+
     $routes->group('Setting', function ($routes) {
         $routes->get('/', 'usersController::Setting');
         $routes->post('update', 'usersController::update');

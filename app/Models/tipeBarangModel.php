@@ -55,6 +55,7 @@ class tipeBarangModel extends Model
             ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
             ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
             ->where(['barang.jenis_barang' => $id])
+            ->where(['tipe_barang.status_tipe_barang' => '1'])
             ->findAll();
     }
 }

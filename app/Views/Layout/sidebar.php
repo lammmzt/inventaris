@@ -80,6 +80,12 @@
                             </a></li>
                     </ul>
                 </li>
+                <li>
+                    <a href="<?= base_url('Admin/Pengadaan') ?>"
+                        class="dropdown-toggle no-arrow <?= $active == 'Pengadaan'  ? 'active' : '' ?>">
+                        <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="<?= base_url('Admin/User') ?>"
