@@ -784,16 +784,16 @@ $(document).on('click', '.edit_inventaris', function() {
             // status inventaris
             var html = '';
             html += '<option value="1" ' + (response.data.status_inventaris == 1 ? 'selected' :
-                '') +
+                    '') +
                 '>Baik</option>';
             html += '<option value="2" ' + (response.data.status_inventaris == 2 ? 'selected' :
-                '') +
+                    '') +
                 '>Rusak</option>';
             html += '<option value="3" ' + (response.data.status_inventaris == 3 ? 'selected' :
-                '') +
+                    '') +
                 '>Perbaikan</option>';
             html += '<option value="0" ' + (response.data.status_inventaris == 0 ? 'selected' :
-                '') +
+                    '') +
                 '>Hilang</option>';
             $('#editstatus_inventaris').html(html);
         }
@@ -1139,6 +1139,9 @@ $(document).on('click', '.perbaiki_inventaris', function() {
             } else {
                 getSwall(response.status, response.data);
             }
+        },
+        error: function() {
+            getSwall('error', 'Data tidak ditemukan');
         }
     });
 });

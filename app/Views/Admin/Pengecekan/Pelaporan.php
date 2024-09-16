@@ -271,11 +271,13 @@ function getDataInventaris(id) {
                         '</tr>'
                     );
                 }
-
             } else {
                 getSwall(response.status, response.data);
             }
         },
+        error: function() {
+            getSwall('error', 'Data tidak ditemukan');
+        }
     });
 }
 
