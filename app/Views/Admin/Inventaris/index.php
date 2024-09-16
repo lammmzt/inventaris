@@ -24,9 +24,9 @@
                 <div class="row mb-4">
                     <!-- 2 button import and cetak qr code -->
                     <div class="col-sm-6">
-                        <a href="<?= base_url('Admin/Inventaris/cetakQrCode') ?>" class="btn btn-primary" type="button">
+                        <button class="btn btn-primary" type="button" id="print_qr_code">
                             <i class="icon-copy fa fa-print" aria-hidden="true"></i> Cetak QR Code
-                        </a>
+                        </button>
                     </div>
                 </div>
                 <div class="pb-20 table-responsive">
@@ -73,7 +73,7 @@
                 <div class="modal-body">
                     <div class="form-group row">
                         <label for="tipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
-                                class="rq">*</span></label></label>
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="tipe_barang_id"
                                 id="tipe_barang_id" style="width: 100%; height: 38px;">
@@ -84,7 +84,7 @@
                     </div>
                     <div class="form-group row">
                         <label for="nama_inventaris" class="col-sm-4 col-form-label">Nama Inventaris<span
-                                class="rq">*</span></label></label>
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control required" id="nama_inventaris" name="nama_inventaris"
                                 placeholder="Masukan Nama inventaris">
@@ -94,7 +94,7 @@
 
                     <div class="form-group row">
                         <label for="qty_inventaris" class="col-sm-4 col-form-label">QTY inventaris<span
-                                class="rq">*</span></label></label>
+                                class="rq">*</span></label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control required" id="qty_inventaris" name="qty_inventaris"
                                 placeholder="Masukan Nama inventaris" min="1" value="1">
@@ -102,8 +102,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="ruangan_id" class="col-sm-4 col-form-label">Ruangan<span
-                                class="rq">*</span></label></label>
+                        <label for="ruangan_id" class="col-sm-4 col-form-label">Ruangan<span class="rq">*</span></label>
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="ruangan_id" id="ruangan_id"
                                 style="width: 100%; height: 38px;">
@@ -322,7 +321,11 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- detail total data dan yang succes filed -->
+                        <div class="col-sm-12 text-center mt-2">
+                            <button class="btn btn-primary" type="button" id="print_qr_code_import">
+                                <i class="icon-copy fa fa-print" aria-hidden="true"></i> Cetak QR Code
+                            </button>
+                        </div>
                     </div>
 
                 </div>
@@ -405,7 +408,6 @@ function dataTablesinventaris() {
         });
     });
 }
-
 
 
 // get data tipe barang
@@ -562,6 +564,9 @@ $(function() {
                         $("#addinventaris").modal('hide');
                         $('#tableInventaris').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
+                        setTimeout(() => {
+                            pritnQrCode(response.qr_code);
+                        }, 1500);
                         inventaris.forEach(function(item) {
                             $("#" + item).removeClass('form-control-danger');
                             $("#" + item).removeClass('form-control-success');
@@ -768,9 +773,13 @@ $('#importDataInventaris').on('hidden.bs.modal', function() {
     $("#statusImport").hide();
     $("#detailImportData").hide();
     $('#tableImport').DataTable().destroy();
+    $("#errorfile").html('');
+    $("#errorfile").removeClass('has-danger');
+    data_qr_code = [];
 });
 
 
+var data_qr_code = [];
 // import data inventaris
 $(function() {
     $("#form_import").submit(function(e) {
@@ -812,7 +821,7 @@ $(function() {
                     } else {
                         // alert(response.data);
                         $("#totalData").html(response.total_data);
-                        $("#totalSukses").html(response.total_success);
+                        $("#totalSukses").html(response.data_success.length);
                         getSwall(response.status, response.data);
 
                         if (response.data_failed.length > 0) {
@@ -862,6 +871,7 @@ $(function() {
                         }
 
                         $("#totalGagal").html(response.data_failed.length);
+                        data_qr_code = response.data_success;
                         $("#form_import")[0].reset();
                         $("#btn_tambah_user").removeAttr("disabled");
                         $("#btn_tambah_user").html("Import");
@@ -877,6 +887,61 @@ $(function() {
             });
         }
     });
+});
+
+// cetak qr code import
+function pritnQrCode(data) {
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "<?= base_url('Admin/Inventaris/pritnQrCode') ?>");
+    form.setAttribute("target", "_blank");
+
+    var hiddenField = document.createElement("input");
+    hiddenField.setAttribute("type", "hidden");
+    hiddenField.setAttribute("name", "qr_code");
+    hiddenField.setAttribute("value", data);
+    form.appendChild(hiddenField);
+
+    document.body.appendChild(form);
+    form.submit();
+
+}
+
+// when click button cetak qr code import
+$('#print_qr_code_import').on('click', function() {
+    if (data_qr_code == '') {
+        swal({
+            title: "Data QR Code Kosong",
+            type: "warning",
+            showCancelButton: false,
+            showConfirmButton: true,
+            timer: 1500
+        });
+    } else {
+        pritnQrCode(data_qr_code);
+    }
+});
+
+// when click button cetak qr code
+$('#print_qr_code').on('click', function() {
+    if ($('.check_select_item:checked').length == 0) {
+        swal({
+            title: "Pilih data yang akan dicetak",
+            type: "warning",
+            showCancelButton: false,
+            showConfirmButton: true,
+            timer: 1500
+        });
+    } else {
+        var qr_code = [];
+        $('.check_select_item:checked').each(function() {
+            // get id form checkbox
+            qr_code.push($(this).attr('id'));
+
+        });
+        // alert(qr_code);
+        pritnQrCode(qr_code);
+    }
 });
 </script>
 

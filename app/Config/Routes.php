@@ -153,10 +153,11 @@ $routes->group('Admin', function ($routes) {
         $routes->post('changeStatus', 'inventarisController::changeStatus');
         $routes->post('fetchDatainventaris', 'inventarisController::fetchDatainventaris');
         $routes->post('Import', 'inventarisController::importData');
-        $routes->get('pritnQrCode', 'inventarisController::pritnQrCode');
+        $routes->post('pritnQrCode', 'inventarisController::pritnQrCode');
+        $routes->get('Pelaporan', 'pengecekanController::Pelaporan');
+        $routes->post('fetchInventarisByKodeInventaris', 'pengecekanController::fetchInventarisByKodeInventaris');
+        $routes->post('Pelaporan/save', 'pengecekanController::store');
     });
-    
-
 
     $routes->group('Setting', function ($routes) {
         $routes->get('/', 'usersController::Setting');

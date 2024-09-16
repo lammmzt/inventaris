@@ -74,9 +74,9 @@
                                 class="<?= $active == 'Inventaris'  ? 'active' : '' ?>">Data
                                 Inventaris
                             </a></li>
-                        <li><a href="<?= base_url('Admin/Inventaris/Pengecekan') ?>"
-                                class="<?= $active == 'Pengecekan'  ? 'active' : '' ?>">
-                                Pengecekan
+                        <li><a href="<?= base_url('Admin/Inventaris/Pelaporan') ?>"
+                                class="<?= $active == 'Pelaporan'  ? 'active' : '' ?>">
+                                Pelaporan
                             </a></li>
                     </ul>
                 </li>

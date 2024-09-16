@@ -62,7 +62,7 @@ class inventarisController extends BaseController
         // dd($builder);
         return DataTable::of($builder)
             ->add('id_inventaris', function ($row) {
-                return '<div class="dt-checkbox"><input class="check_select_item" type="checkbox" name="select_item" value="1" id="' . $row->id_inventaris . '">
+                return '<div class="dt-checkbox"><input class="check_select_item" type="checkbox" name="select_item" value="1" id="' . $row->qr_code . '">
                 <span class="dt-checkbox-label"></span></div>';
             })
             ->add('nama_barang', function ($row) {
@@ -196,6 +196,7 @@ class inventarisController extends BaseController
             return $this->response->setJSON([
                 'error' => false,
                 'data' => 'Data berhasil disimpan',
+                'qr_code' => $kode_inventaris.'.png',
                 'status' => '200'
             ]);
         }
@@ -388,7 +389,7 @@ class inventarisController extends BaseController
         // add total data to process
         $total_data = count($data) - 1;
         $no = 0;
-        $success = 0;
+        $success = [];
         $failed = [];
         // dd($total_data);
         foreach ($data as $x => $col) {
@@ -501,7 +502,9 @@ class inventarisController extends BaseController
                         'status_inventaris' => '1',
                     ];
                     $this->inventarisModel->insert($data_inventaris);
-                    $success++;
+                    // push $kode_inventaris.'.png'
+                    $success[] = $kode_inventaris.'.png' ;
+
                 } else {
                     $failed[] = [
                         'kode_inventaris' => $kode_inventaris.'-'.$nama_barang.'-'.$nama_tipe_barang.'-'.$nama_inventaris,
@@ -521,7 +524,8 @@ class inventarisController extends BaseController
                 'data' => [
                     'total_data' => $total_data,
                     'success' => $success,
-                    'failed' => $failed
+                    'failed' => $failed,
+
                 ]
             ]);
         }
@@ -531,25 +535,32 @@ class inventarisController extends BaseController
                 'status' => '200',
                 'data' => 'Data berhasil diimport',
                 'total_data' => $total_data,
-                'total_success' => $success,
+                'data_success' => $success,
                 'data_failed' => $failed
         ]);
     }
 
     public function pritnQrCode()
     {
-        $data_inventaris = $this->inventarisModel->findAll();
-        $data = [
-            'main_menu' => 'Inventaris',
-            'title' => 'Print QR Code',
-            'active' => 'Print QR Code',
-            'data' => $data_inventaris
-        ];
-        // dd($data);
-        return view('Admin/Inventaris/print_qr_code', $data);
+        $data_inventaris = $this->request->getPost('qr_code');
+        // split data qr_code to array
+        $data_inventaris = explode(',', $data_inventaris);
+        // dd($data_inventaris);
+        return view('Admin/Inventaris/print_qr_code', ['data_inventaris' => $data_inventaris]);
+
     }
     
+    // pengecekan data inventaris
+    public function Pengecekan(){
+        $data = [
+            'main_menu' => 'Inventaris',
+            'title' => 'Pengecekan inventaris',
+            'active' => 'Pengecekan',
+        ];
+        return view('Admin/Inventaris/pengecekan', $data);
+    }
 
+    
 }
 
 ?>
