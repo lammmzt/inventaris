@@ -359,8 +359,14 @@ $(document).on('click', '.detail_trans_masuk', function() {
             $('#tanggal_transaksi').val(data.data.tanggal_transaksi);
             $('#keterangan').val(data.data.ket_transaksi);
             $('#status').html(data.data.status_transaksi == 1 ?
+                '<span class="badge badge-warning">Permintaan</span>' :
+                data.data.status_transaksi == 2 ?
+                '<span class="badge badge-primary">persetujuan</span>' :
+                data.data.status_transaksi == 3 ?
+                '<span class="badge badge-info">Proses pengadaan</span>' :
+                data.data.status_transaksi == 4 ?
                 '<span class="badge badge-success">Selesai</span>' :
-                '<span class="badge badge-warning">Proses</span>');
+                '<span class="badge badge-danger">Ditolak</span>');
             $('#modalDetailTransMasuk').modal('show');
 
 
@@ -382,7 +388,7 @@ $(document).on('click', '.detail_trans_masuk', function() {
                                 <td>${item.nama_barang + ' - ' + item.nama_tipe_barang + '(' + item.merek_atk + ') @ ' + item.nama_satuan}</td>
                                 <td class="text-center">${item.qty}</td>
                                 <td class="text-center">${item.catatan_detail_transaksi}</td>
-                                <td class="text-center">${item.status_detail_transaksi == 1 ? '<span class="badge badge-success">Setuju</span>' : '<span class="badge badge-danger">Tolak</span>'}</td>
+                                <td class="text-center">${item.status_detail_transaksi == 1 ? '<span class="badge badge-success">Setuju</span>' : item.status_detail_transaksi == 2 ? '<span class="badge badge-danger">Tolak</span>' : '<span class="badge badge-warning">Proses</span>'}</td>
                             </tr>
                             `;
                         });
@@ -418,7 +424,7 @@ $(document).on('click', '.detail_trans_keluar', function() {
             $('#nama_pemohon_keluar').val(data.data.nama_user);
             $('#tanggal_transaksi_keluar').val(data.data.tanggal_transaksi);
             $('#keterangan_keluar').val(data.data.ket_transaksi);
-            $('#status_keluar').html(data.data.status_transaksi == 1 ?
+            $('#status_keluar').html(data.data.status_transaksi == 4 ?
                 '<span class="badge badge-success">Selesai</span>' :
                 '<span class="badge badge-warning">Proses</span>');
             $('#modalDetailTransKeluar').modal('show');
@@ -442,7 +448,7 @@ $(document).on('click', '.detail_trans_keluar', function() {
                                 <td>${item.nama_barang + ' - ' + item.nama_tipe_barang + '(' + item.merek_atk + ') @ ' + item.nama_satuan}</td>
                                 <td class="text-center">${item.qty}</td>
                                 <td class="text-center">${item.catatan_detail_transaksi}</td>
-                                <td class="text-center">${item.status_detail_transaksi == 1 ? '<span class="badge badge-success">Setuju</span>' : '<span class="badge badge-danger">Tolak</span>'}</td>
+                                <td class="text-center">${item.status_detail_transaksi == 1 ? '<span class="badge badge-success">Setuju</span>' : item.status_detail_transaksi == 2 ? '<span class="badge badge-danger">Tolak</span>' : '<span class="badge badge-warning">Proses</span>'}</td>
                             </tr>
                             `;
                         });

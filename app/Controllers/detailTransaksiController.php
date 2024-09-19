@@ -122,7 +122,7 @@ class detailTransaksiController extends BaseController
             // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
             'tipe_transaksi' => '0',
             'ket_transaksi' => $ket_transaksi,
-            'status_transaksi' => '1',
+            'status_transaksi' => '0',
             'tanggal_transaksi' => $tgl_transaksi,
         ];
 
@@ -142,11 +142,11 @@ class detailTransaksiController extends BaseController
             // insert detail transaksi
             $this->detailTransaksiModel->save($dt_trx);
             
-            // cari data atk
-            $data_atk = $this->atkModel->find($detail_transaksi[$i]['atk_id']);
+            // // cari data atk
+            // $data_atk = $this->atkModel->find($detail_transaksi[$i]['atk_id']);
 
-            // update qty atk
-            $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $detail_transaksi[$i]['qty']]);
+            // // update qty atk
+            // $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $detail_transaksi[$i]['qty']]);
         }
 
         return $this->response->setJSON([
@@ -172,13 +172,13 @@ class detailTransaksiController extends BaseController
         return view('Admin/Transaksi/edit_transaksi_masuk', $data);
     }
 
-    public function updateDetailATKMasuk(){
+    public function updateDetailATKMasuk(){ 
         $transaksi_id = $this->request->getPost('id_transaksi');
         $qty = $this->request->getPost('qty');
         $atk_id = $this->request->getPost('atk_id');
         
         // find data atk
-        $data_atk = $this->atkModel->find($atk_id);
+        // $data_atk = $this->atkModel->find($atk_id);
 
         // find detail transaksi
         $data_detail = $this->detailTransaksiModel->where('transaksi_id', $transaksi_id)->where('atk_id', $atk_id)->first();
@@ -188,7 +188,7 @@ class detailTransaksiController extends BaseController
             $this->detailTransaksiModel->update($data_detail['id_detail_transaksi'], ['qty' => $data_detail['qty'] + $qty]);
 
             // update qty atk
-            $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
+            // $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
 
             return $this->response->setJSON([
                 'error' => false,
@@ -201,13 +201,12 @@ class detailTransaksiController extends BaseController
             'transaksi_id' => $transaksi_id,
             'atk_id' => $atk_id,
             'qty' => $qty,
-            'status_detail_transaksi' => '1',
         ];
         // insert detail transaksi
         $this->detailTransaksiModel->save($data);
 
-        // update qty atk
-        $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
+        // // update qty atk
+        // $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
         
         return $this->response->setJSON([
             'error' => false,
@@ -224,13 +223,13 @@ class detailTransaksiController extends BaseController
         $data_detail = $this->detailTransaksiModel->find($id_detail_transaksi);
 
         // cari data atk
-        $data_atk = $this->atkModel->find($data_detail['atk_id']);
+        // $data_atk = $this->atkModel->find($data_detail['atk_id']);
 
         // update qty detail transaksi
         $this->detailTransaksiModel->update($id_detail_transaksi, ['qty' => $qty]);
         
         // update qty atk
-        $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty'] + $qty]);
+        // $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty'] + $qty]);
 
         return $this->response->setJSON([
             'error' => false,
@@ -248,10 +247,10 @@ class detailTransaksiController extends BaseController
         $data_detail = $this->detailTransaksiModel->find($id_detail_transaksi);
 
         // cari data atk
-        $data_atk = $this->atkModel->find($data_detail['atk_id']);
+        // $data_atk = $this->atkModel->find($data_detail['atk_id']);
 
         // update qty atk
-        $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
+        // $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
         
         // delete detail transaksi
         $this->detailTransaksiModel->delete($id_detail_transaksi);

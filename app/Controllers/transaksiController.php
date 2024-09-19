@@ -38,17 +38,25 @@ class transaksiController extends BaseController
         // dd($builder);
         return DataTable::of($builder)
              ->add('status_transaksi', function ($row) {
-                // jika status_transaksi = 1 maka label inventaris dan sebaliknya atk
-                return $row->status_transaksi == 1 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>';
+                if ($row->status_transaksi == 1) {
+                    return '<span class="badge badge-warning">Permintaan</span>';
+                } elseif ($row->status_transaksi == 2) {
+                    return '<span class="badge badge-primary">persetujuan</span>';
+                } elseif ($row->status_transaksi == 3) {
+                    return '<span class="badge badge-info">Proses pengadaan</span>';
+                } elseif ($row->status_transaksi == 4) {
+                    return '<span class="badge badge-success">Selesai</span>';
+                } else {
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
             })
             ->add('action', function ($row) {   
                 return '
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                     ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>' : '') . ' 
                         <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
-                        </div>
                 </div>
                 ';
             }, 'last')
@@ -62,16 +70,16 @@ class transaksiController extends BaseController
         return DataTable::of($builder)
             ->add('status_transaksi', function ($row) {
                 // jika status_transaksi = 1 maka label inventaris dan sebaliknya atk
-                return $row->status_transaksi == 1 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>';
+                return $row->status_transaksi == 4 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>';
             })
             ->add('action', function ($row) {   
                 return '
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        ' . ($row->status_transaksi == 1 ? '<button class="dropdown-item detail_trans_keluar" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>' : '
-                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
-                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>   ') . ' 
+                        ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>' : '<button class="dropdown-item detail_trans_keluar" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
+                          ') . ' 
                 </div>
                 ';
             }, 'last')

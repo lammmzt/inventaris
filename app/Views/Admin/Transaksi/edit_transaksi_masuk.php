@@ -62,7 +62,9 @@
                                 <tr>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
                                     <th scope="col" class="datatable-nosort">Nama ATK</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">QTY</th>
+                                    <th scope="col" class="datatable-nosort text-center">Stok</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
+                                        Permintaan</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 150px;">Action
                                     </th>
                                 </tr>
@@ -129,6 +131,10 @@ function dataTablesDetailBarang() {
             {
                 data: 'nama_barang',
                 class: 'table-plus'
+            },
+            {
+                data: 'qty_atk',
+                class: 'text-center'
             },
             {
                 data: 'qty',
