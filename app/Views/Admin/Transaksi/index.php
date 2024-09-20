@@ -137,7 +137,7 @@
                                     <tr>
                                         <th scope="col" class="text-center">#</th>
                                         <th scope="col">Nama ATK</th>
-                                        <th scope="col" class="text-center">QTY</th>
+                                        <th scope="col" class="text-center">Permintaan</th>
                                         <th scope="col" class="text-center">Catatan</th>
                                         <th scope="col" class="text-center">Status Permintaan</th>
                                     </tr>
@@ -220,7 +220,7 @@
                                     <tr>
                                         <th scope="col" class="text-center">#</th>
                                         <th scope="col">Nama ATK</th>
-                                        <th scope="col" class="text-center">QTY</th>
+                                        <th scope="col" class="text-center">Permintaan</th>
                                         <th scope="col" class="text-center">Catatan</th>
                                         <th scope="col" class="text-center">Status</th>
                                     </tr>

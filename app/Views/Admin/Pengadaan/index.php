@@ -38,15 +38,14 @@
         </div>
     </div>
 </div>
-
 <!-- detail trans keluar -->
-<div class="modal fade" id="modalDetailTransMasuk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade" id="modalDetailPengadaan" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">
-                    Detail Transaksi Masuk
+                    Detail Pengadaan
                 </h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     ×
@@ -64,9 +63,9 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Tanggal Transaksi</label>
+                            <label class="col-sm-4 col-form-label">Tanggal Pengadaan</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi"
+                                <input type="text" class="form-control" id="tanggal_permintaan" name="tangal_permintaan"
                                     readonly>
                             </div>
                         </div>
@@ -81,7 +80,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Status</label>
+                            <label class="col-sm-4 col-form-label">Status Pengadaan</label>
                             <div class="col-sm-8">
                                 <div id="status"></div>
                             </div>
@@ -95,95 +94,13 @@
                                     <tr>
                                         <th scope="col" class="text-center">#</th>
                                         <th scope="col">Nama ATK</th>
-                                        <th scope="col" class="text-center">QTY</th>
+                                        <th scope="col" class="text-center">Spek</th>
+                                        <th scope="col" class="text-center">Pemintaan</th>
                                         <th scope="col" class="text-center">Catatan</th>
                                         <th scope="col" class="text-center">Status</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbody_transaksi_masuk">
-                                    <tr>
-                                        <td colspan="5" class="text-center">Data Kosong</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    Tutup
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- detail trans keluar -->
-<div class="modal fade" id="modalDetailTransKeluar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myLargeModalLabel">
-                    Detail Transaksi Keluar
-                </h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    ×
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Nama Pemohon</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="nama_pemohon_keluar"
-                                    name="nama_pemohon_keluar" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Tanggal Transaksi</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="tanggal_transaksi_keluar"
-                                    name="tanggal_transaksi" readonly>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Keterangan</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control" id="keterangan_keluar" name="keterangan"
-                                    readonly></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Status</label>
-                            <div class="col-sm-8">
-                                <div id="status_keluar"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="table-responsive pt-4">
-                            <table class="table table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="text-center">#</th>
-                                        <th scope="col">Nama ATK</th>
-                                        <th scope="col" class="text-center">QTY</th>
-                                        <th scope="col" class="text-center">Catatan</th>
-                                        <th scope="col" class="text-center">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody_transaksi">
+                                <tbody id="tbody_pengadaan">
                                     <tr>
                                         <td colspan="5" class="text-center">Data Kosong</td>
                                     </tr>
@@ -264,93 +181,36 @@ $(document).ready(function() {
     dataTablesPengadaan();
 });
 
-// edit detail_trans_masuk
-$(document).on('click', '.detail_trans_masuk', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/edit') ?>',
-        type: 'post',
-        data: {
-            id_transaksi: id
-        },
-        dataType: 'json',
-        success: function(data) {
-            // console.log(data);
-            $('#nama_pemohon').val(data.data.nama_user);
-            $('#tanggal_transaksi').val(data.data.tanggal_transaksi);
-            $('#keterangan').val(data.data.ket_transaksi);
-            $('#status').html(data.data.status_transaksi == 1 ?
-                '<span class="badge badge-success">Selesai</span>' :
-                '<span class="badge badge-warning">Proses</span>');
-            $('#modalDetailTransMasuk').modal('show');
-
-
-            $.ajax({
-                url: '<?= base_url('Admin/ATK/Transaksi/fetchDetailTransByIdTrans') ?>',
-                type: 'post',
-                data: {
-                    id_transaksi: id
-                },
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    let html = '';
-                    if (data.data.length > 0) {
-                        data.data.forEach((item, index) => {
-                            html += `
-                            <tr>
-                                <td class="text-center">${index+1}</td>
-                                <td>${item.nama_barang + ' - ' + item.nama_tipe_barang + '(' + item.merek_atk + ') @ ' + item.nama_satuan}</td>
-                                <td class="text-center">${item.qty}</td>
-                                <td class="text-center">${item.catatan_detail_transaksi}</td>
-                                <td class="text-center">${item.status_detail_transaksi == 1 ? '<span class="badge badge-success">Setuju</span>' : '<span class="badge badge-danger">Tolak</span>'}</td>
-                            </tr>
-                            `;
-                        });
-                    } else {
-                        html += `
-                        <tr>
-                            <td colspan="5" class="text-center">Data Kosong</td>
-                        </tr>
-                        `;
-                    }
-                    $('#tbody_transaksi_masuk').html(html);
-                }
-
-            });
-        }
-
-    });
-});
-
 // edit detail_trans_keluar
-$(document).on('click', '.detail_trans_keluar', function() {
+$(document).on('click', '.detail_pengadaan', function() {
     const id = $(this).attr('id');
     // alert(id);
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/edit') ?>',
+        url: '<?= base_url('Admin/Pengadaan/edit') ?>',
         type: 'post',
         data: {
-            id_transaksi: id
+            id_pengadaan: id
         },
         dataType: 'json',
         success: function(data) {
-            // console.log(data);
-            $('#nama_pemohon_keluar').val(data.data.nama_user);
-            $('#tanggal_transaksi_keluar').val(data.data.tanggal_transaksi);
-            $('#keterangan_keluar').val(data.data.ket_transaksi);
-            $('#status_keluar').html(data.data.status_transaksi == 1 ?
-                '<span class="badge badge-success">Selesai</span>' :
-                '<span class="badge badge-warning">Proses</span>');
-            $('#modalDetailTransKeluar').modal('show');
+            $('#nama_pemohon').val(data.data.nama_user);
+            $('#tanggal_permintaan').val(data.data.created_at);
+            $('#keterangan').val(data.data.ket_pengadaan);
+            $('#status').html(data.data.status_pengadaan == 1 ?
+                '<span class="badge badge-warning">Permintaan</span>' : data.data
+                .status_pengadaan == 2 ? '<span class="badge badge-warning">Proses</span>' :
+                data.data.status_pengadaan == 3 ?
+                '<span class="badge badge-success">Pengadaan</span>' : data.data
+                .status_pengadaan == 4 ? '<span class="badge badge-info">Selesai</span>' :
+                '<span class="badge badge-danger">Ditolak</span>');
+            $('#modalDetailPengadaan').modal('show');
 
 
             $.ajax({
-                url: '<?= base_url('Admin/ATK/Transaksi/fetchDetailTransByIdTrans') ?>',
+                url: '<?= base_url('Admin/Pengadaan/fetchPengadaanById') ?>',
                 type: 'post',
                 data: {
-                    id_transaksi: id
+                    id_pengadaan: id
                 },
                 dataType: 'json',
                 success: function(data) {
@@ -362,20 +222,21 @@ $(document).on('click', '.detail_trans_keluar', function() {
                             <tr>
                                 <td class="text-center">${index+1}</td>
                                 <td>${item.nama_barang + ' - ' + item.nama_tipe_barang + '(' + item.merek_atk + ') @ ' + item.nama_satuan}</td>
+                                <td class="text-center">${item.spek}</td>
                                 <td class="text-center">${item.qty}</td>
-                                <td class="text-center">${item.catatan_detail_transaksi}</td>
-                                <td class="text-center">${item.status_detail_transaksi == 1 ? '<span class="badge badge-success">Setuju</span>' : '<span class="badge badge-danger">Tolak</span>'}</td>
-                            </tr>
+                                <td class="text-center">${item.catatan_detail_pengadaan}</td>
+                                <td class="text-center">${item.status_detail_pengadaan == 1 ? '<span class="badge badge-success">Setuju</span>' : item.status_detail_pengadaan == 2 ? '<span class="badge badge-danger">Tolak</span>' : '<span class="badge badge-warning">Proses</span>'}</td>
+                               </tr>
                             `;
                         });
                     } else {
                         html += `
                         <tr>
-                            <td colspan="5" class="text-center">Data Kosong</td>
+                            <td colspan="6" class="text-center">Data Kosong</td>
                         </tr>
                         `;
                     }
-                    $('#tbody_transaksi').html(html);
+                    $('#tbody_pengadaan').html(html);
                 }
 
             });

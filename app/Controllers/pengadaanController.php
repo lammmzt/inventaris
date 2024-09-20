@@ -55,7 +55,7 @@ class pengadaanController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>    
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        '.($row->status_pengadaan == '1' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/Pengadaan/Masuk/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        '.($row->status_pengadaan == '1' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/Pengadaan/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
                         ' : '').'
                         <button class="dropdown-item detail_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
                         </div>
@@ -94,7 +94,9 @@ class pengadaanController extends BaseController
             'status' => '200'
         ]);
     }
-    public function updateTransMasuk()
+
+
+    public function update()
     {
         $id_pengadaan = $this->request->getPost('id_pengadaan');
         
@@ -102,13 +104,6 @@ class pengadaanController extends BaseController
         $validation->setRules([
             'ket_pengadaan' => [
                 'label' => 'Keterangan pengadaan',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                ],
-            ],
-            'tanggal_pengadaan' => [
-                'label' => 'Tanggal pengadaan',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
@@ -125,7 +120,6 @@ class pengadaanController extends BaseController
         } else {
             $data = [
                 'ket_pengadaan' => $this->request->getPost('ket_pengadaan'),
-                'tanggal_pengadaan' => $this->request->getPost('tanggal_pengadaan'),
             ];
             
             $this->pengadaanModel->update($id_pengadaan, $data);

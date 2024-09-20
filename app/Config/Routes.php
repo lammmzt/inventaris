@@ -132,7 +132,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('updateQtyKeluar', 'detailTransaksiController::updateQtyKeluar');
         $routes->post('updatedCatatan', 'detailTransaksiController::updatedCatatan');
         $routes->post('UpdateprosesTransKeluar', 'detailTransaksiController::UpdateprosesTransKeluar');
-
+        
         
         $routes->post('save', 'transaksiController::store');
         $routes->post('delete', 'transaksiController::destroy');
@@ -142,7 +142,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('fetchDataTransaksi', 'transaksiController::fetchDataTransaksi');
         $routes->post('fetchDataTransaksiById', 'transaksiController::fetchDataTransaksiById');
     });
-
+    
     $routes->group('Inventaris', function ($routes) {
         $routes->get('/', 'inventarisController::index');
         $routes->get('DataTables', 'inventarisController::ajaxDataTables');
@@ -158,17 +158,24 @@ $routes->group('Admin', function ($routes) {
         $routes->post('fetchInventarisByKodeInventaris', 'pengecekanController::fetchInventarisByKodeInventaris');
         $routes->post('Pelaporan/save', 'pengecekanController::store');
     });
-
+    
     $routes->group('Pengadaan', function ($routes) {
         $routes->get('/', 'pengadaanController::index');
         $routes->get('Tambah', 'pengadaanController::tambah_pengadaan');
         $routes->get('DataTables', 'pengadaanController::ajaxDataTables');
         $routes->post('save', 'detailPengadaanController::store');
         $routes->post('delete', 'detailPengadaanController::destroy');
-        $routes->post('edit', 'detailPengadaanController::edit');
+        $routes->post('edit', 'pengadaanController::edit');
         $routes->post('update', 'detailPengadaanController::update');
         $routes->post('fetchAll', 'pengadaanController::fetchAll');
-        $routes->post('fetchDatapengadaan', 'pengadaanController::fetchDatapengadaan');
+        $routes->post('fetchPengadaanById', 'detailPengadaanController::fetchPengadaanById');
+        $routes->get('(:segment)', 'detailPengadaanController::edit_pengadaan/$1');
+        $routes->post('DataTablesDetailPengadaan', 'detailPengadaanController::ajaxDataTables');
+        $routes->post('updatePengadaan', 'detailPengadaanController::updateDetail');
+        $routes->post('updateQty', 'detailPengadaanController::updateQty');
+        $routes->post('updateCatatan', 'detailPengadaanController::updateCatatan');
+        $routes->post('updateSpek', 'detailPengadaanController::updateSpek');
+        $routes->post('Delete', 'detailPengadaanController::destroyPengadaan');
     });
     
 
