@@ -30,7 +30,7 @@
                     </a>
                 </li>
                 <?php
-                // if (session()->get('role') == 'Admin'):
+                if (session()->get('role') == 'Admin'):
                 ?>
                 <li
                     class="dropdown <?= $active == 'Barang' || $active == 'detail_barang' || $active == 'Ruangan' ? 'show' : '' ?>">
@@ -62,7 +62,6 @@
                             </a></li>
                     </ul>
                 </li>
-
                 <li
                     class="dropdown <?= $active == 'Inventaris' || $active == 'Pengecekan' || $active == 'Inventaris' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
@@ -86,7 +85,6 @@
                         <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
                     </a>
                 </li>
-
                 <li>
                     <a href="<?= base_url('Admin/User') ?>"
                         class="dropdown-toggle no-arrow <?= $active == 'Users'  ? 'active' : '' ?>">
@@ -98,8 +96,11 @@
 
 
                 <?php
-                //  endif; 
+                 endif;
+
+                if (session()->get('role') == 'Admin' || session()->get('role') == 'Petugas BOS'):
                 ?>
+
                 <li
                     class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_data_pengadaan' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
@@ -116,6 +117,7 @@
                         </li>
                     </ul>
                 </li>
+                <?php endif; ?>
 
                 <li>
                     <div class="dropdown-divider"></div>

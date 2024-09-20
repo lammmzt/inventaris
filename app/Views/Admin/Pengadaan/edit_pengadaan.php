@@ -248,11 +248,11 @@ $('#tipe_barang_id').change(function() {
 function updateDetailPengadaan() {
     var tipe_barang_id = $('#tipe_barang_id').val();
     var id_pengadaan = $('#id_pengadaan').val();
+    // alert(tipe_barang_id);
 
     var data = {
         tipe_barang_id: tipe_barang_id,
         id_pengadaan: id_pengadaan,
-        qty: 1
     };
     $.ajax({
         url: '<?= base_url('Admin/Pengadaan/updatePengadaan') ?>',
@@ -307,7 +307,6 @@ $(document).on('focusout', '.input_qty', function() {
     });
 });
 
-
 // event focus lost input spek
 $(document).on('focusout', '.input_spek', function() {
     const id = $(this).attr('id');
@@ -350,7 +349,7 @@ $('#btn_update').click(function() {
     };
 
     $.ajax({
-        url: '<?= base_url('Admin/Pengadaan/updatePengadaan') ?>',
+        url: '<?= base_url('Admin/Pengadaan/update') ?>',
         method: 'post',
         data: data,
         dataType: 'json',

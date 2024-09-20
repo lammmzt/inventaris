@@ -157,6 +157,7 @@ class detailPengadaanController extends BaseController
         // dd($id_pengadaan);
         $data_pengadaan = $this->pengadaanModel->getpengadaan($id_pengadaan);
 
+        $data_pengadaan['created_at'] = date('Y-m-d', strtotime($data_pengadaan['created_at']));
         $data = [
             'main_menu' => 'Pengadaan',
             'title' => 'Edit pengadaan Masuk',
@@ -165,11 +166,12 @@ class detailPengadaanController extends BaseController
             'tgl_pengadaan' => $data_pengadaan['created_at'],
             'ket_pengadaan' => $data_pengadaan['ket_pengadaan'],    
         ];
+        // dd($data);
         return view('Admin/Pengadaan/edit_pengadaan', $data);
     }
 
     public function updateDetail(){
-        $pengadaan_id = $this->request->getPost('pengadaan_id');
+        $pengadaan_id = $this->request->getPost('id_pengadaan');
         $tipe_barang_id = $this->request->getPost('tipe_barang_id');
         $qty = $this->request->getPost('qty');
         
@@ -177,20 +179,22 @@ class detailPengadaanController extends BaseController
         $data_detail = $this->detailPengadaanModel->where('pengadaan_id', $pengadaan_id)->where('tipe_barang_id', $tipe_barang_id)->first();
 
 
+        // cek jika data detail pengadaan sudah ada
         if($data_detail){
-            
+            $qty = $data_detail['qty'] + 1;
+            $this->detailPengadaanModel->update($data_detail['id_detail_pengadaan'], ['qty' => $qty]);
+        } else {
+            // insert detail pengadaan
+            $data = [
+                'pengadaan_id' => $pengadaan_id,
+                'tipe_barang_id' => $tipe_barang_id,
+                'qty' => '1',
+                'spek' => '',
+                'status_detail_pengadaan' => '0',
+            ];
+        
+            $this->detailPengadaanModel->save($data);
         }
-
-        // insert detail pengadaan
-        $data = [
-            'pengadaan_id' => $pengadaan_id,
-            'tipe_barang_id' => $tipe_barang_id,
-            'qty' => '1',
-            'spek' => '',
-            'status_detail_pengadaan' => '0',
-        ];
-
-        $this->detailPengadaanModel->save($data);
         
         return $this->response->setJSON([
             'error' => false,
@@ -258,6 +262,8 @@ class detailPengadaanController extends BaseController
             'status' => '200'
         ]);
     }
+
+    // ==================== PROSES PENGADAAN ====================
 }
 
 ?>

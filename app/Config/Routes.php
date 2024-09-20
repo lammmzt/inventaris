@@ -108,8 +108,15 @@ $routes->group('Admin', function ($routes) {
         $routes->post('updateTransMasuk', 'transaksiController::updateTransMasuk');
         $routes->post('edit', 'transaksiController::edit');
         $routes->post('updateTransKeluar', 'transaksiController::updateTransKeluar');
+        $routes->post('save', 'transaksiController::store');
+        $routes->post('delete', 'transaksiController::destroy');
+        $routes->post('edit', 'transaksiController::edit');
+        $routes->post('update', 'transaksiController::update');
+        $routes->post('changeStatus', 'transaksiController::changeStatus');
+        $routes->post('fetchDataTransaksi', 'transaksiController::fetchDataTransaksi');
+        $routes->post('fetchDataTransaksiById', 'transaksiController::fetchDataTransaksiById');
 
-        // transaksi masuk
+        // ================== TRANSAKSI MASUK ==================
         $routes->get('Masuk', 'detailTransaksiController::transaksi_masuk');
         $routes->post('insertTransaksiMasuk', 'detailTransaksiController::insertTransaksiMasuk');
         $routes->post('fetchDetailTransByIdTrans', 'detailTransaksiController::fetchDetailTransByIdTrans');
@@ -119,8 +126,8 @@ $routes->group('Admin', function ($routes) {
         $routes->post('deleteTransMasuk', 'detailTransaksiController::destroyTransMasuk');
         $routes->post('updateDetailATKMasuk', 'detailTransaksiController::updateDetailATKMasuk');
         $routes->post('updateQtyMasuk', 'detailTransaksiController::updateQtyMasuk');
-
-        // transaksi Keluar
+        
+        // ================== TRANSAKSI KELUAR ==================
         $routes->get('Keluar', 'detailTransaksiController::transaksi_keluar');
         $routes->post('insertTransaksiKeluar', 'detailTransaksiController::insertTransaksiKeluar');
         $routes->get('Keluar/(:segment)', 'detailTransaksiController::edit_trans_keluar/$1');
@@ -134,13 +141,11 @@ $routes->group('Admin', function ($routes) {
         $routes->post('UpdateprosesTransKeluar', 'detailTransaksiController::UpdateprosesTransKeluar');
         
         
-        $routes->post('save', 'transaksiController::store');
-        $routes->post('delete', 'transaksiController::destroy');
-        $routes->post('edit', 'transaksiController::edit');
-        $routes->post('update', 'transaksiController::update');
-        $routes->post('changeStatus', 'transaksiController::changeStatus');
-        $routes->post('fetchDataTransaksi', 'transaksiController::fetchDataTransaksi');
-        $routes->post('fetchDataTransaksiById', 'transaksiController::fetchDataTransaksiById');
+        // KA TU
+        $routes->get('Proses/(:segment)', 'detailTransaksiController::proses_setuju/$1');
+        $routes->post('DataTablesProsesPersetujuan', 'detailTransaksiController::ajaxDataTablesProsesPersetujuan');
+        $routes->post('UpdateProsesPersetujuan', 'detailTransaksiController::UpdateProsesPersetujuan');
+       
     });
     
     $routes->group('Inventaris', function ($routes) {
@@ -166,7 +171,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('save', 'detailPengadaanController::store');
         $routes->post('delete', 'detailPengadaanController::destroy');
         $routes->post('edit', 'pengadaanController::edit');
-        $routes->post('update', 'detailPengadaanController::update');
+        $routes->post('update', 'PengadaanController::update');
         $routes->post('fetchAll', 'pengadaanController::fetchAll');
         $routes->post('fetchPengadaanById', 'detailPengadaanController::fetchPengadaanById');
         $routes->get('(:segment)', 'detailPengadaanController::edit_pengadaan/$1');

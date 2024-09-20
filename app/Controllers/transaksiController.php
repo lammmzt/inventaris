@@ -57,6 +57,7 @@ class transaksiController extends BaseController
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                      ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>' : '') . ' 
                         <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
+                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>
                 </div>
                 ';
             }, 'last')

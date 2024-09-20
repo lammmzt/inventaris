@@ -35,6 +35,13 @@ class detailTransaksiController extends BaseController
             ->add('nama_barang', function ($row) {
                 return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
             })
+            ->add('status_detail_transaksi', function ($row) {
+                return '<select class="form-control input_status required" id="'. $row->id_detail_transaksi .'">
+                            <option value="" '. ($row->status_detail_transaksi == '0' ? 'selected' : '') .'>--Pilih Status--</option>
+                            <option value="1" '. ($row->status_detail_transaksi == '1' ? 'selected' : '') .'>Setuju</option>
+                            <option value="2" '. ($row->status_detail_transaksi == '2' ? 'selected' : '') .'>Tolak</option>
+                        </select>';
+            })
              ->add('qty', function ($row) {
                 return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
             })
@@ -471,6 +478,105 @@ class detailTransaksiController extends BaseController
             'status' => '200'
         ]);
     }
+
+    
+    // ==================== PROSES TRANSAKSI MASUK ====================
+
+    // ================================= KA TU ==============================
+    public function proses_setuju(){ 
+        $id_transaksi = $this->request->getUri()->getSegment(5);
+        // dd($id_transaksi);
+        $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
+
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Edit Transaksi Masuk',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tgl_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],   
+            'nama_user' => $data_transaksi['nama_user'],
+        ];
+        return view('KaTu/Transaksi/Proses', $data);
+    }
+
+    public function ajaxDataTablesProsesPersetujuan()
+    {
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        // $id_transaksi = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
+            
+        $builder = $this->detailTransaksiModel->getTransByTransId($id_transaksi);
+        // dd($builder);
+        
+        return DataTable::of($builder)
+            ->add('nama_barang', function ($row) {
+                return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
+            })
+             ->add('qty', function ($row) {
+                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
+            })
+             ->add('status_detail_transaksi', function ($row) {
+                return '<select class="form-control input_status required" id="'. $row->id_detail_transaksi .'">
+                            <option value="" '. ($row->status_detail_transaksi == '0' ? 'selected' : '') .'>--Pilih Status--</option>
+                            <option value="1" '. ($row->status_detail_transaksi == '1' ? 'selected' : '') .'>Setuju</option>
+                            <option value="2" '. ($row->status_detail_transaksi == '2' ? 'selected' : '') .'>Tolak</option>
+                        </select>';
+            })
+            ->add('catatan_detail_transaksi', function ($row) {
+                return '<textarea class="form-control input_catatan" style="min-width: 100px; height: 50px;" placeholder="Catatan"
+                 id="'. $row->id_detail_transaksi .'">'. $row->catatan_detail_transaksi .'</textarea>';
+            })
+            ->add('action', function ($row) {   
+                return '
+                <button type="button" class="btn btn-danger deleteTransMasuk" id="'. $row->id_detail_transaksi .'">Hapus</button> 
+                ';
+            }, 'last')
+            ->toJson(true);
+    }
+
+    public function UpdateProsesPersetujuan(){
+        $detail_data = $this->request->getPost('detail_data');
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        
+        for ($i=0; $i < count($detail_data); $i++) { 
+            $data = [
+                'id_detail_transaksi' => $detail_data[$i]['id'],
+                'status_detail_transaksi' => $detail_data[$i]['status'],
+            ];
+            
+            $this->detailTransaksiModel->update($data['id_detail_transaksi'], ['status_detail_transaksi' => $data['status_detail_transaksi']]);
+            
+        }
+
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '2']);
+
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
+    }
+
+    // ================================= PETUGAS BOS ==============================
+    public function proses_pengadaan(){ 
+        $id_transaksi = $this->request->getUri()->getSegment(5);
+        // dd($id_transaksi);
+        $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
+
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Edit Transaksi Masuk',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tgl_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],   
+            'nama_user' => $data_transaksi['nama_user'],
+        ];
+        return view('PetugasBos/Transaksi/Proses', $data);
+
+
+    }
+
 }
 
 ?>
