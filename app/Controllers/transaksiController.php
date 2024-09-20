@@ -39,9 +39,9 @@ class transaksiController extends BaseController
         return DataTable::of($builder)
              ->add('status_transaksi', function ($row) {
                 if ($row->status_transaksi == 1) {
-                    return '<span class="badge badge-warning">Permintaan</span>';
+                    return '<span class="badge badge-warning">Persetujuan</span>';
                 } elseif ($row->status_transaksi == 2) {
-                    return '<span class="badge badge-primary">persetujuan</span>';
+                    return '<span class="badge badge-primary">Disetujui</span>';
                 } elseif ($row->status_transaksi == 3) {
                     return '<span class="badge badge-info">Proses pengadaan</span>';
                 } elseif ($row->status_transaksi == 4) {

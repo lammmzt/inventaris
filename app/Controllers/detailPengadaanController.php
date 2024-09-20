@@ -38,32 +38,6 @@ class detailPengadaanController extends BaseController
             ->add('spek', function ($row) {
                 return '<textarea class="form-control input_spek" style="min-width: 100px; height: 50px;" placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
             })
-             ->add('qty', function ($row) {
-                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_pengadaan .'">';
-            })
-            ->add('action', function ($row) {   
-                return '
-                <button type="button" class="btn btn-danger delete_pengadaan" id="'. $row->id_detail_pengadaan .'">Hapus</button> 
-                ';
-            }, 'last')
-            ->toJson(true);
-    }
-    
-    public function ajaxDataTablesProses()
-    {
-        $id_pengadaan = $this->request->getPost('id_pengadaan');
-        // $id_pengadaan = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
-            
-        $builder = $this->detailPengadaanModel->getDetailPengadaanByID($id_pengadaan);
-        // dd($builder);
-        
-        return DataTable::of($builder)
-            ->add('nama_barang', function ($row) {
-                return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' @ ' . $row->nama_satuan;
-            })
-            ->add('qty', function ($row) {
-                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_pengadaan .'">';
-            })
             ->add('status_detail_pengadaan', function ($row) {
                 return '<select class="form-control input_status required" id="'. $row->id_detail_pengadaan .'">
                             <option value="" '. ($row->status_detail_pengadaan == '0' ? 'selected' : '') .'>--Pilih Status--</option>
@@ -75,14 +49,20 @@ class detailPengadaanController extends BaseController
                 return '<textarea class="form-control input_catatan" style="min-width: 100px; height: 50px;" placeholder="Catatan"
                  id="'. $row->id_detail_pengadaan .'">'. $row->catatan_detail_pengadaan .'</textarea>';
             })
+             ->add('nama_spek', function ($row) {
+                return '<textarea class="form-control input_spek" style="min-width: 80px; height: 50px;" readonly placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
+            })
+             ->add('qty', function ($row) {
+                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_pengadaan .'">';
+            })
             ->add('action', function ($row) {   
                 return '
-                <button type="button" class="btn btn-danger deleteTransKeluar" id="'. $row->id_detail_pengadaan .'">Hapus</button> 
+                <button type="button" class="btn btn-danger delete_pengadaan" id="'. $row->id_detail_pengadaan .'">Hapus</button> 
                 ';
             }, 'last')
             ->toJson(true);
     }
-
+    
     public function fetchAll(){
         $data = $this->pengadaanModel->findAll();
         return $this->response->setJSON([
@@ -104,8 +84,8 @@ class detailPengadaanController extends BaseController
         
     public function fetchPengadaanById()
     {
-        // $id_pengadaan = $this->request->getPost('id_pengadaan');
-        $id_pengadaan = '23fbc3b8-7c4c-4a5d-8566-0b4067fe9d02';
+        $id_pengadaan = $this->request->getPost('id_pengadaan');
+        // $id_pengadaan = '23fbc3b8-7c4c-4a5d-8566-0b4067fe9d02';
         $data = $this->detailPengadaanModel->getDetailPengadaanByID($id_pengadaan)->findAll();
         return $this->response->setJSON([
             'error' => false,
@@ -263,7 +243,68 @@ class detailPengadaanController extends BaseController
         ]);
     }
 
+    public function proses_penerimaan(){
+        $id_pengadaan = $this->request->getUri()->getSegment(4);
+        // dd($id_pengadaan);
+        $data_pengadaan = $this->pengadaanModel->getpengadaan($id_pengadaan);
+
+        $data_pengadaan['created_at'] = date('Y-m-d', strtotime($data_pengadaan['created_at']));
+        $data = [
+            'main_menu' => 'Pengadaan',
+            'title' => 'Edit pengadaan Masuk',
+            'active' => 'Pengadaan',
+            'id_pengadaan' => $id_pengadaan,
+            'tgl_pengadaan' => $data_pengadaan['created_at'],
+            'ket_pengadaan' => $data_pengadaan['ket_pengadaan'], 
+            'nama_user' => $data_pengadaan['nama_user'], 
+        ];
+        // dd($data);
+        return view('KaTU/Pengadaan/Proses', $data);
+    }
+
     // ==================== PROSES PENGADAAN ====================
+    public function prsetujuan_pengadaan(){
+        $id_pengadaan = $this->request->getUri()->getSegment(4);
+        // dd($id_pengadaan);
+        $data_pengadaan = $this->pengadaanModel->getpengadaan($id_pengadaan);
+
+        $data_pengadaan['created_at'] = date('Y-m-d', strtotime($data_pengadaan['created_at']));
+        $data = [
+            'main_menu' => 'Pengadaan',
+            'title' => 'Edit pengadaan Masuk',
+            'active' => 'Pengadaan',
+            'id_pengadaan' => $id_pengadaan,
+            'tgl_pengadaan' => $data_pengadaan['created_at'],
+            'ket_pengadaan' => $data_pengadaan['ket_pengadaan'], 
+            'nama_user' => $data_pengadaan['nama_user'], 
+        ];
+        // dd($data);
+        return view('KaTU/Pengadaan/Proses', $data);
+    }
+
+    public function UpdateProsesPersetujuan(){
+        $detail_data = $this->request->getPost('detail_data');
+        $id_pengadaan = $this->request->getPost('id_pengadaan');
+        
+        for ($i=0; $i < count($detail_data); $i++) { 
+            $data = [
+                'id_detail_pengadaan' => $detail_data[$i]['id'],
+                'status_detail_pengadaan' => $detail_data[$i]['status'],
+            ];
+            
+            $this->detailPengadaanModel->update($data['id_detail_pengadaan'], ['status_detail_pengadaan' => $data['status_detail_pengadaan']]);
+            
+        }
+
+        $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '2']);
+
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
+    }
+
 }
 
 ?>

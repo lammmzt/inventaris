@@ -500,40 +500,6 @@ class detailTransaksiController extends BaseController
         return view('KaTu/Transaksi/Proses', $data);
     }
 
-    public function ajaxDataTablesProsesPersetujuan()
-    {
-        $id_transaksi = $this->request->getPost('id_transaksi');
-        // $id_transaksi = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
-            
-        $builder = $this->detailTransaksiModel->getTransByTransId($id_transaksi);
-        // dd($builder);
-        
-        return DataTable::of($builder)
-            ->add('nama_barang', function ($row) {
-                return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
-            })
-             ->add('qty', function ($row) {
-                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
-            })
-             ->add('status_detail_transaksi', function ($row) {
-                return '<select class="form-control input_status required" id="'. $row->id_detail_transaksi .'">
-                            <option value="" '. ($row->status_detail_transaksi == '0' ? 'selected' : '') .'>--Pilih Status--</option>
-                            <option value="1" '. ($row->status_detail_transaksi == '1' ? 'selected' : '') .'>Setuju</option>
-                            <option value="2" '. ($row->status_detail_transaksi == '2' ? 'selected' : '') .'>Tolak</option>
-                        </select>';
-            })
-            ->add('catatan_detail_transaksi', function ($row) {
-                return '<textarea class="form-control input_catatan" style="min-width: 100px; height: 50px;" placeholder="Catatan"
-                 id="'. $row->id_detail_transaksi .'">'. $row->catatan_detail_transaksi .'</textarea>';
-            })
-            ->add('action', function ($row) {   
-                return '
-                <button type="button" class="btn btn-danger deleteTransMasuk" id="'. $row->id_detail_transaksi .'">Hapus</button> 
-                ';
-            }, 'last')
-            ->toJson(true);
-    }
-
     public function UpdateProsesPersetujuan(){
         $detail_data = $this->request->getPost('detail_data');
         $id_transaksi = $this->request->getPost('id_transaksi');
@@ -573,9 +539,8 @@ class detailTransaksiController extends BaseController
             'nama_user' => $data_transaksi['nama_user'],
         ];
         return view('PetugasBos/Transaksi/Proses', $data);
-
-
     }
+    
 
 }
 

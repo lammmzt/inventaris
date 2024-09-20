@@ -197,10 +197,10 @@ $(document).on('click', '.detail_pengadaan', function() {
             $('#tanggal_permintaan').val(data.data.created_at);
             $('#keterangan').val(data.data.ket_pengadaan);
             $('#status').html(data.data.status_pengadaan == 1 ?
-                '<span class="badge badge-warning">Persetujuan</span>' : data.data
-                .status_pengadaan == 2 ? '<span class="badge badge-primary">Disetujui</span>' :
+                '<span class="badge badge-warning">Permintaan</span>' : data.data
+                .status_pengadaan == 2 ? '<span class="badge badge-warning">Proses</span>' :
                 data.data.status_pengadaan == 3 ?
-                '<span class="badge badge-info">Proses Pengadaan</span>' : data.data
+                '<span class="badge badge-success">Pengadaan</span>' : data.data
                 .status_pengadaan == 4 ? '<span class="badge badge-info">Selesai</span>' :
                 '<span class="badge badge-danger">Ditolak</span>');
             $('#modalDetailPengadaan').modal('show');

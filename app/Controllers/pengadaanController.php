@@ -38,13 +38,13 @@ class pengadaanController extends BaseController
         return DataTable::of($builder)
              ->add('status_pengadaan', function ($row) {
                 if($row->status_pengadaan == 1){
-                    return '<span class="badge badge-secondary">Permintaan</span>';
+                    return '<span class="badge badge-warning">Persetujuan</span>';
                 }else if($row->status_pengadaan == 2){
-                    return '<span class="badge badge-warning">Proses</span>';
+                    return '<span class="badge badge-primary">Disetujui</span>';
                 }else if($row->status_pengadaan == 3){
-                    return '<span class="badge badge-success">Pengadaan</span>';
+                    return '<span class="badge badge-info">Proses Pengadaan</span>';
                 }else if($row->status_pengadaan == 4){
-                    return '<span class="badge badge-info">Selesai</span>';
+                    return '<span class="badge badge-sucess">Selesai</span>';
                 }else{
                     return '<span class="badge badge-danger">Ditolak</span>';
                 }
@@ -58,6 +58,8 @@ class pengadaanController extends BaseController
                         '.($row->status_pengadaan == '1' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/Pengadaan/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
                         ' : '').'
                         <button class="dropdown-item detail_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
+                        <a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/Pengadaan/Proses/' . $row->id_pengadaan) . '"><i class="dw dw-check"></i> Proses</a>
+               
                         </div>
                 </div>
                 ';
