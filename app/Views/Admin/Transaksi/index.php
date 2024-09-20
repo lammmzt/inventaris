@@ -139,7 +139,7 @@
                                         <th scope="col">Nama ATK</th>
                                         <th scope="col" class="text-center">QTY</th>
                                         <th scope="col" class="text-center">Catatan</th>
-                                        <th scope="col" class="text-center">Status</th>
+                                        <th scope="col" class="text-center">Status Permintaan</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody_transaksi_masuk">
@@ -206,7 +206,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Status</label>
+                            <label class="col-sm-4 col-form-label">Status Permintaan</label>
                             <div class="col-sm-8">
                                 <div id="status_keluar"></div>
                             </div>
@@ -294,6 +294,10 @@ function dataTablesTransMasuk() {
                 targets: "datatable-nosort",
                 orderable: false,
             }],
+
+            order: [
+                [2, 'asc']
+            ]
         });
     });
 }
@@ -333,6 +337,9 @@ function dataTablesTransKeluar() {
                 targets: "datatable-nosort",
                 orderable: false,
             }],
+            order: [
+                [2, 'asc']
+            ]
         });
     });
 }
@@ -426,7 +433,7 @@ $(document).on('click', '.detail_trans_keluar', function() {
             $('#keterangan_keluar').val(data.data.ket_transaksi);
             $('#status_keluar').html(data.data.status_transaksi == 4 ?
                 '<span class="badge badge-success">Selesai</span>' :
-                '<span class="badge badge-warning">Proses</span>');
+                '<span class="badge badge-warning">Permintaan</span>');
             $('#modalDetailTransKeluar').modal('show');
 
 

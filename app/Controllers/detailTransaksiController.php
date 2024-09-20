@@ -89,6 +89,18 @@ class detailTransaksiController extends BaseController
         ]);
     }
 
+    public function fetchDetailTransByIdTrans()
+    {
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        $data = $this->detailTransaksiModel->getTransByTransId($id_transaksi)->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+
+
     // ==================== TRANSAKSI MASUK ====================
 
     public function transaksi_masuk()
@@ -101,17 +113,6 @@ class detailTransaksiController extends BaseController
         return view('Admin/Transaksi/transaksi_masuk', $data);
     }
         
-    public function fetchDetailTransByIdTrans()
-    {
-        $id_transaksi = $this->request->getPost('id_transaksi');
-        $data = $this->detailTransaksiModel->getTransByTransId($id_transaksi)->findAll();
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
-    }
-
     public function insertTransaksiMasuk(){
         $ket_transaksi = $this->request->getPost('ket_transaksi');
         $tgl_transaksi = $this->request->getPost('tgl_transaksi');
@@ -122,7 +123,7 @@ class detailTransaksiController extends BaseController
             // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
             'tipe_transaksi' => '0',
             'ket_transaksi' => $ket_transaksi,
-            'status_transaksi' => '0',
+            'status_transaksi' => '1',
             'tanggal_transaksi' => $tgl_transaksi,
         ];
 
@@ -287,7 +288,7 @@ class detailTransaksiController extends BaseController
             // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
             'tipe_transaksi' => '1',
             'ket_transaksi' => $ket_transaksi,
-            'status_transaksi' => '0',
+            'status_transaksi' => '1',
             'tanggal_transaksi' => $tgl_transaksi,
         ];
 
@@ -429,7 +430,7 @@ class detailTransaksiController extends BaseController
             
         }
 
-        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '1']);
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '4']);
 
         return $this->response->setJSON([
             'error' => false,

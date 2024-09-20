@@ -23,12 +23,12 @@ class detailPengadaanController extends BaseController
     }
 
     // ==================== INDEX ====================
-    public function ajaxDataTablesEdit()
+    public function ajaxDataTables()
     {
         $id_pengadaan = $this->request->getPost('id_pengadaan');
         // $id_pengadaan = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
             
-        $builder = $this->detailPengadaanModel->getTransByTransId($id_pengadaan);
+        $builder = $this->detailPengadaanModel->getDetailPengadaanByID($id_pengadaan);
         // dd($builder);
         
         return DataTable::of($builder)
@@ -51,7 +51,7 @@ class detailPengadaanController extends BaseController
         $id_pengadaan = $this->request->getPost('id_pengadaan');
         // $id_pengadaan = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
             
-        $builder = $this->detailPengadaanModel->getTransByTransId($id_pengadaan);
+        $builder = $this->detailPengadaanModel->getDetailPengadaanByID($id_pengadaan);
         // dd($builder);
         
         return DataTable::of($builder)
@@ -89,8 +89,6 @@ class detailPengadaanController extends BaseController
         ]);
     }
 
-    // ==================== pengadaan MASUK ====================
-
     public function pengadaan_masuk()
     {
         $data = [
@@ -101,10 +99,10 @@ class detailPengadaanController extends BaseController
         return view('Admin/pengadaan/pengadaan_masuk', $data);
     }
         
-    public function fetchDetailTransByIdTrans()
+    public function fetchPengadaanById()
     {
         $id_pengadaan = $this->request->getPost('id_pengadaan');
-        $data = $this->detailPengadaanModel->getTransByTransId($id_pengadaan)->findAll();
+        $data = $this->detailPengadaanModel->getDetailPengadaanByID($id_pengadaan)->findAll();
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,
@@ -112,41 +110,35 @@ class detailPengadaanController extends BaseController
         ]);
     }
 
-    public function insertpengadaanMasuk(){
+    public function store(){
         $ket_pengadaan = $this->request->getPost('ket_pengadaan');
-        $tgl_pengadaan = $this->request->getPost('tgl_pengadaan');
 
         $data = [   
             'id_pengadaan' => Uuid::uuid4()->toString(),
             'user_id' => session()->get('id_user'),
-            // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
-            'tipe_pengadaan' => '0',
+            // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e3
             'ket_pengadaan' => $ket_pengadaan,
             'status_pengadaan' => '1',
-            'tanggal_pengadaan' => $tgl_pengadaan,
         ];
 
         $this->pengadaanModel->insert($data);
         
         // insert detail pengadaan
-        $detail_pengadaan = $this->request->getPost('detail_pengadaan');
+        $detail_pengadaan = $this->request->getPost('item_pengadaan');
 
+        // dd($detail_pengadaan);
         for ($i=0; $i < count($detail_pengadaan); $i++) { 
             $dt_trx = [
                 'pengadaan_id' => $data['id_pengadaan'],
-                'atk_id' => $detail_pengadaan[$i]['atk_id'],
+                'tipe_barang_id' => $detail_pengadaan[$i]['tipe_barang_id'],
                 'qty' => $detail_pengadaan[$i]['qty'],
-                'status_detail_pengadaan' => '1',
+                'spek' => $detail_pengadaan[$i]['spek'],
+                'status_detail_pengadaan' => '0',
             ];
 
             // insert detail pengadaan
             $this->detailPengadaanModel->save($dt_trx);
             
-            // cari data atk
-            $data_atk = $this->atkModel->find($detail_pengadaan[$i]['atk_id']);
-
-            // update qty atk
-            $this->atkModel->update($detail_pengadaan[$i]['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $detail_pengadaan[$i]['qty']]);
         }
 
         return $this->response->setJSON([
@@ -156,7 +148,7 @@ class detailPengadaanController extends BaseController
         ]);
     }
 
-    public function edit_trans_masuk(){
+    public function edit_pengadaan(){
         $id_pengadaan = $this->request->getUri()->getSegment(5);
         // dd($id_pengadaan);
         $data_pengadaan = $this->pengadaanModel->getpengadaan($id_pengadaan);
@@ -170,50 +162,6 @@ class detailPengadaanController extends BaseController
             'ket_pengadaan' => $data_pengadaan['ket_pengadaan'],    
         ];
         return view('Admin/pengadaan/edit_pengadaan_masuk', $data);
-    }
-
-    public function updateDetailATKMasuk(){
-        $pengadaan_id = $this->request->getPost('id_pengadaan');
-        $qty = $this->request->getPost('qty');
-        $atk_id = $this->request->getPost('atk_id');
-        
-        // find data atk
-        $data_atk = $this->atkModel->find($atk_id);
-
-        // find detail pengadaan
-        $data_detail = $this->detailPengadaanModel->where('pengadaan_id', $pengadaan_id)->where('atk_id', $atk_id)->first();
-
-        if ($data_detail) {
-            // update qty
-            $this->detailPengadaanModel->update($data_detail['id_detail_pengadaan'], ['qty' => $data_detail['qty'] + $qty]);
-
-            // update qty atk
-            $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
-
-            return $this->response->setJSON([
-                'error' => false,
-                'data' => 'Data berhasil diupdate',
-                'status' => '200'
-            ]);
-        }
-
-        $data = [
-            'pengadaan_id' => $pengadaan_id,
-            'atk_id' => $atk_id,
-            'qty' => $qty,
-            'status_detail_pengadaan' => '1',
-        ];
-        // insert detail pengadaan
-        $this->detailPengadaanModel->save($data);
-
-        // update qty atk
-        $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
-        
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => 'Data berhasil disimpan',
-            'status' => '200'
-        ]);
     }
 
     public function updateQtyMasuk(){

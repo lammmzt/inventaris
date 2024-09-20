@@ -97,7 +97,7 @@
                                 class="rq">*</span></label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control required" id="qty_inventaris" name="qty_inventaris"
-                                placeholder="Masukan Nama inventaris" min="1" value="1">
+                                placeholder="Masukan Nama inventaris" min="1" value="1" readonly>
                             <div class="form-control-feedback " id="errorqty_inventaris"></div>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
                                 class="rq">*</span></label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control required" id="editqty_inventaris"
-                                name="qty_inventaris" placeholder="Masukan Nama inventaris" min="0" value="0">
+                                name="qty_inventaris" placeholder="Masukan Nama inventaris" min="0" readonly>
                             <div class="form-control-feedback " id="erroreditqty_inventaris"></div>
                         </div>
                     </div>

@@ -33,7 +33,7 @@
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="date" class="form-control required" id="tgl_transaksi"
-                                        name="tgl_transaksi">
+                                        name="tgl_transaksi" readonly value="<?= date('Y-m-d'); ?>">
                                     <div class="form-control-feedback " id="errortgl_transaksi"></div>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@
                                         class="rq">*</span></label></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control required" id="ket_transaksi" name="ket_transaksi"
-                                        placeholder="Masukan ket_transaksi transaksi"></textarea>
+                                        placeholder="Masukan ket transaksi"></textarea>
                                     <div class="form-control-feedback " id="errorket_transaksi"></div>
                                 </div>
                             </div>

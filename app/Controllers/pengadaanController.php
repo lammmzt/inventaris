@@ -13,13 +13,11 @@ class pengadaanController extends BaseController
 {
     protected $pengadaanModel;
     protected $detailpengadaanModel;
-    protected $atkModel;
 
     public function __construct()
     {
         $this->detailpengadaanModel = new detailpengadaanModel();
         $this->pengadaanModel = new pengadaanModel();
-        $this->atkModel = new atkModel();
     }
 
     public function index()
@@ -62,9 +60,9 @@ class pengadaanController extends BaseController
                 return '
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        <a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/ATK/pengadaan/Masuk/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
-                        <button class="dropdown-item detail_trans_masuk" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
+                        '.($role == 'Admin' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/ATK/Pengadaan/Masuk/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        ' : '<button class="dropdown-item proses_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-proses"></i> Detail</button>').'
+                        <button class="dropdown-item detail_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
                         </div>
                 </div>
                 ';
@@ -101,7 +99,6 @@ class pengadaanController extends BaseController
             'status' => '200'
         ]);
     }
-
     public function updateTransMasuk()
     {
         $id_pengadaan = $this->request->getPost('id_pengadaan');
@@ -207,32 +204,6 @@ class pengadaanController extends BaseController
         ]);
     }
 
-    public function changeStatus()
-    {
-        $id_pengadaan = $this->request->getPost('id_pengadaan');
-
-        $status_pengadaan = $this->pengadaanModel->find($id_pengadaan);
-        $data = [
-            'status_pengadaan' => $status_pengadaan['status_pengadaan'] == '1' ? '0' : '1',
-        ];
-        $this->pengadaanModel->update($id_pengadaan, $data);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => 'Status berhasil diubah',
-            'status' => '200'
-        ]);
-    }
-
-    public function fetchDatapengadaan()
-    {
-        $id_pengadaan = $this->request->getPost('id_pengadaan');
-        $data = $this->pengadaanModel->find($id_pengadaan);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
-    }
     
 
 }
