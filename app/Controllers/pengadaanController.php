@@ -32,15 +32,9 @@ class pengadaanController extends BaseController
     
     public function ajaxDataTables()
     {
-        $role = session()->get('role');
-        if ($role == 'Admin') {
-            $builder = $this->pengadaanModel->getPengadaan();
-        } else if ($role == 'KA. TU') {
-            $builder = $this->pengadaanModel->getPengadaan()->where(['status_pengadaan' => '2'])->orWhere(['status_pengadaan' => '1']);
-        }else{
-            $builder = $this->pengadaanModel->getPengadaan()->where(['status_pengadaan' => '3'])->orWhere(['status_pengadaan' => '2']);
-        }
-        // dd($builder);
+        $builder = $this->pengadaanModel->getPengadaan();
+       
+        // dd($builder->findAll());
         return DataTable::of($builder)
              ->add('status_pengadaan', function ($row) {
                 if($row->status_pengadaan == 1){
@@ -59,9 +53,10 @@ class pengadaanController extends BaseController
             ->add('action', function ($row) {   
                 return '
                 <div class="dropdown">
-                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
-                        '.($role == 'Admin' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/ATK/Pengadaan/Masuk/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
-                        ' : '<button class="dropdown-item proses_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-proses"></i> Detail</button>').'
+                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>    
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                        '.($row->status_pengadaan == '1' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/Pengadaan/Masuk/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        ' : '').'
                         <button class="dropdown-item detail_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
                         </div>
                 </div>

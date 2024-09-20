@@ -244,6 +244,8 @@ $('#btn_simpan').click(function() {
         return;
     }
 
+    ket_pengadaan = $('#ket_pengadaan').val();
+
     if (ket_pengadaan == '') {
         $("#ket_pengadaan").addClass('form-control-danger');
         $("#errorket_pengadaan").addClass('has-danger');
