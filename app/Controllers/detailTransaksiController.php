@@ -330,7 +330,7 @@ class detailTransaksiController extends BaseController
     
 
     // ==================== TRANSAKSI KELUAR ====================
-     public function transaksi_keluar()
+    public function transaksi_keluar()
     {
         $data = [
             'main_menu' => 'Transaksi',
@@ -617,7 +617,32 @@ class detailTransaksiController extends BaseController
 
     }
     
+    public function transaksi_keluar_pegawai()
+    {
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Form Transaksi Keluar',
+            'active' => 'Transaksi',
+        ];
+        return view('Pegawai/Transaksi/transaksi_keluar', $data);
+    }
 
+    public function edit_trans_keluar_pegawai(){
+        $id_transaksi = $this->request->getUri()->getSegment(5);
+        // dd($id_transaksi);
+        $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
+
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Edit Transaksi Keluar',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tanggal_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],   
+            'user_id' => $data_transaksi['user_id'],
+        ];
+        return view('Pegawai/Transaksi/edit_transaksi_keluar', $data);
+    }
 }
 
 ?>

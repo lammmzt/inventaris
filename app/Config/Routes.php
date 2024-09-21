@@ -214,6 +214,8 @@ $routes->group('KaTU', function ($routes) {
         $routes->get('Proses/(:segment)', 'detailPengadaanController::persetujuan_pengadaan/$1');
         $routes->post('UpdateProsesPersetujuan', 'detailPengadaanController::UpdateProsesPersetujuan');
     });
+
+    $routes->get('Setting','usersController::Setting');
 });
 
 // group route petugasBOS
@@ -233,4 +235,26 @@ $routes->group('PetugasBOS', function ($routes) {
         $routes->get('Proses/(:segment)', 'detailPengadaanController::proses_pengadaan/$1');
     });
 
+    $routes->get('Setting','usersController::Setting');
+});
+
+// group route Pegawai
+$routes->group('Pegawai', function ($routes) {
+    $routes->get('Dashboard', 'Home::index');
+    
+    $routes->group('ATK/Transaksi', function ($routes) {
+        $routes->get('/', 'transaksiController::transaksi_pegawai');
+        $routes->get('DataTablesPegawai', 'transaksiController::ajaxDataTablesPegawai');
+        $routes->get('Keluar', 'detailTransaksiController::transaksi_keluar_pegawai');
+        $routes->post('insertTransaksiPegawai', 'detailTransaksiController::insertTransaksiPegawai');
+        $routes->get('Keluar/(:segment)', 'detailTransaksiController::edit_trans_keluar_pegawai/$1');
+    });
+
+    $routes->group('Inventaris', function ($routes) {
+        $routes->get('Pelaporan', 'pengecekanController::Pelaporan');
+        $routes->post('fetchInventarisByKodeInventaris', 'pengecekanController::fetchInventarisByKodeInventaris');
+        $routes->post('Pelaporan/save', 'pengecekanController::store');
+    });
+
+    $routes->get('Setting','usersController::Setting');
 });

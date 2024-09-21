@@ -140,9 +140,8 @@
                         </li>
                     </ul>
                 </li>
-                <?php endif; ?>
-
                 <?php
+                endif;
                 if (session()->get('role') == 'KA. TU'):
                 ?>
                 <li
@@ -163,6 +162,37 @@
                         class="dropdown-toggle no-arrow <?= $active == 'Pengadaan'  ? 'active' : '' ?>">
                         <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
                     </a>
+                </li>
+
+                <?php
+                endif;
+                if (session()->get('role') == 'Pegawai'):
+                ?>
+                <li
+                    class="dropdown <?= $active == 'ATK' || $active == 'Transaksi' || $active == 'ATK' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-archive"></span><span class="mtext">ATK</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Pegawai/ATK/Transaksi') ?>"
+                                class="<?= $active == 'Transaksi'  ? 'active' : '' ?>">
+                                Transakasi
+                            </a></li>
+                    </ul>
+                </li>
+
+                <li
+                    class="dropdown <?= $active == 'Inventaris' || $active == 'Pengecekan' || $active == 'Inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-box-seam">
+                        </span><span class="mtext">Inventaris</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Pegawai/Inventaris/Pelaporan') ?>"
+                                class="<?= $active == 'Pelaporan'  ? 'active' : '' ?>">
+                                Pelaporan
+                            </a></li>
+                    </ul>
                 </li>
 
                 <?php endif; ?>
