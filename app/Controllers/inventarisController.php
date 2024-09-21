@@ -77,8 +77,8 @@ class inventarisController extends BaseController
                 } elseif ($row->status_inventaris == '2') {
                     return '<span class="badge badge badge-warning">Rusak</span>';
                 } elseif ($row->status_inventaris == '3') {
-                    return '<span class="badge badge badge-secondary">Proses Perbaikan</span>';
-                }
+                    return '<span class="badge badge badge-info">Proses Perbaikan</span>';
+                } 
                 return $row->status_inventaris;
             })
             ->add('action', function ($row) {   

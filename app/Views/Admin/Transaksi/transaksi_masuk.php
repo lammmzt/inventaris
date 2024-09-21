@@ -20,7 +20,7 @@
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="date" class="form-control required" id="tgl_transaksi"
-                                        name="tgl_transaksi">
+                                        name="tgl_transaksi" readonly value="<?= date('Y-m-d'); ?>">
                                     <div class="form-control-feedback " id="errortgl_transaksi"></div>
                                 </div>
                             </div>
@@ -32,7 +32,7 @@
                                         class="rq">*</span></label></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control required" id="ket_transaksi" name="ket_transaksi"
-                                        placeholder="Masukan ket_transaksi transaksi"></textarea>
+                                        placeholder="Masukan ket transaksi"></textarea>
                                     <div class="form-control-feedback " id="errorket_transaksi"></div>
                                 </div>
                             </div>
@@ -60,13 +60,14 @@
                                 <tr>
                                     <th scope="col" class="text-center">#</th>
                                     <th scope="col">Nama ATK</th>
-                                    <th scope="col" class="text-center" style="width: 250px;">QTY</th>
+                                    <th scope="col" class="text-center">Stok</th>
+                                    <th scope="col" class="text-center" style="width: 250px;">Permintaan</th>
                                     <th scope="col" class="text-center" style="width: 150px;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_transaksi">
                                 <tr>
-                                    <td colspan="4" class="text-center">Data Kosong</td>
+                                    <td colspan="5" class="text-center">Data Kosong</td>
                                 </tr>
 
                             </tbody>
@@ -110,7 +111,8 @@ function getATK() {
             var html = '';
             html += '<option value="">Pilih ATK</option>';
             $.each(response.data, function(key, value) {
-                html += '<option value="' + value.id_atk + '">' + value.nama_barang +
+                html += '<option value="' + value.id_atk + '" data-stok="' + value.qty_atk + '">' +
+                    value.nama_barang +
                     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' + ' @ ' + value
                     .nama_satuan +
                     '</option>';
@@ -151,12 +153,14 @@ $('#atk_id').change(function() {
 function addDetailTransaksi() {
     var atk_id = $('#atk_id').val();
     var atk_text = $('#atk_id option:selected').text();
+    var stok = $('#atk_id option:selected').data('stok');
     var qty = 1;
     var index = detail_transaksi.findIndex(x => x.atk_id == atk_id);
     if (index == -1) {
         detail_transaksi.push({
             atk_id: atk_id,
             atk_text: atk_text,
+            stok: stok,
             qty: qty
         });
     } else {
@@ -173,6 +177,7 @@ function renderDetailTransaksi() {
         html += '<tr>';
         html += '<td class="text-center">' + (key + 1) + '</td>';
         html += '<td>' + value.atk_text + '</td>';
+        html += '<td class="text-center">' + value.stok + '</td>';
         html +=
             '<td class="text-center"><input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' +
             value
@@ -192,7 +197,7 @@ function deleteDetailTransaksi(index) {
     renderDetailTransaksi();
     if (detail_transaksi.length == 0) {
         $('#tbody_transaksi').html(
-            '<tr><td colspan="4" class="text-center">Data Kosong</td></tr>');
+            '<tr><td colspan="5" class="text-center">Data Kosong</td></tr>');
     }
 }
 

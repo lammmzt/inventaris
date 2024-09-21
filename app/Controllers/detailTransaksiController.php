@@ -35,6 +35,13 @@ class detailTransaksiController extends BaseController
             ->add('nama_barang', function ($row) {
                 return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
             })
+            ->add('status_detail_transaksi', function ($row) {
+                return '<select class="form-control input_status required" id="'. $row->id_detail_transaksi .'">
+                            <option value="" '. ($row->status_detail_transaksi == '0' ? 'selected' : '') .'>--Pilih Status--</option>
+                            <option value="1" '. ($row->status_detail_transaksi == '1' ? 'selected' : '') .'>Setuju</option>
+                            <option value="2" '. ($row->status_detail_transaksi == '2' ? 'selected' : '') .'>Tolak</option>
+                        </select>';
+            })
              ->add('qty', function ($row) {
                 return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
             })
@@ -89,6 +96,18 @@ class detailTransaksiController extends BaseController
         ]);
     }
 
+    public function fetchDetailTransByIdTrans()
+    {
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        $data = $this->detailTransaksiModel->getTransByTransId($id_transaksi)->findAll();
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+
+
     // ==================== TRANSAKSI MASUK ====================
 
     public function transaksi_masuk()
@@ -101,17 +120,6 @@ class detailTransaksiController extends BaseController
         return view('Admin/Transaksi/transaksi_masuk', $data);
     }
         
-    public function fetchDetailTransByIdTrans()
-    {
-        $id_transaksi = $this->request->getPost('id_transaksi');
-        $data = $this->detailTransaksiModel->getTransByTransId($id_transaksi)->findAll();
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
-    }
-
     public function insertTransaksiMasuk(){
         $ket_transaksi = $this->request->getPost('ket_transaksi');
         $tgl_transaksi = $this->request->getPost('tgl_transaksi');
@@ -136,17 +144,17 @@ class detailTransaksiController extends BaseController
                 'transaksi_id' => $data['id_transaksi'],
                 'atk_id' => $detail_transaksi[$i]['atk_id'],
                 'qty' => $detail_transaksi[$i]['qty'],
-                'status_detail_transaksi' => '1',
+                'status_detail_transaksi' => '0',
             ];
 
             // insert detail transaksi
             $this->detailTransaksiModel->save($dt_trx);
             
-            // cari data atk
-            $data_atk = $this->atkModel->find($detail_transaksi[$i]['atk_id']);
+            // // cari data atk
+            // $data_atk = $this->atkModel->find($detail_transaksi[$i]['atk_id']);
 
-            // update qty atk
-            $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $detail_transaksi[$i]['qty']]);
+            // // update qty atk
+            // $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $detail_transaksi[$i]['qty']]);
         }
 
         return $this->response->setJSON([
@@ -172,13 +180,13 @@ class detailTransaksiController extends BaseController
         return view('Admin/Transaksi/edit_transaksi_masuk', $data);
     }
 
-    public function updateDetailATKMasuk(){
+    public function updateDetailATKMasuk(){ 
         $transaksi_id = $this->request->getPost('id_transaksi');
         $qty = $this->request->getPost('qty');
         $atk_id = $this->request->getPost('atk_id');
         
         // find data atk
-        $data_atk = $this->atkModel->find($atk_id);
+        // $data_atk = $this->atkModel->find($atk_id);
 
         // find detail transaksi
         $data_detail = $this->detailTransaksiModel->where('transaksi_id', $transaksi_id)->where('atk_id', $atk_id)->first();
@@ -188,7 +196,7 @@ class detailTransaksiController extends BaseController
             $this->detailTransaksiModel->update($data_detail['id_detail_transaksi'], ['qty' => $data_detail['qty'] + $qty]);
 
             // update qty atk
-            $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
+            // $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
 
             return $this->response->setJSON([
                 'error' => false,
@@ -201,13 +209,12 @@ class detailTransaksiController extends BaseController
             'transaksi_id' => $transaksi_id,
             'atk_id' => $atk_id,
             'qty' => $qty,
-            'status_detail_transaksi' => '1',
         ];
         // insert detail transaksi
         $this->detailTransaksiModel->save($data);
 
-        // update qty atk
-        $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
+        // // update qty atk
+        // $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
         
         return $this->response->setJSON([
             'error' => false,
@@ -224,13 +231,13 @@ class detailTransaksiController extends BaseController
         $data_detail = $this->detailTransaksiModel->find($id_detail_transaksi);
 
         // cari data atk
-        $data_atk = $this->atkModel->find($data_detail['atk_id']);
+        // $data_atk = $this->atkModel->find($data_detail['atk_id']);
 
         // update qty detail transaksi
         $this->detailTransaksiModel->update($id_detail_transaksi, ['qty' => $qty]);
         
         // update qty atk
-        $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty'] + $qty]);
+        // $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty'] + $qty]);
 
         return $this->response->setJSON([
             'error' => false,
@@ -248,10 +255,10 @@ class detailTransaksiController extends BaseController
         $data_detail = $this->detailTransaksiModel->find($id_detail_transaksi);
 
         // cari data atk
-        $data_atk = $this->atkModel->find($data_detail['atk_id']);
+        // $data_atk = $this->atkModel->find($data_detail['atk_id']);
 
         // update qty atk
-        $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
+        // $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
         
         // delete detail transaksi
         $this->detailTransaksiModel->delete($id_detail_transaksi);
@@ -288,7 +295,7 @@ class detailTransaksiController extends BaseController
             // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
             'tipe_transaksi' => '1',
             'ket_transaksi' => $ket_transaksi,
-            'status_transaksi' => '0',
+            'status_transaksi' => '1',
             'tanggal_transaksi' => $tgl_transaksi,
         ];
 
@@ -430,7 +437,7 @@ class detailTransaksiController extends BaseController
             
         }
 
-        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '1']);
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '4']);
 
         return $this->response->setJSON([
             'error' => false,
@@ -471,6 +478,70 @@ class detailTransaksiController extends BaseController
             'status' => '200'
         ]);
     }
+
+    
+    // ==================== PROSES TRANSAKSI MASUK ====================
+
+    // ================================= KA TU ==============================
+    public function proses_setuju(){ 
+        $id_transaksi = $this->request->getUri()->getSegment(5);
+        // dd($id_transaksi);
+        $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
+
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Edit Transaksi Masuk',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tgl_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],   
+            'nama_user' => $data_transaksi['nama_user'],
+        ];
+        return view('KaTu/Transaksi/Proses', $data);
+    }
+
+    public function UpdateProsesPersetujuan(){
+        $detail_data = $this->request->getPost('detail_data');
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        
+        for ($i=0; $i < count($detail_data); $i++) { 
+            $data = [
+                'id_detail_transaksi' => $detail_data[$i]['id'],
+                'status_detail_transaksi' => $detail_data[$i]['status'],
+            ];
+            
+            $this->detailTransaksiModel->update($data['id_detail_transaksi'], ['status_detail_transaksi' => $data['status_detail_transaksi']]);
+            
+        }
+
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '2']);
+
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
+    }
+
+    // ================================= PETUGAS BOS ==============================
+    public function proses_pengadaan(){ 
+        $id_transaksi = $this->request->getUri()->getSegment(5);
+        // dd($id_transaksi);
+        $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
+
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Edit Transaksi Masuk',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tgl_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],   
+            'nama_user' => $data_transaksi['nama_user'],
+        ];
+        return view('PetugasBos/Transaksi/Proses', $data);
+    }
+    
+
 }
 
 ?>

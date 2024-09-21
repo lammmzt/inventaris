@@ -12,28 +12,29 @@
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
-                <form id="form_tambah_transaksi_keluar">
-                    <input type="hidden" name="id_transaksi" id="id_transaksi" value="<?= $id_transaksi; ?>">
+                <form id="form_tambah_transaksi_masuk" class="mt-3">
                     <div class="row">
+                        <!-- nama pemohon -->
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label for="user_id" class="col-sm-4 col-form-label">Nama Pemohon<span
+                                <label for="nama_user" class="col-sm-4 col-form-label">Nama Pemohon<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="user_id" readonly name="user_id"
-                                        value="<?= $nama_user; ?>">
-                                    <div class="form-control-feedback " id="erroruser_id"></div>
+                                    <input type="text" class="form-control required" id="nama_user" name="nama_user"
+                                        value="<?= $nama_user; ?>" readonly>
+                                    <div class="form-control-feedback " id="errornama_user"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
+                            <input type="hidden" id="id_transaksi" name="id_transaksi" value="<?= $id_transaksi; ?>">
                             <div class="form-group row">
-                                <label for="tanggal_transaksi" class="col-sm-4 col-form-label">Tanggal<span
+                                <label for="tgl_transaksi" class="col-sm-4 col-form-label">Tanggal<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control" id="tanggal_transaksi" readonly
-                                        name="tanggal_transaksi" value="<?= $tanggal_transaksi; ?>">
-                                    <div class="form-control-feedback " id="errortanggal_transaksi"></div>
+                                    <input type="date" class="form-control required" id="tgl_transaksi"
+                                        name="tgl_transaksi" value="<?= $tgl_transaksi; ?>" readonly>
+                                    <div class="form-control-feedback " id="errortgl_transaksi"></div>
                                 </div>
                             </div>
                         </div>
@@ -45,7 +46,8 @@
                                 <label for="ket_transaksi" class="col-sm-4 col-form-label">Keterangan<span
                                         class="rq">*</span></label></label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" id="ket_transaksi" name="ket_transaksi" readonly
+                                    <textarea class="form-control required" id="ket_transaksi" name="ket_transaksi"
+                                        readonly
                                         placeholder="Masukan ket_transaksi transaksi"><?= $ket_transaksi; ?></textarea>
                                     <div class="form-control-feedback " id="errorket_transaksi"></div>
                                 </div>
@@ -59,12 +61,12 @@
                                 <tr>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
                                     <th scope="col" class="datatable-nosort">Nama ATK</th>
-                                    <th scope="col" class="text-center datatable-nosort">
+                                    <th scope="col" class="datatable-nosort text-center">Stok</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
                                         Permintaan</th>
-                                    <th scope="col" class="text-center datatable-nosort">Stok</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">Catatan
-                                    </th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 200px;">Action
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
+                                        Catatan</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 150px;">Action
                                     </th>
                                 </tr>
                             </thead>
@@ -84,13 +86,7 @@
         </div>
     </div>
 </div>
-<style>
-/* mx height table 500px and srroler down */
-.table-responsive {
-    max-height: 400px;
-    overflow-y: auto;
-}
-</style>
+
 <!-- ======================================== END transaksi ======================================== -->
 
 <?= $this->endSection('content');?>
@@ -113,15 +109,15 @@ function dataTablesDetailBarang() {
                 data.id_transaksi = $('#id_transaksi').val();
             }
         },
-        // "lengthMenu": [
-        //     [5, 10, 25, 50, -1],
-        //     [5, 10, 25, 50, "All"]
-        // ],
+        "lengthMenu": [
+            [5, 10, 25, 50, -1],
+            [5, 10, 25, 50, "All"]
+        ],
 
         // search, paging, info false
-        searching: false,
-        paging: false,
-        info: false,
+        // searching: false,
+        // paging: false,
+        // info: false,
 
         // remove order default sorting
         order: [],
@@ -138,11 +134,11 @@ function dataTablesDetailBarang() {
                 class: 'table-plus'
             },
             {
-                data: 'qty',
+                data: 'qty_atk',
                 class: 'text-center'
             },
             {
-                data: 'qty_atk',
+                data: 'qty',
                 class: 'text-center'
             },
             {
@@ -166,6 +162,7 @@ $(document).ready(function() {
     dataTablesDetailBarang();
 });
 
+
 function getSwall(status, message) {
     swal({
         title: message,
@@ -176,6 +173,7 @@ function getSwall(status, message) {
 
     })
 }
+
 
 
 // event focus lost input qty
@@ -191,7 +189,7 @@ $(document).on('focusout', '.input_qty', function() {
     // alert(data);
 
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateQtyKeluar') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/updateQtyMasuk') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
@@ -205,6 +203,7 @@ $(document).on('focusout', '.input_qty', function() {
         }
     });
 });
+
 
 // event focus lost input catatan
 $(document).on('focusout', '.input_catatan', function() {
@@ -251,6 +250,7 @@ $('#btn_simpan').click(function() {
             $("#btn_simpan").html('Simpan');
             getSwall('error', 'Status belum dipilih');
             data = [];
+            return false;
         } else {
             data.push({
                 id: id,
@@ -264,7 +264,7 @@ $('#btn_simpan').click(function() {
 
     if (data.length > 0) {
         $.ajax({
-            url: '<?= base_url('Admin/ATK/Transaksi/UpdateprosesTransKeluar') ?>',
+            url: '<?= base_url('Admin/ATK/Transaksi/UpdateProsesPersetujuan') ?>',
             method: 'post',
             data: {
                 detail_data: data,

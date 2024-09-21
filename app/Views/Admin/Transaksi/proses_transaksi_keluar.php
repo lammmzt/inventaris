@@ -59,9 +59,8 @@
                                 <tr>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
                                     <th scope="col" class="datatable-nosort">Nama ATK</th>
-                                    <th scope="col" class="text-center datatable-nosort">
-                                        Permintaan</th>
                                     <th scope="col" class="text-center datatable-nosort">Stok</th>
+                                    <th scope="col" class="text-center datatable-nosort">Permintaan</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 250px;">Catatan
                                     </th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 200px;">Action
@@ -138,13 +137,14 @@ function dataTablesDetailBarang() {
                 class: 'table-plus'
             },
             {
-                data: 'qty',
-                class: 'text-center'
-            },
-            {
                 data: 'qty_atk',
                 class: 'text-center'
             },
+            {
+                data: 'qty',
+                class: 'text-center'
+            },
+
             {
                 data: 'catatan_detail_transaksi',
                 class: 'text-center'
@@ -251,6 +251,7 @@ $('#btn_simpan').click(function() {
             $("#btn_simpan").html('Simpan');
             getSwall('error', 'Status belum dipilih');
             data = [];
+            return false;
         } else {
             data.push({
                 id: id,

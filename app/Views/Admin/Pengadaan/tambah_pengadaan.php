@@ -16,15 +16,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label for="tgl_pengadaan" class="col-sm-4 col-form-label">Jenis Pengadaan<span
+                                <label for="tgl_pengadaan" class="col-sm-4 col-form-label">Tanggal<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <select class="form-control" name="jenis_pengadaan" id="jenis_pengadaan"
-                                        style="width: 100%; height: 38px;">
-                                        <option value="">Pilih Jenis Pengadaan</option>
-                                        <option value="0">ATK</option>
-                                        <option value="1">Inventaris</option>
-                                    </select>
+                                    <input class="form-control required" type="date" id="tgl_pengadaan"
+                                        name="tgl_pengadaan" placeholder="Masukan tanggal pengadaan" readonly
+                                        value="<?= date('Y-m-d'); ?>">
                                     <div class="form-control-feedback " id="errortgl_pengadaan"></div>
                                 </div>
                             </div>
@@ -64,13 +61,14 @@
                                 <tr>
                                     <th scope="col" class="text-center">#</th>
                                     <th scope="col">Nama Barang</th>
-                                    <th scope="col" class="text-center" style="width: 250px;">QTY</th>
+                                    <th scope="col">Spek</th>
+                                    <th scope="col" class="text-center" style="width: 250px;">Jumlah</th>
                                     <th scope="col" class="text-center" style="width: 150px;">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody_pengadaan">
                                 <tr>
-                                    <td colspan="4" class="text-center">Data Kosong</td>
+                                    <td colspan="5" class="text-center">Data Kosong</td>
                                 </tr>
 
                             </tbody>
@@ -115,7 +113,7 @@ function getTipeBarang(jenis_barang) {
         dataType: 'json',
         success: function(response) {
             var html = '';
-            html += '<option value="">Pilih ATK</option>';
+            html += '<option value="">Pilih Barang</option>';
             if (response.status == '200') {
                 $.each(response.data, function(key, value) {
                     html += '<option value="' + value.id_tipe_barang + '">' + value
@@ -129,7 +127,7 @@ function getTipeBarang(jenis_barang) {
 };
 
 $(document).ready(function() {
-    getTipeBarang(0);
+    getTipeBarang(1);
 });
 
 // when change jenis pengadaan
@@ -170,6 +168,7 @@ function addDetailPengadaan() {
         detail_pengadaan.push({
             tipe_barang_id: tipe_barang_id,
             nama_barang: nama_barang,
+            spek: '',
             qty: qty
         });
     } else {
@@ -186,6 +185,9 @@ function renderDetailpengadaan() {
         html += '<tr>';
         html += '<td class="text-center">' + (key + 1) + '</td>';
         html += '<td>' + value.nama_barang + '</td>';
+        html +=
+            '<td><textarea class="form-control input_spek" style="min-width: 100px; height: 50px;" placeholder="Masukan spesifikasi" id="spek_' +
+            key + '">' + value.spek + '</textarea></td>';
         html +=
             '<td class="text-center"><input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' +
             value
@@ -205,7 +207,7 @@ function deleteDetailpengadaan(index) {
     renderDetailpengadaan();
     if (detail_pengadaan.length == 0) {
         $('#tbody_pengadaan').html(
-            '<tr><td colspan="4" class="text-center">Data Kosong</td></tr>');
+            '<tr><td colspan="5" class="text-center">Data Kosong</td></tr>');
     }
 }
 
@@ -218,6 +220,14 @@ $('#btn_plus').click(function() {
 $(document).on('change', '.input_qty', function() {
     var index = $(this).attr('id').split('_')[1];
     detail_pengadaan[index].qty = $(this).val();
+    renderDetailpengadaan();
+});
+
+// event change focus loss input spek
+$(document).on('focusout', '.input_spek', function() {
+    var index = $(this).attr('id').split('_')[1];
+    detail_pengadaan[index].spek = $(this).val();
+    // console.log(detail_pengadaan);
     renderDetailpengadaan();
 });
 
@@ -234,6 +244,8 @@ $('#btn_simpan').click(function() {
         return;
     }
 
+    ket_pengadaan = $('#ket_pengadaan').val();
+
     if (ket_pengadaan == '') {
         $("#ket_pengadaan").addClass('form-control-danger');
         $("#errorket_pengadaan").addClass('has-danger');
@@ -248,18 +260,18 @@ $('#btn_simpan').click(function() {
     }
 
     var data = {
-        tgl_pengadaan: tgl_pengadaan,
         ket_pengadaan: ket_pengadaan,
-        detail_pengadaan: detail_pengadaan
+        item_pengadaan: detail_pengadaan
     };
+    // console.log(data);
 
     $("#btn_simpan").attr("disabled", "disabled");
     $("#btn_simpan").html(
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
     );
-    // console.log(data);
+    console.log(data);
     $.ajax({
-        url: '<?= base_url('Admin/Pengadaan/insertpengadaanMasuk') ?>',
+        url: '<?= base_url('Admin/Pengadaan/save') ?>',
         method: 'post',
         data: data,
         dataType: 'json',

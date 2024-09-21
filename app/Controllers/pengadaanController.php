@@ -13,13 +13,11 @@ class pengadaanController extends BaseController
 {
     protected $pengadaanModel;
     protected $detailpengadaanModel;
-    protected $atkModel;
 
     public function __construct()
     {
         $this->detailpengadaanModel = new detailpengadaanModel();
         $this->pengadaanModel = new pengadaanModel();
-        $this->atkModel = new atkModel();
     }
 
     public function index()
@@ -34,25 +32,19 @@ class pengadaanController extends BaseController
     
     public function ajaxDataTables()
     {
-        $role = session()->get('role');
-        if ($role == 'Admin') {
-            $builder = $this->pengadaanModel->getPengadaan();
-        } else if ($role == 'KA. TU') {
-            $builder = $this->pengadaanModel->getPengadaan()->where(['status_pengadaan' => '2'])->orWhere(['status_pengadaan' => '1']);
-        }else{
-            $builder = $this->pengadaanModel->getPengadaan()->where(['status_pengadaan' => '3'])->orWhere(['status_pengadaan' => '2']);
-        }
-        // dd($builder);
+        $builder = $this->pengadaanModel->getPengadaan();
+       
+        // dd($builder->findAll());
         return DataTable::of($builder)
              ->add('status_pengadaan', function ($row) {
                 if($row->status_pengadaan == 1){
-                    return '<span class="badge badge-secondary">Permintaan</span>';
+                    return '<span class="badge badge-warning">Persetujuan</span>';
                 }else if($row->status_pengadaan == 2){
-                    return '<span class="badge badge-warning">Proses</span>';
+                    return '<span class="badge badge-primary">Disetujui</span>';
                 }else if($row->status_pengadaan == 3){
-                    return '<span class="badge badge-success">Pengadaan</span>';
+                    return '<span class="badge badge-info">Proses Pengadaan</span>';
                 }else if($row->status_pengadaan == 4){
-                    return '<span class="badge badge-info">Selesai</span>';
+                    return '<span class="badge badge-success">Selesai</span>';
                 }else{
                     return '<span class="badge badge-danger">Ditolak</span>';
                 }
@@ -61,10 +53,11 @@ class pengadaanController extends BaseController
             ->add('action', function ($row) {   
                 return '
                 <div class="dropdown">
-                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
-                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        <a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/ATK/pengadaan/Masuk/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
-                        <button class="dropdown-item detail_trans_masuk" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
+                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>    
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                        '.($row->status_pengadaan == '1' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/Pengadaan/' . $row->id_pengadaan) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        ' : ($row->status_pengadaan == '3' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('Admin/Pengadaan/Proses/' . $row->id_pengadaan) . '"><i class="dw dw-check"></i> Proses</a>' : '')).'
+                        <button class="dropdown-item detail_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
                         </div>
                 </div>
                 ';
@@ -102,7 +95,7 @@ class pengadaanController extends BaseController
         ]);
     }
 
-    public function updateTransMasuk()
+    public function update()
     {
         $id_pengadaan = $this->request->getPost('id_pengadaan');
         
@@ -110,13 +103,6 @@ class pengadaanController extends BaseController
         $validation->setRules([
             'ket_pengadaan' => [
                 'label' => 'Keterangan pengadaan',
-                'rules' => 'required',
-                'errors' => [
-                    'required' => '{field} tidak boleh kosong',
-                ],
-            ],
-            'tanggal_pengadaan' => [
-                'label' => 'Tanggal pengadaan',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
@@ -133,7 +119,6 @@ class pengadaanController extends BaseController
         } else {
             $data = [
                 'ket_pengadaan' => $this->request->getPost('ket_pengadaan'),
-                'tanggal_pengadaan' => $this->request->getPost('tanggal_pengadaan'),
             ];
             
             $this->pengadaanModel->update($id_pengadaan, $data);
@@ -207,31 +192,51 @@ class pengadaanController extends BaseController
         ]);
     }
 
-    public function changeStatus()
+    public function persetujuan_pengadaan()
     {
-        $id_pengadaan = $this->request->getPost('id_pengadaan');
-
-        $status_pengadaan = $this->pengadaanModel->find($id_pengadaan);
         $data = [
-            'status_pengadaan' => $status_pengadaan['status_pengadaan'] == '1' ? '0' : '1',
+            'main_menu' => 'Pengadaan',
+            'title' => 'Proses Pengadaan',
+            'active' => 'Pengadaan',
         ];
-        $this->pengadaanModel->update($id_pengadaan, $data);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => 'Status berhasil diubah',
-            'status' => '200'
-        ]);
+        return view('KaTU/Pengadaan/index', $data);
     }
 
-    public function fetchDatapengadaan()
+    public function ajaxDataTablesProsesSetuju()
     {
-        $id_pengadaan = $this->request->getPost('id_pengadaan');
-        $data = $this->pengadaanModel->find($id_pengadaan);
-        return $this->response->setJSON([
-            'error' => false,
-            'data' => $data,
-            'status' => '200'
-        ]);
+        $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '1')->orWhere('status_pengadaan', '2');
+       
+        // dd($builder->findAll());
+        return DataTable::of($builder)
+             ->add('status_pengadaan', function ($row) {
+                if($row->status_pengadaan == 1){
+                    return '<span class="badge badge-warning">Persetujuan</span>';
+                }else if($row->status_pengadaan == 2){
+                    return '<span class="badge badge-primary">Disetujui</span>';
+                }else if($row->status_pengadaan == 3){
+                    return '<span class="badge badge-info">Proses Pengadaan</span>';
+                }else if($row->status_pengadaan == 4){
+                    return '<span class="badge badge-sucess">Selesai</span>';
+                }else{
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+                
+            })
+            ->add('action', function ($row) {   
+                return '
+                <div class="dropdown">
+                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>    
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                        '.($row->status_pengadaan == '1' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('KaTU/Pengadaan/Proses/' . $row->id_pengadaan) . '"><i class="dw dw-check"></i> Proses</a>
+               
+                        ' : '').'
+                        <button class="dropdown-item detail_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
+                       
+                        </div>
+                </div>
+                ';
+            }, 'last')
+            ->toJson(true);
     }
     
 

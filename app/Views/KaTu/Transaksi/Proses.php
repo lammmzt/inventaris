@@ -8,12 +8,24 @@
                 <!-- <h5 class="h4 text-blue mb-20">Form Edit Transaksi Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
+                        <a href="<?= base_url('KaTU/ATK/Transaksi'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
                 <form id="form_tambah_transaksi_masuk" class="mt-3">
                     <div class="row">
+                        <!-- nama pemohon -->
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="nama_user" class="col-sm-4 col-form-label">Nama Pemohon<span
+                                        class="rq">*</span></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control required" id="nama_user" name="nama_user"
+                                        value="<?= $nama_user; ?>" readonly>
+                                    <div class="form-control-feedback " id="errornama_user"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <input type="hidden" id="id_transaksi" name="id_transaksi" value="<?= $id_transaksi; ?>">
                             <div class="form-group row">
@@ -21,11 +33,13 @@
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="date" class="form-control required" id="tgl_transaksi"
-                                        name="tgl_transaksi" value="<?= $tgl_transaksi; ?>">
+                                        name="tgl_transaksi" value="<?= $tgl_transaksi; ?>" readonly>
                                     <div class="form-control-feedback " id="errortgl_transaksi"></div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <!-- ket -->
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -33,26 +47,11 @@
                                         class="rq">*</span></label></label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control required" id="ket_transaksi" name="ket_transaksi"
+                                        readonly
                                         placeholder="Masukan ket_transaksi transaksi"><?= $ket_transaksi; ?></textarea>
                                     <div class="form-control-feedback " id="errorket_transaksi"></div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="atk_id" class="col-sm-2 col-form-label">Nama ATK<span
-                                class="rq">*</span></label></label>
-                        <div class="col-sm-9">
-                            <select class="custom-select2 form-control" name="atk_id" id="atk_id"
-                                style="width: 100%; height: 38px;">
-
-                            </select>
-                        </div>
-                        <div class="col-sm-1">
-                            <button type="button" class="btn btn-primary text-right d-flex align-items-center m-1"
-                                id="btn_plus" disabled>
-                                <i class="fa fa-plus"></i>
-                            </button>
                         </div>
                     </div>
 
@@ -62,7 +61,11 @@
                                 <tr>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
                                     <th scope="col" class="datatable-nosort">Nama ATK</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">QTY</th>
+                                    <th scope="col" class="datatable-nosort text-center">Stok</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
+                                        Permintaan</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
+                                        Catatan</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 150px;">Action
                                     </th>
                                 </tr>
@@ -74,7 +77,7 @@
 
                     <div class="row mt-3">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-primary float-right" id="btn_update">Update</button>
+                            <button type="button" class="btn btn-primary float-right" id="btn_simpan">Simpan</button>
                         </div>
                     </div>
                 </form>
@@ -100,7 +103,7 @@ function dataTablesDetailBarang() {
         autoWidth: false,
         responsive: true,
         ajax: {
-            url: '<?= base_url('Admin/ATK/Transaksi/DataTablesEditTransMasuk') ?>',
+            url: '<?= base_url('Admin/ATK/Transaksi/DataTablesEditTransKeluar') ?>',
             type: 'POST',
             data: function(data) {
                 data.id_transaksi = $('#id_transaksi').val();
@@ -131,11 +134,19 @@ function dataTablesDetailBarang() {
                 class: 'table-plus'
             },
             {
+                data: 'qty_atk',
+                class: 'text-center'
+            },
+            {
                 data: 'qty',
                 class: 'text-center'
             },
             {
-                data: 'action',
+                data: 'catatan_detail_transaksi',
+                class: 'text-center'
+            },
+            {
+                data: 'status_detail_transaksi',
                 class: 'text-center'
             },
 
@@ -151,30 +162,6 @@ $(document).ready(function() {
     dataTablesDetailBarang();
 });
 
-// get data tipe barang
-function getATK() {
-    $.ajax({
-        url: '<?= base_url('Admin/ATK/fetchAll') ?>',
-        method: 'post',
-        dataType: 'json',
-        success: function(response) {
-            var html = '';
-            html += '<option value="">Pilih ATK</option>';
-            $.each(response.data, function(key, value) {
-                html += '<option value="' + value.id_atk + '">' + value.nama_barang +
-                    ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' + ' @ ' + value
-                    .nama_satuan +
-                    '</option>';
-                // html += '<option value="' + value.id_atk + '">' + +
-                //     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' +
-                //     '</option>';
-            });
-            $('#atk_id').html(html);
-        }
-    });
-};
-
-getATK();
 
 function getSwall(status, message) {
     swal({
@@ -187,86 +174,6 @@ function getSwall(status, message) {
     })
 }
 
-// when click button delete
-$(document).on('click', '.deleteTransMasuk', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    swal({
-        title: 'Apakah anda yakin?',
-        text: "Data yang dihapus tidak dapat dikembalikan!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal',
-    }).then((result) => {
-        if (result.value) {
-            $.ajax({
-                url: '<?= base_url('Admin/ATK/Transaksi/deleteTransMasuk') ?>',
-                method: 'post',
-                data: {
-                    id_detail_transaksi: id
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == '200') {
-                        getSwall(response.status, response.data);
-                        $('#tableDetailBarang').DataTable().ajax.reload();
-                    } else {
-                        getSwall(response.status, response.data);
-                    }
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            });
-        }
-    });
-});
-
-// event change tipe barang
-$('#atk_id').change(function() {
-    if ($('#atk_id').val() !== '') {
-        $('#btn_plus').prop('disabled', false);
-    } else {
-        $('#btn_plus').attr('disabled', true);
-    }
-});
-
-// function to update detail
-function updatedDetailTransMasuk() {
-    var atk_id = $('#atk_id').val();
-    var id_transaksi = $('#id_transaksi').val();
-
-    var data = {
-        atk_id: atk_id,
-        id_transaksi: id_transaksi,
-        qty: 1
-    };
-    $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateDetailATKMasuk') ?>',
-        method: 'post',
-        data: data,
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == '200') {
-                getSwall(response.status, response.data);
-                $('#tableDetailBarang').DataTable().ajax.reload();
-            } else {
-                getSwall(response.status, response.data);
-            }
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    });
-}
-
-// event click button plus
-$('#btn_plus').click(function() {
-    updatedDetailTransMasuk();
-});
 
 
 // event focus lost input qty
@@ -297,34 +204,25 @@ $(document).on('focusout', '.input_qty', function() {
     });
 });
 
-// event click button update
-$('#btn_update').click(function() {
-    var id_transaksi = $('#id_transaksi').val();
-    var tanggal_transaksi = $('#tgl_transaksi').val();
-    var ket_transaksi = $('#ket_transaksi').val();
-    $("#btn_update").attr("disabled", "disabled");
-    $("#btn_update").html(
-        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
-    );
-    // alert(tgl_transaksi);
+
+// event focus lost input catatan
+$(document).on('focusout', '.input_catatan', function() {
+    const id = $(this).attr('id');
+    const catatan = $(this).val();
+    // alert(catatan);
     var data = {
-        id_transaksi: id_transaksi,
-        tanggal_transaksi: tanggal_transaksi,
-        ket_transaksi: ket_transaksi
+        id_detail_transaksi: id,
+        catatan: catatan
     };
 
+    // alert(data);
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateTransMasuk') ?>',
+        url: '<?= base_url('Admin/ATK/Transaksi/updatedCatatan') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
         success: function(response) {
-            if (response.status == '200') {
-                getSwall(response.status, response.data);
-                $("#btn_update").removeAttr("disabled");
-                $("#btn_update").html('Update');
-                $('#tableDetailBarang').DataTable().ajax.reload();
-            } else {
+            if (response.status != '200') {
                 getSwall(response.status, response.data);
             }
         },
@@ -332,6 +230,64 @@ $('#btn_update').click(function() {
             console.log(err);
         }
     });
+});
+
+// event click button update
+$('#btn_simpan').click(function() {
+
+    // get all input_status value and id
+    var data = [];
+    $("#btn_simpan").attr("disabled", "disabled");
+    $("#btn_simpan").html(
+        '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+    );
+    $('.input_status').each(function() {
+        var id = $(this).attr('id');
+        var status = $(this).val();
+        if (status == '') {
+            $(this).focus();
+            $("#btn_simpan").removeAttr("disabled");
+            $("#btn_simpan").html('Simpan');
+            getSwall('error', 'Status belum dipilih');
+            data = [];
+            return false;
+        } else {
+            data.push({
+                id: id,
+                status: status
+            });
+        }
+    });
+
+    // console.log(data);
+    // alert(data);
+
+    if (data.length > 0) {
+        $.ajax({
+            url: '<?= base_url('KaTU/ATK/Transaksi/UpdateProsesPersetujuan') ?>',
+            method: 'post',
+            data: {
+                detail_data: data,
+                id_transaksi: $('#id_transaksi').val()
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status != '200') {
+                    getSwall(response.status, response.data);
+                } else {
+                    getSwall(response.status, response.data);
+                    $("#btn_simpan").removeAttr("disabled");
+                    $("#btn_simpan").html('Simpan');
+                    setTimeout(function() {
+                        window.location.href = '<?= base_url('KaTU/ATK/Transaksi'); ?>';
+                    }, 1500);
+                }
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        });
+    }
 });
 </script>
 

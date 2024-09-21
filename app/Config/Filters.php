@@ -12,6 +12,12 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
+use App\Filters\filterPetugasBOS;
+use App\Filters\filterPegawai;
+use App\Filters\filterAdmin;
+use App\Filters\filterKaTU;
+use App\Filters\filterKepsek;
+use App\Filters\Middleware;
 
 class Filters extends BaseFilters
 {
@@ -34,6 +40,12 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'filterPetugasBOS' => filterPetugasBOS::class,
+        'filterPegawai' => filterPegawai::class,
+        'filterAdmin' => filterAdmin::class,
+        'filterKaTU' => filterKaTU::class,
+        'filterKepsek' => filterKepsek::class,
+        'Middleware' => Middleware::class,
     ];
 
     /**
@@ -69,13 +81,15 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
-            // 'honeypot',
-            // 'csrf',
-            // 'invalidchars',
+            'Middleware' => ['except' => ['Auth','Auth/*',]],
         ],
         'after' => [
-            // 'honeypot',
-            // 'secureheaders',
+            'filterAdmin' => ['except' => [ 
+                '/', 'Auth/logout', 'Auth/login','Admin/Dashboard', 'Admin/Barang', 'Admin/Barang*', 'Admin/Ruangan', 'Admin/Ruangan/*', 'Admin/Satuan', 'Admin/Satuan/*', 'Admin/ATK', 'Admin/ATK/*', 'Admin/Inventaris', 'Admin/Inventaris/*', 'Admin/Pengadaan', 'Admin/Pengadaan/*', 'Admin/User', 'Admin/User/*', 'Admin/Laporan', 'Admin/Laporan/*', 
+            ]],
+            'filterKaTU' => ['except' => [ 
+                '/', 'Auth/logout','Auth/login', 'KaTU/Dashboard', 'KaTu/ATK/Transaksi', 'KaTu/ATK/Transaksi/*', 'KaTu/Pengadaan', 'KaTu/Pengadaan/*', 'Admin/ATK/Transaksi/DataTablesKeluar', 'Admin/ATK/Transaksi/edit', 'Admin/ATK/Transaksi/fetchDetailTransByIdTrans','Admin/ATK/Transaksi/edit', 'Admin/ATK/Transaksi/fetchDetailTransByIdTrans','Admin/ATK/Transaksi/DataTablesEditTransKeluar', 'Admin/ATK/Transaksi/updateQtyMasuk', 'Admin/ATK/Transaksi/updatedCatatan', 'Admin/Pengadaan/edit', 'Admin/Pengadaan/fetchPengadaanById', 'Admin/Pengadaan/DataTablesDetailPengadaan', 'Admin/Barang/Detail/fetchTipeBarangByJenisBarang', 'Admin/Pengadaan/Delete', 'Admin/Pengadaan/updatePengadaan', 'Admin/Pengadaan/updateQty', 'Admin/Pengadaan/updateSpek', 'Admin/Pengadaan/updateCatatan'
+            ]],
         ],
     ];
 

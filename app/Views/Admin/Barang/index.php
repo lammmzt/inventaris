@@ -59,11 +59,11 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="jenis_barang" class="col-sm-4 col-form-label">jenis_barang<span
+                        <label for="jenis_barang" class="col-sm-4 col-form-label">Jenis Barang<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
                             <select class="form-control required" id="jenis_barang" name="jenis_barang">
-                                <option value="">Pilih jenis_barang</option>
+                                <option value="">Pilih Jenis Barang</option>
                                 <option value="1">Inventaris</option>
                                 <option value="0">ATK</option>
                             </select>
