@@ -559,7 +559,7 @@ class detailTransaksiController extends BaseController
         ];
         return view('KaTu/Transaksi/Proses', $data);
     }
-
+    
     public function UpdateProsesPersetujuan(){
         $detail_data = $this->request->getPost('detail_data');
         $id_transaksi = $this->request->getPost('id_transaksi');
@@ -597,8 +597,24 @@ class detailTransaksiController extends BaseController
             'tgl_transaksi' => $data_transaksi['tanggal_transaksi'],
             'ket_transaksi' => $data_transaksi['ket_transaksi'],   
             'nama_user' => $data_transaksi['nama_user'],
+            'status_transaksi' => $data_transaksi['status_transaksi'],
         ];
         return view('PetugasBos/Transaksi/Proses', $data);
+    }
+
+    public function UpdateProsesPengadaan(){
+        $status_transaksi = $this->request->getPost('status_transaksi');
+        $id_transaksi = $this->request->getPost('id_transaksi');
+
+        // update status transaksi
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => $status_transaksi]);
+
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
+
     }
     
 

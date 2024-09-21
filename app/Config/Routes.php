@@ -223,7 +223,8 @@ $routes->group('PetugasBOS', function ($routes) {
     $routes->group('ATK/Transaksi', function ($routes) {
         $routes->get('/', 'transaksiController::peroses_pengadaan');
         $routes->get('DataTablesProsesPengadaan', 'transaksiController::ajaxDataTablesProsesPengadaan');
-        $routes->get('ProsesBos/(:segment)', 'detailTransaksiController::proses_setuju_bos/$1');
+        $routes->get('Proses/(:segment)', 'detailTransaksiController::proses_pengadaan/$1');
+        $routes->post('UpdateProsesPengadaan', 'detailTransaksiController::UpdateProsesPengadaan');
     });
     
     $routes->group('Pengadaan', function ($routes) {

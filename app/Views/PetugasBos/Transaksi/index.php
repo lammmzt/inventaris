@@ -211,7 +211,7 @@ function dataTablesTransMasuk() {
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('KaTU/ATK/Transaksi/DataTablesProsesSetuju') ?>",
+            ajax: "<?php echo base_url('PetugasBOS/ATK/Transaksi/DataTablesProsesPengadaan') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
@@ -293,7 +293,7 @@ $(document).ready(function() {
 });
 
 // edit detail_trans_masuk
-$(document).on('click', '.detail_trans_masuk', function() {
+$(document).on('click', '.detail_trans', function() {
     const id = $(this).attr('id');
     // alert(id);
     $.ajax({
@@ -309,9 +309,9 @@ $(document).on('click', '.detail_trans_masuk', function() {
             $('#tanggal_transaksi').val(data.data.tanggal_transaksi);
             $('#keterangan').val(data.data.ket_transaksi);
             $('#status').html(data.data.status_transaksi == 1 ?
-                '<span class="badge badge-warning">Permintaan</span>' :
+                '<span class="badge badge-warning">Persetujuan</span>' :
                 data.data.status_transaksi == 2 ?
-                '<span class="badge badge-primary">persetujuan</span>' :
+                '<span class="badge badge-primary">Disetujui</span>' :
                 data.data.status_transaksi == 3 ?
                 '<span class="badge badge-info">Proses pengadaan</span>' :
                 data.data.status_transaksi == 4 ?
@@ -350,66 +350,6 @@ $(document).on('click', '.detail_trans_masuk', function() {
                         `;
                     }
                     $('#tbody_transaksi_masuk').html(html);
-                }
-
-            });
-        }
-
-    });
-});
-
-// edit detail_trans
-$(document).on('click', '.detail_trans', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/edit') ?>',
-        type: 'post',
-        data: {
-            id_transaksi: id
-        },
-        dataType: 'json',
-        success: function(data) {
-            // console.log(data);
-            $('#nama_pemohon_keluar').val(data.data.nama_user);
-            $('#tanggal_transaksi_keluar').val(data.data.tanggal_transaksi);
-            $('#keterangan_keluar').val(data.data.ket_transaksi);
-            $('#status_keluar').html(data.data.status_transaksi == 4 ?
-                '<span class="badge badge-success">Selesai</span>' :
-                '<span class="badge badge-warning">Permintaan</span>');
-            $('#modalDetailTransKeluar').modal('show');
-
-
-            $.ajax({
-                url: '<?= base_url('Admin/ATK/Transaksi/fetchDetailTransByIdTrans') ?>',
-                type: 'post',
-                data: {
-                    id_transaksi: id
-                },
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    let html = '';
-                    if (data.data.length > 0) {
-                        data.data.forEach((item, index) => {
-                            html += `
-                            <tr>
-                                <td class="text-center">${index+1}</td>
-                                <td>${item.nama_barang + ' - ' + item.nama_tipe_barang + '(' + item.merek_atk + ') @ ' + item.nama_satuan}</td>
-                                <td class="text-center">${item.qty}</td>
-                                <td class="text-center">${item.catatan_detail_transaksi}</td>
-                                <td class="text-center">${item.status_detail_transaksi == 1 ? '<span class="badge badge-success">Setuju</span>' : item.status_detail_transaksi == 2 ? '<span class="badge badge-danger">Tolak</span>' : '<span class="badge badge-warning">Proses</span>'}</td>
-                            </tr>
-                            `;
-                        });
-                    } else {
-                        html += `
-                        <tr>
-                            <td colspan="5" class="text-center">Data Kosong</td>
-                        </tr>
-                        `;
-                    }
-                    $('#tbody_transaksi').html(html);
                 }
 
             });
