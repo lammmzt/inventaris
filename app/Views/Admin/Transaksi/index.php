@@ -131,7 +131,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="table-responsive pt-4">
+                        <div class="table-responsive pt-4 response">
                             <table class="table table table-striped">
                                 <thead>
                                     <tr>
@@ -214,7 +214,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="table-responsive pt-4">
+                        <div class="table-responsive response pt-4">
                             <table class="table table table-striped">
                                 <thead>
                                     <tr>
@@ -246,7 +246,7 @@
 </div>
 <style>
 /* mx height table 500px and srroler down */
-.table-responsive {
+.response {
     max-height: 400px;
     overflow-y: auto;
 }

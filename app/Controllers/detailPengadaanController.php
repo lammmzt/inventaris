@@ -257,13 +257,27 @@ class detailPengadaanController extends BaseController
             'tgl_pengadaan' => $data_pengadaan['created_at'],
             'ket_pengadaan' => $data_pengadaan['ket_pengadaan'], 
             'nama_user' => $data_pengadaan['nama_user'], 
+            'status_pengadaan' => $data_pengadaan['status_pengadaan'],
         ];
         // dd($data);
-        return view('KaTU/Pengadaan/Proses', $data);
+        return view('Admin/Pengadaan/Proses', $data);
+    }
+
+    public function UpdateProsesPenerimaan(){
+        $status_pengadaan = $this->request->getPost('status_pengadaan');
+        $id_pengadaan = $this->request->getPost('id_pengadaan');
+        
+        $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => $status_pengadaan]);
+
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
     }
 
     // ==================== PROSES PENGADAAN ====================
-    public function prsetujuan_pengadaan(){
+    public function persetujuan_pengadaan(){
         $id_pengadaan = $this->request->getUri()->getSegment(4);
         // dd($id_pengadaan);
         $data_pengadaan = $this->pengadaanModel->getpengadaan($id_pengadaan);

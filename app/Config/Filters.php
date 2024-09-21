@@ -85,10 +85,10 @@ class Filters extends BaseFilters
         ],
         'after' => [
             'filterAdmin' => ['except' => [ 
-                '/', 'Auth/logout', 'Admin/Dashboard', 'Admin/Barang', 'Admin/Barang*', 'Admin/Ruangan', 'Admin/Ruangan/*', 'Admin/Satuan', 'Admin/Satuan/*', 'Admin/ATK', 'Admin/ATK/*', 'Admin/Inventaris', 'Admin/Inventaris/*', 'Admin/Pengadaan', 'Admin/Pengadaan/*', 'Admin/User', 'Admin/User/*', 'Admin/Laporan', 'Admin/Laporan/*', 
+                '/', 'Auth/logout', 'Auth/login','Admin/Dashboard', 'Admin/Barang', 'Admin/Barang*', 'Admin/Ruangan', 'Admin/Ruangan/*', 'Admin/Satuan', 'Admin/Satuan/*', 'Admin/ATK', 'Admin/ATK/*', 'Admin/Inventaris', 'Admin/Inventaris/*', 'Admin/Pengadaan', 'Admin/Pengadaan/*', 'Admin/User', 'Admin/User/*', 'Admin/Laporan', 'Admin/Laporan/*', 
             ]],
             'filterKaTU' => ['except' => [ 
-                '/', 'Auth/logout', 'KaTU/Dashboard', 'Admin/Barang', 'Admin/Barang*', 'Admin/Ruangan', 'Admin/Ruangan/*', 'Admin/Satuan', 'Admin/Satuan/*', 'Admin/ATK', 'Admin/ATK/*', 'Admin/Inventaris', 'Admin/Inventaris/*', 'Admin/Pengadaan', 'Admin/Pengadaan/*', 'Admin/User', 'Admin/User/*', 'Admin/Laporan', 'Admin/Laporan/*', 
+                '/', 'Auth/logout','Auth/login', 'KaTU/Dashboard', 'KaTu/ATK/Transaksi', 'KaTu/ATK/Transaksi/*', 'KaTu/Pengadaan', 'KaTu/Pengadaan/*', 'Admin/ATK/Transaksi/DataTablesKeluar', 'Admin/ATK/Transaksi/edit', 'Admin/ATK/Transaksi/fetchDetailTransByIdTrans','Admin/ATK/Transaksi/edit', 'Admin/ATK/Transaksi/fetchDetailTransByIdTrans','Admin/ATK/Transaksi/DataTablesEditTransKeluar', 'Admin/ATK/Transaksi/updateQtyMasuk', 'Admin/ATK/Transaksi/updatedCatatan', 'Admin/Pengadaan/edit', 'Admin/Pengadaan/fetchPengadaanById', 'Admin/Pengadaan/DataTablesDetailPengadaan', 'Admin/Barang/Detail/fetchTipeBarangByJenisBarang', 'Admin/Pengadaan/Delete', 'Admin/Pengadaan/updatePengadaan', 'Admin/Pengadaan/updateQty', 'Admin/Pengadaan/updateSpek', 'Admin/Pengadaan/updateCatatan'
             ]],
         ],
     ];

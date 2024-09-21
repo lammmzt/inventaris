@@ -132,6 +132,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('insertTransaksiKeluar', 'detailTransaksiController::insertTransaksiKeluar');
         $routes->get('Keluar/(:segment)', 'detailTransaksiController::edit_trans_keluar/$1');
         $routes->get('Keluar/Proses/(:segment)', 'detailTransaksiController::proses_trans_keluar/$1');
+        
         // $routes->get('DataTablesEditTransKeluar', 'detailTransaksiController::ajaxDataTablesKeluar');
         $routes->post('DataTablesEditTransKeluar', 'detailTransaksiController::ajaxDataTablesKeluar');
         $routes->post('deleteTransKeluar', 'detailTransaksiController::destroyTransKeluar');
@@ -140,15 +141,6 @@ $routes->group('Admin', function ($routes) {
         $routes->post('updatedCatatan', 'detailTransaksiController::updatedCatatan');
         $routes->post('UpdateprosesTransKeluar', 'detailTransaksiController::UpdateprosesTransKeluar');
         
-        
-        // KA TU
-        $routes->get('Proses/(:segment)', 'detailTransaksiController::proses_setuju/$1');
-        $routes->post('UpdateProsesPersetujuan', 'detailTransaksiController::UpdateProsesPersetujuan');
-
-        // PETUGAS BOS
-        $routes->get('ProsesBos/(:segment)', 'detailTransaksiController::proses_setuju_bos/$1');
-        $routes->post('UpdateProsesPengadaan', 'detailTransaksiController::UpdateProsesPengadaan');
-       
     });
     
     $routes->group('Inventaris', function ($routes) {
@@ -184,12 +176,9 @@ $routes->group('Admin', function ($routes) {
         $routes->post('updateCatatan', 'detailPengadaanController::updateCatatan');
         $routes->post('updateSpek', 'detailPengadaanController::updateSpek');
         $routes->post('Delete', 'detailPengadaanController::destroyPengadaan');
-
-
-        // KA TU
+        
         $routes->get('Proses/(:segment)', 'detailPengadaanController::proses_penerimaan/$1');
-        // $routes->get('Proses/(:segment)', 'detailPengadaanController::prsetujuan_pengadaan/$1');
-        $routes->post('UpdateProsesPersetujuan', 'detailPengadaanController::UpdateProsesPersetujuan');
+        $routes->post('UpdateProsesPenerimaan', 'detailPengadaanController::UpdateProsesPenerimaan');
     });
     
     $routes->group('Setting', function ($routes) {
@@ -197,5 +186,46 @@ $routes->group('Admin', function ($routes) {
         $routes->post('update', 'usersController::update');
     });
 
+});
+
+// group route Pegawai
+$routes->group('Pegawai', function ($routes) {
+    $routes->get('Dashboard', 'Home::index');
+    $routes->group('Transaksi', function ($routes) {
+        $routes->get('/', 'transaksiController::transaksi_keluar');
+    });
+});
+
+// group route Ka TU
+$routes->group('KaTU', function ($routes) {
+    $routes->get('Dashboard', 'Home::index');
+    
+    $routes->group('ATK/Transaksi', function ($routes) {
+        $routes->get('/', 'transaksiController::prosesSetujuTransaksi');
+        $routes->get('DataTablesProsesSetuju', 'transaksiController::ajaxDataTablesProsesSetuju');
+        $routes->get('Proses/(:segment)', 'detailTransaksiController::proses_setuju/$1');
+        $routes->post('UpdateProsesPersetujuan', 'detailTransaksiController::UpdateProsesPersetujuan');
+    });
+    $routes->group('Pengadaan', function ($routes) {
+        $routes->get('/', 'pengadaanController::persetujuan_pengadaan');
+        $routes->get('DataTablesProsesSetuju', 'pengadaanController::ajaxDataTablesProsesSetuju');
+        $routes->get('Proses/(:segment)', 'detailPengadaanController::persetujuan_pengadaan/$1');
+        $routes->post('UpdateProsesPersetujuan', 'detailPengadaanController::UpdateProsesPersetujuan');
+    });
+});
+
+// group route petugasBOS
+$routes->group('PetugasBOS', function ($routes) {
+    $routes->get('Dashboard', 'Home::index');
+    
+    $routes->group('Transaksi', function ($routes) {
+        $routes->get('/', 'transaksiController::transaksi_masuk');
+        $routes->get('ProsesBos/(:segment)', 'detailTransaksiController::proses_setuju_bos/$1');
+    });
+    
+    $routes->group('Pengadaan', function ($routes) {
+        $routes->get('/', 'pengadaanController::index');
+        $routes->post('UpdateProsesPengadaan', 'detailTransaksiController::UpdateProsesPengadaan');
+    });
 
 });

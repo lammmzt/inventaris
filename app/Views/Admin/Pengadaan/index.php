@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="table-responsive pt-4">
+                        <div class="table-responsive pt-4 response">
                             <table class="table table table-striped">
                                 <thead>
                                     <tr>
@@ -121,7 +121,7 @@
 </div>
 <style>
 /* mx height table 500px and srroler down */
-.table-responsive {
+.response {
     max-height: 400px;
     overflow-y: auto;
 }
@@ -201,7 +201,7 @@ $(document).on('click', '.detail_pengadaan', function() {
                 .status_pengadaan == 2 ? '<span class="badge badge-primary">Disetujui</span>' :
                 data.data.status_pengadaan == 3 ?
                 '<span class="badge badge-info">Proses Pengadaan</span>' : data.data
-                .status_pengadaan == 4 ? '<span class="badge badge-info">Selesai</span>' :
+                .status_pengadaan == 4 ? '<span class="badge badge-success">Selesai</span>' :
                 '<span class="badge badge-danger">Ditolak</span>');
             $('#modalDetailPengadaan').modal('show');
 

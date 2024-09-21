@@ -8,7 +8,7 @@
                 <!-- <h5 class="h4 text-blue mb-20">Form Edit pengadaan Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <a href="<?= base_url('Admin/Pengadaan'); ?>" class="btn btn-primary"><i
+                        <a href="<?= base_url('KaTU/Pengadaan'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
@@ -401,7 +401,7 @@ $('#btn_simpan').click(function() {
 
     if (data.length > 0) {
         $.ajax({
-            url: '<?= base_url('Admin/Pengadaan/UpdateProsesPersetujuan') ?>',
+            url: '<?= base_url('KaTU/Pengadaan/UpdateProsesPersetujuan') ?>',
             method: 'post',
             data: {
                 detail_data: data,

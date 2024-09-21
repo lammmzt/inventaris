@@ -5,55 +5,57 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20 card-box">
-                <!-- <h5 class="h4 text-blue mb-20">Form Edit Transaksi Masuk</h5> -->
+                <!-- <h5 class="h4 text-blue mb-20">Form Edit pengadaan Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <a href="<?= base_url('KaTU/ATK/Transaksi'); ?>" class="btn btn-primary"><i
+                        <a href="<?= base_url('Admin/Pengadaan'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
-                <form id="form_tambah_transaksi_masuk" class="mt-3">
+                <form id="form_tambah_pengadaan" class="mt-3">
                     <div class="row">
-                        <!-- nama pemohon -->
                         <div class="col-md-6">
+                            <input type="hidden" id="id_pengadaan" name="id_pengadaan" value="<?= $id_pengadaan; ?>">
                             <div class="form-group row">
-                                <label for="nama_user" class="col-sm-4 col-form-label">Nama Pemohon<span
+                                <label for="tgl_pengadaan" class="col-sm-4 col-form-label">Tanggal<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control required" id="nama_user" name="nama_user"
-                                        value="<?= $nama_user; ?>" readonly>
-                                    <div class="form-control-feedback " id="errornama_user"></div>
+                                    <input type="date" class="form-control required" id="tgl_pengadaan"
+                                        name="tgl_pengadaan" value="<?= $tgl_pengadaan; ?>" readonly>
+                                    <div class="form-control-feedback " id="errortgl_pengadaan"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <input type="hidden" id="id_transaksi" name="id_transaksi" value="<?= $id_transaksi; ?>">
                             <div class="form-group row">
-                                <label for="tgl_transaksi" class="col-sm-4 col-form-label">Tanggal<span
+                                <label for="status_pengadaan" class="col-sm-4 col-form-label">Status<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control required" id="tgl_transaksi"
-                                        name="tgl_transaksi" value="<?= $tgl_transaksi; ?>" readonly>
-                                    <div class="form-control-feedback " id="errortgl_transaksi"></div>
+                                    <select class="form-control required" id="status_pengadaan" name="status_pengadaan">
+                                        <option value="3" <?= $status_pengadaan == 3 ? 'selected' : ''; ?>>Proses
+                                            Pengadaan
+                                        </option>
+                                        <option value="4" <?= $status_pengadaan == 4 ? 'selected' : ''; ?>>Selesai
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <!-- ket -->
+
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label for="ket_transaksi" class="col-sm-4 col-form-label">Keterangan<span
+                                <label for="ket_pengadaan" class="col-sm-4 col-form-label">Keterangan<span
                                         class="rq">*</span></label></label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control required" id="ket_transaksi" name="ket_transaksi"
+                                    <textarea class="form-control required" id="ket_pengadaan" name="ket_pengadaan"
                                         readonly
-                                        placeholder="Masukan ket_transaksi transaksi"><?= $ket_transaksi; ?></textarea>
-                                    <div class="form-control-feedback " id="errorket_transaksi"></div>
+                                        placeholder="Masukan ket_pengadaan pengadaan"><?= $ket_pengadaan; ?></textarea>
+                                    <div class="form-control-feedback " id="errorket_pengadaan"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                     <div class="table-responsive pt-4">
                         <table class="table table table-striped" id="tableDetailBarang">
@@ -61,13 +63,10 @@
                                 <tr>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
                                     <th scope="col" class="datatable-nosort">Nama ATK</th>
-                                    <th scope="col" class="datatable-nosort text-center">Stok</th>
+                                    <th scope="col" class="datatable-nosort">Spek</th>
+                                    <th scope="col" class="datatable-nosort">Catatan</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
                                         Permintaan</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
-                                        Catatan</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 150px;">Action
-                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,7 +76,7 @@
 
                     <div class="row mt-3">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-primary float-right" id="btn_simpan">Simpan</button>
+                            <button type="button" class="btn btn-primary float-right" id="btn_update">Update</button>
                         </div>
                     </div>
                 </form>
@@ -87,7 +86,7 @@
     </div>
 </div>
 
-<!-- ======================================== END transaksi ======================================== -->
+<!-- ======================================== END pengadaan ======================================== -->
 
 <?= $this->endSection('content');?>
 
@@ -103,10 +102,10 @@ function dataTablesDetailBarang() {
         autoWidth: false,
         responsive: true,
         ajax: {
-            url: '<?= base_url('Admin/ATK/Transaksi/DataTablesEditTransKeluar') ?>',
+            url: '<?= base_url('Admin/Pengadaan/DataTablesDetailPengadaan') ?>',
             type: 'POST',
             data: function(data) {
-                data.id_transaksi = $('#id_transaksi').val();
+                data.id_pengadaan = $('#id_pengadaan').val();
             }
         },
         "lengthMenu": [
@@ -134,19 +133,15 @@ function dataTablesDetailBarang() {
                 class: 'table-plus'
             },
             {
-                data: 'qty_atk',
-                class: 'text-center'
+                data: 'spek',
+                class: ''
+            },
+            {
+                data: 'catatan_detail_pengadaan',
+                class: ''
             },
             {
                 data: 'qty',
-                class: 'text-center'
-            },
-            {
-                data: 'catatan_detail_transaksi',
-                class: 'text-center'
-            },
-            {
-                data: 'status_detail_transaksi',
                 class: 'text-center'
             },
 
@@ -175,21 +170,20 @@ function getSwall(status, message) {
 }
 
 
-
 // event focus lost input qty
 $(document).on('focusout', '.input_qty', function() {
     const id = $(this).attr('id');
     const qty = $(this).val();
     // alert(qty);
     var data = {
-        id_detail_transaksi: id,
+        id_detail_pengadaan: id,
         qty: qty
     };
 
     // alert(data);
 
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updateQtyMasuk') ?>',
+        url: '<?= base_url('Admin/Pengadaan/updateQty') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
@@ -204,20 +198,19 @@ $(document).on('focusout', '.input_qty', function() {
     });
 });
 
-
-// event focus lost input catatan
-$(document).on('focusout', '.input_catatan', function() {
+// event focus lost input spek
+$(document).on('focusout', '.input_spek', function() {
     const id = $(this).attr('id');
-    const catatan = $(this).val();
-    // alert(catatan);
+    const spek = $(this).val();
+    // alert(spek);
     var data = {
-        id_detail_transaksi: id,
-        catatan: catatan
+        id_detail_pengadaan: id,
+        spek: spek
     };
 
     // alert(data);
     $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/updatedCatatan') ?>',
+        url: '<?= base_url('Admin/Pengadaan/updateSpek') ?>',
         method: 'post',
         data: data,
         dataType: 'json',
@@ -233,61 +226,41 @@ $(document).on('focusout', '.input_catatan', function() {
 });
 
 // event click button update
-$('#btn_simpan').click(function() {
-
-    // get all input_status value and id
-    var data = [];
-    $("#btn_simpan").attr("disabled", "disabled");
-    $("#btn_simpan").html(
+$('#btn_update').click(function() {
+    var id_pengadaan = $('#id_pengadaan').val();
+    var status_pengadaan = $('#status_pengadaan').val();
+    $("#btn_update").attr("disabled", "disabled");
+    $("#btn_update").html(
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
     );
-    $('.input_status').each(function() {
-        var id = $(this).attr('id');
-        var status = $(this).val();
-        if (status == '') {
-            $(this).focus();
-            $("#btn_simpan").removeAttr("disabled");
-            $("#btn_simpan").html('Simpan');
-            getSwall('error', 'Status belum dipilih');
-            data = [];
-            return false;
-        } else {
-            data.push({
-                id: id,
-                status: status
-            });
+    // alert(tgl_pengadaan);
+    var data = {
+        id_pengadaan: id_pengadaan,
+        status_pengadaan: status_pengadaan
+    };
+
+    $.ajax({
+        url: '<?= base_url('Admin/Pengadaan/UpdateProsesPenerimaan') ?>',
+        method: 'post',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status == '200') {
+                getSwall(response.status, response.data);
+                $("#btn_update").removeAttr("disabled");
+                $("#btn_update").html('Update');
+                $('#tableDetailBarang').DataTable().ajax.reload();
+                setTimeout(function() {
+                    window.location.href = '<?= base_url('Admin/Pengadaan'); ?>';
+                }, 1000);
+            } else {
+                getSwall(response.status, response.data);
+            }
+        },
+        error: function(err) {
+            console.log(err);
         }
     });
-
-    // console.log(data);
-    // alert(data);
-
-    if (data.length > 0) {
-        $.ajax({
-            url: '<?= base_url('KaTU/ATK/Transaksi/UpdateProsesPersetujuan') ?>',
-            method: 'post',
-            data: {
-                detail_data: data,
-                id_transaksi: $('#id_transaksi').val()
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.status != '200') {
-                    getSwall(response.status, response.data);
-                } else {
-                    getSwall(response.status, response.data);
-                    $("#btn_simpan").removeAttr("disabled");
-                    $("#btn_simpan").html('Simpan');
-                    setTimeout(function() {
-                        window.location.href = '<?= base_url('KaTU/ATK/Transaksi'); ?>';
-                    }, 1500);
-                }
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });
-    }
 });
 </script>
 

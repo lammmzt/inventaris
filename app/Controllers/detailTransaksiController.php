@@ -144,7 +144,7 @@ class detailTransaksiController extends BaseController
                 'transaksi_id' => $data['id_transaksi'],
                 'atk_id' => $detail_transaksi[$i]['atk_id'],
                 'qty' => $detail_transaksi[$i]['qty'],
-                'status_detail_transaksi' => '1',
+                'status_detail_transaksi' => '0',
             ];
 
             // insert detail transaksi

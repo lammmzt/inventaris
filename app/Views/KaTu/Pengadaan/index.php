@@ -8,16 +8,6 @@
                 <h5 class="h4 text-blue mb-20">Data Pengadaan</h5>
                 <div class="tab-pane fade show active" id="masuk" role="tabpanel">
                     <div class="pd-20">
-                        <div class="row mb-4">
-                            <div class="col-sm-6">
-                                <!-- <h4 class="text-blue h4">Data ATK</h4> -->
-                            </div>
-                            <div class="col-sm-6 text-right">
-                                <a href="<?= base_url('Admin/Pengadaan/Tambah') ?>" class="btn btn-primary">
-                                    <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </div>
                         <div class="pb-20 table-responsive">
                             <table class="table hover multiple-select-row nowrap" id="tablePengadaan">
                                 <thead>
@@ -88,7 +78,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="table-responsive pt-4">
+                        <div class="table-responsive pt-4 response">
                             <table class="table table table-striped">
                                 <thead>
                                     <tr>
@@ -121,7 +111,7 @@
 </div>
 <style>
 /* mx height table 500px and srroler down */
-.table-responsive {
+.response {
     max-height: 400px;
     overflow-y: auto;
 }
@@ -143,7 +133,7 @@ function dataTablesPengadaan() {
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('Admin/Pengadaan/DataTables') ?>",
+            ajax: "<?php echo base_url('KaTU/Pengadaan/DataTablesProsesSetuju') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
@@ -173,6 +163,9 @@ function dataTablesPengadaan() {
                 targets: "datatable-nosort",
                 orderable: false,
             }],
+            "order": [
+                [3, "asc"]
+            ],
         });
     });
 }
@@ -197,8 +190,8 @@ $(document).on('click', '.detail_pengadaan', function() {
             $('#tanggal_permintaan').val(data.data.created_at);
             $('#keterangan').val(data.data.ket_pengadaan);
             $('#status').html(data.data.status_pengadaan == 1 ?
-                '<span class="badge badge-warning">Permintaan</span>' : data.data
-                .status_pengadaan == 2 ? '<span class="badge badge-warning">Proses</span>' :
+                '<span class="badge badge-warning">Persetujuan</span>' : data.data
+                .status_pengadaan == 2 ? '<span class="badge badge-primary">Disetujui</span>' :
                 data.data.status_pengadaan == 3 ?
                 '<span class="badge badge-success">Pengadaan</span>' : data.data
                 .status_pengadaan == 4 ? '<span class="badge badge-info">Selesai</span>' :
