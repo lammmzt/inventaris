@@ -55,9 +55,9 @@ class transaksiController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                     ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>' : '') . ' 
+                     ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>' : ($row->status_transaksi == 3 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a> ' : '')) . '
                         <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
-                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>
+                        
                 </div>
                 ';
             }, 'last')

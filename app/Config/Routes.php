@@ -126,6 +126,8 @@ $routes->group('Admin', function ($routes) {
         $routes->post('deleteTransMasuk', 'detailTransaksiController::destroyTransMasuk');
         $routes->post('updateDetailATKMasuk', 'detailTransaksiController::updateDetailATKMasuk');
         $routes->post('updateQtyMasuk', 'detailTransaksiController::updateQtyMasuk');
+        $routes->post('updatePenerimaanTransMasuk', 'detailTransaksiController::updatePenerimaanTransMasuk');
+        $routes->get('Masuk/Proses/(:segment)', 'detailTransaksiController::proses_penerimaan');
         
         // ================== TRANSAKSI KELUAR ==================
         $routes->get('Keluar', 'detailTransaksiController::transaksi_keluar');
