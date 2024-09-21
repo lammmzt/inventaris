@@ -36,7 +36,7 @@ class detailPengadaanController extends BaseController
                 return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' @ ' . $row->nama_satuan;
             })
             ->add('spek', function ($row) {
-                return '<textarea class="form-control input_spek" style="min-width: 100px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
+                return '<textarea class="form-control input_spek" style="min-width: 200px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
             })
             ->add('status_detail_pengadaan', function ($row) {
                 return '<select class="form-control input_status required" id="'. $row->id_detail_pengadaan .'">
@@ -59,10 +59,10 @@ class detailPengadaanController extends BaseController
                  id="'. $row->id_detail_pengadaan .'">'. $row->catatan_detail_pengadaan .'</textarea>';
             })
              ->add('nama_spek', function ($row) {
-                return '<textarea class="form-control input_spek" style="min-width: 80px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
+                return '<textarea class="form-control input_spek" style="min-width: 200px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
             })
              ->add('qty', function ($row) {
-                return '<input type="number" class="form-control text-center input_qty" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_pengadaan .'">';
+                return '<input type="number" class="form-control text-center input_qty" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' style="min-width: 50px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_pengadaan .'">';
             })
             ->add('action', function ($row) {   
                 return '
@@ -327,6 +327,27 @@ class detailPengadaanController extends BaseController
             'status' => '200'
         ]);
     }
+
+    public function proses_pengadaan(){
+        $id_pengadaan = $this->request->getUri()->getSegment(4);
+        // dd($id_pengadaan);
+        $data_pengadaan = $this->pengadaanModel->getpengadaan($id_pengadaan);
+
+        $data_pengadaan['created_at'] = date('Y-m-d', strtotime($data_pengadaan['created_at']));
+        $data = [
+            'main_menu' => 'Pengadaan',
+            'title' => 'Edit pengadaan Masuk',
+            'active' => 'Pengadaan',
+            'id_pengadaan' => $id_pengadaan,
+            'tgl_pengadaan' => $data_pengadaan['created_at'],
+            'ket_pengadaan' => $data_pengadaan['ket_pengadaan'], 
+            'status_pengadaan' => $data_pengadaan['status_pengadaan'],
+            'nama_user' => $data_pengadaan['nama_user'], 
+        ];
+        // dd($data);
+        return view('PetugasBOS/Pengadaan/Proses', $data);
+    }
+
 
 }
 

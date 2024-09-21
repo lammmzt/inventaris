@@ -220,14 +220,16 @@ $routes->group('KaTU', function ($routes) {
 $routes->group('PetugasBOS', function ($routes) {
     $routes->get('Dashboard', 'Home::index');
     
-    $routes->group('Transaksi', function ($routes) {
-        $routes->get('/', 'transaksiController::transaksi_masuk');
+    $routes->group('ATK/Transaksi', function ($routes) {
+        $routes->get('/', 'transaksiController::peroses_pengadaan');
+        $routes->get('DataTablesProsesPengadaan', 'transaksiController::ajaxDataTablesProsesPengadaan');
         $routes->get('ProsesBos/(:segment)', 'detailTransaksiController::proses_setuju_bos/$1');
     });
     
     $routes->group('Pengadaan', function ($routes) {
-        $routes->get('/', 'pengadaanController::index');
-        $routes->post('UpdateProsesPengadaan', 'detailTransaksiController::UpdateProsesPengadaan');
+        $routes->get('/', 'pengadaanController::peroses_pengadaan');
+        $routes->get('DataTablesProsesPengadaan', 'pengadaanController::ajaxDataTablesProsesPengadaan');
+        $routes->get('Proses/(:segment)', 'detailPengadaanController::proses_pengadaan/$1');
     });
 
 });

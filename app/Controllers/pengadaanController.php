@@ -201,6 +201,7 @@ class pengadaanController extends BaseController
         ];
         return view('KaTU/Pengadaan/index', $data);
     }
+    
 
     public function ajaxDataTablesProsesSetuju()
     {
@@ -228,6 +229,53 @@ class pengadaanController extends BaseController
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>    
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                         '.($row->status_pengadaan == '1' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('KaTU/Pengadaan/Proses/' . $row->id_pengadaan) . '"><i class="dw dw-check"></i> Proses</a>
+               
+                        ' : '').'
+                        <button class="dropdown-item detail_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>
+                       
+                        </div>
+                </div>
+                ';
+            }, 'last')
+            ->toJson(true);
+    }
+    
+    public function peroses_pengadaan()
+    {
+        $data = [
+            'main_menu' => 'Pengadaan',
+            'title' => 'Proses Pengadaan',
+            'active' => 'Pengadaan',
+        ];
+        return view('PetugasBOS/Pengadaan/index', $data);
+    }
+    
+    public function ajaxDataTablesProsesPengadaan()
+    {
+        $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '2')->orWhere('status_pengadaan', '3');
+       
+        // dd($builder->findAll());
+        return DataTable::of($builder)
+             ->add('status_pengadaan', function ($row) {
+                if($row->status_pengadaan == 1){
+                    return '<span class="badge badge-warning">Persetujuan</span>';
+                }else if($row->status_pengadaan == 2){
+                    return '<span class="badge badge-primary">Disetujui</span>';
+                }else if($row->status_pengadaan == 3){
+                    return '<span class="badge badge-info">Proses Pengadaan</span>';
+                }else if($row->status_pengadaan == 4){
+                    return '<span class="badge badge-sucess">Selesai</span>';
+                }else{
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+                
+            })
+            ->add('action', function ($row) {   
+                return '
+                <div class="dropdown">
+                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>    
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                        '.($row->status_pengadaan == '2' ? '<a class="dropdown-item " id="' . $row->id_pengadaan . '" href="' . base_url('PetugasBOS/Pengadaan/Proses/' . $row->id_pengadaan) . '"><i class="dw dw-check"></i> Proses</a>
                
                         ' : '').'
                         <button class="dropdown-item detail_pengadaan" id="' . $row->id_pengadaan . '"><i class="dw dw-eye"></i> Detail</button>

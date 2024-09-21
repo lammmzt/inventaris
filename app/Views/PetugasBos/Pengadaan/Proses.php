@@ -8,7 +8,7 @@
                 <!-- <h5 class="h4 text-blue mb-20">Form Edit pengadaan Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <a href="<?= base_url('KaTU/Pengadaan'); ?>" class="btn btn-primary"><i
+                        <a href="<?= base_url('PetugasBOS/Pengadaan'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
@@ -19,7 +19,7 @@
                                 <label for="nama_user" class="col-sm-4 col-form-label">Nama Pemohon<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="date" class="form-control required" id="nama_user" name="nama_user"
+                                    <input type="text" class="form-control required" id="nama_user" name="nama_user"
                                         value="<?= $nama_user; ?>" readonly>
                                     <div class="form-control-feedback " id="errornama_user"></div>
                                 </div>
@@ -38,10 +38,24 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- ket -->
-
                     </div>
-                    <div class="form-group row">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="status_pengadaan" class="col-sm-4 col-form-label">Status<span
+                                        class="rq">*</span></label>
+                                <div class="col-sm-8">
+                                    <select class="form-control required" id="status_pengadaan" name="status_pengadaan">
+                                        <option value="2" <?= $status_pengadaan == '2' ? 'selected' : ''; ?>>Disetujui
+                                        </option>
+                                        <option value="3" <?= $status_pengadaan == '3' ? 'selected' : ''; ?>>Proses
+                                            Pengadaan
+                                        </option>
+                                    </select>
+                                    <div class="form-control-feedback " id="errorstatus_pengadaan"></div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group row">
                                 <label for="ket_pengadaan" class="col-sm-4 col-form-label">Keterangan<span
@@ -54,7 +68,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="table-responsive pt-4">
@@ -63,12 +76,12 @@
                                 <tr>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
                                     <th scope="col" class="datatable-nosort">Nama ATK</th>
-                                    <th scope="col" class="datatable-nosort" style="width: 250px;">Spek</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 100px;">
+                                    <th scope="col" class="datatable-nosort">Spek</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
                                         Permintaan</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 250px;">Catatan
                                     </th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 150px;">Action
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 150px;">Status
                                     </th>
                                 </tr>
                             </thead>
@@ -148,7 +161,7 @@ function dataTablesDetailBarang() {
                 class: 'text-center'
             },
             {
-                data: 'status_detail_pengadaan',
+                data: 'status_detail',
                 class: 'text-center'
             },
 
@@ -164,29 +177,6 @@ $(document).ready(function() {
     dataTablesDetailBarang();
 });
 
-// get data tipe barang
-function getTipeBarang() {
-    $.ajax({
-        url: '<?= base_url('Admin/Barang/Detail/fetchTipeBarangByJenisBarang') ?>',
-        data: {
-            jenis_barang: 1
-        },
-        method: 'post',
-        dataType: 'json',
-        success: function(response) {
-            var html = '';
-            html += '<option value="">Pilih Barang</option>';
-            if (response.status == '200') {
-                $.each(response.data, function(key, value) {
-                    html += '<option value="' + value.id_tipe_barang + '">' + value
-                        .nama_barang + ' - ' + value.nama_tipe_barang + ' @' + value.nama_satuan +
-                        '</option>';
-                });
-            }
-            $('#tipe_barang_id').html(html);
-        }
-    });
-};
 
 // get data tipe barang
 document.addEventListener('DOMContentLoaded', function() {
@@ -204,43 +194,6 @@ function getSwall(status, message) {
     })
 }
 
-// when click button delete
-$(document).on('click', '.delete_pengadaan', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    swal({
-        title: 'Apakah anda yakin?',
-        text: "Data yang dihapus tidak dapat dikembalikan!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Hapus!',
-        cancelButtonText: 'Batal',
-    }).then((result) => {
-        if (result.value) {
-            $.ajax({
-                url: '<?= base_url('Admin/Pengadaan/Delete') ?>',
-                method: 'post',
-                data: {
-                    id_detail_pengadaan: id
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status == '200') {
-                        getSwall(response.status, response.data);
-                        $('#tableDetailBarang').DataTable().ajax.reload();
-                    } else {
-                        getSwall(response.status, response.data);
-                    }
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            });
-        }
-    });
-});
 
 // event change tipe barang
 $('#tipe_barang_id').change(function() {
@@ -249,40 +202,6 @@ $('#tipe_barang_id').change(function() {
     } else {
         $('#btn_plus').attr('disabled', true);
     }
-});
-
-// function to update detail
-function updateDetailPengadaan() {
-    var tipe_barang_id = $('#tipe_barang_id').val();
-    var id_pengadaan = $('#id_pengadaan').val();
-    // alert(tipe_barang_id);
-
-    var data = {
-        tipe_barang_id: tipe_barang_id,
-        id_pengadaan: id_pengadaan,
-    };
-    $.ajax({
-        url: '<?= base_url('Admin/Pengadaan/updatePengadaan') ?>',
-        method: 'post',
-        data: data,
-        dataType: 'json',
-        success: function(response) {
-            if (response.status == '200') {
-                getSwall(response.status, response.data);
-                $('#tableDetailBarang').DataTable().ajax.reload();
-            } else {
-                getSwall(response.status, response.data);
-            }
-        },
-        error: function(err) {
-            console.log(err);
-        }
-    });
-}
-
-// event click button plus
-$('#btn_plus').click(function() {
-    updateDetailPengadaan();
 });
 
 
@@ -371,60 +290,37 @@ $(document).on('focusout', '.input_catatan', function() {
 
 // event click button update
 $('#btn_simpan').click(function() {
-
-    // get all input_status value and id
-    var data = [];
     $("#btn_simpan").attr("disabled", "disabled");
     $("#btn_simpan").html(
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
     );
-    $('.input_status').each(function() {
-        var id = $(this).attr('id');
-        var status = $(this).val();
-        if (status == '') {
-            $(this).focus();
-            $("#btn_simpan").removeAttr("disabled");
-            $("#btn_simpan").html('Simpan');
-            getSwall('error', 'Status belum dipilih');
-            data = [];
-            return false;
-        } else {
-            data.push({
-                id: id,
-                status: status
-            });
+    var data = {
+        id_pengadaan: $('#id_pengadaan').val(),
+        status_pengadaan: $('#status_pengadaan').val()
+    };
+
+
+    $.ajax({
+        url: '<?= base_url('Admin/Pengadaan/UpdateProsesPenerimaan') ?>',
+        method: 'post',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status == '200') {
+                getSwall(response.status, response.data);
+                setTimeout(function() {
+                    window.location.href = '<?= base_url('PetugasBOS/Pengadaan'); ?>';
+                }, 1500);
+            } else {
+                getSwall(response.status, response.data);
+                $("#btn_simpan").removeAttr("disabled");
+                $("#btn_simpan").html('Update');
+            }
+        },
+        error: function(err) {
+            console.log(err);
         }
     });
-
-    // console.log(data);
-    // alert(data);
-
-    if (data.length > 0) {
-        $.ajax({
-            url: '<?= base_url('KaTU/Pengadaan/UpdateProsesPersetujuan') ?>',
-            method: 'post',
-            data: {
-                detail_data: data,
-                id_pengadaan: $('#id_pengadaan').val()
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.status != '200') {
-                    getSwall(response.status, response.data);
-                } else {
-                    getSwall(response.status, response.data);
-                    $("#btn_simpan").removeAttr("disabled");
-                    $("#btn_simpan").html('Simpan');
-                    setTimeout(function() {
-                        window.location.href = '<?= base_url('Admin/Pengadaan'); ?>';
-                    }, 1500);
-                }
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });
-    }
 });
 </script>
 

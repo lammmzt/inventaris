@@ -8,7 +8,7 @@
                 <!-- <h5 class="h4 text-blue mb-20">Form Edit Transaksi Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
+                        <a href="<?= base_url('KaTU/ATK/Transaksi'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
@@ -264,7 +264,7 @@ $('#btn_simpan').click(function() {
 
     if (data.length > 0) {
         $.ajax({
-            url: '<?= base_url('Admin/ATK/Transaksi/UpdateProsesPersetujuan') ?>',
+            url: '<?= base_url('KaTU/ATK/Transaksi/UpdateProsesPersetujuan') ?>',
             method: 'post',
             data: {
                 detail_data: data,
@@ -279,7 +279,7 @@ $('#btn_simpan').click(function() {
                     $("#btn_simpan").removeAttr("disabled");
                     $("#btn_simpan").html('Simpan');
                     setTimeout(function() {
-                        window.location.href = '<?= base_url('Admin/ATK/Transaksi'); ?>';
+                        window.location.href = '<?= base_url('KaTU/ATK/Transaksi'); ?>';
                     }, 1500);
                 }
             },

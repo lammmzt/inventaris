@@ -94,9 +94,32 @@
                     </a>
                 </li>
 
-
                 <?php
-                 endif;
+                endif;
+                if (session()->get('role') == 'Petugas BOS'):
+                ?>
+                <li
+                    class="dropdown <?= $active == 'ATK' || $active == 'Transaksi' || $active == 'ATK' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-archive"></span><span class="mtext">ATK</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('PetugasBOS/ATK/Transaksi') ?>"
+                                class="<?= $active == 'Transaksi'  ? 'active' : '' ?>">
+                                Transakasi
+                            </a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="<?= base_url('PetugasBOS/Pengadaan') ?>"
+                        class="dropdown-toggle no-arrow <?= $active == 'Pengadaan'  ? 'active' : '' ?>">
+                        <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
+                    </a>
+                </li>
+
+                <?php endif; ?>
+                <?php
 
                 if (session()->get('role') == 'Admin' || session()->get('role') == 'Petugas BOS'):
                 ?>
@@ -143,6 +166,7 @@
                 </li>
 
                 <?php endif; ?>
+
 
                 <li>
                     <div class="dropdown-divider"></div>

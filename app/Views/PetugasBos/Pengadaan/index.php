@@ -60,8 +60,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Keterangan</label>
@@ -78,36 +76,36 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12">
-                    <div class="table-responsive pt-4 response">
-                        <table class="table table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-center">#</th>
-                                    <th scope="col">Nama ATK</th>
-                                    <th scope="col" class="text-center">Spek</th>
-                                    <th scope="col" class="text-center">Pemintaan</th>
-                                    <th scope="col" class="text-center">Catatan</th>
-                                    <th scope="col" class="text-center">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody_pengadaan">
-                                <tr>
-                                    <td colspan="5" class="text-center">Data Kosong</td>
-                                </tr>
+                    <div class="col-md-12">
+                        <div class="table-responsive pt-4 response">
+                            <table class="table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">#</th>
+                                        <th scope="col">Nama ATK</th>
+                                        <th scope="col" class="text-center">Spek</th>
+                                        <th scope="col" class="text-center">Pemintaan</th>
+                                        <th scope="col" class="text-center">Catatan</th>
+                                        <th scope="col" class="text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody_pengadaan">
+                                    <tr>
+                                        <td colspan="5" class="text-center">Data Kosong</td>
+                                    </tr>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                Tutup
-            </button>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Tutup
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -135,7 +133,7 @@ function dataTablesPengadaan() {
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('KaTU/Pengadaan/DataTablesProsesSetuju') ?>",
+            ajax: "<?php echo base_url('PetugasBOS/Pengadaan/DataTablesProsesPengadaan') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
@@ -195,8 +193,8 @@ $(document).on('click', '.detail_pengadaan', function() {
                 '<span class="badge badge-warning">Persetujuan</span>' : data.data
                 .status_pengadaan == 2 ? '<span class="badge badge-primary">Disetujui</span>' :
                 data.data.status_pengadaan == 3 ?
-                '<span class="badge badge-info">Pengadaan</span>' : data.data
-                .status_pengadaan == 4 ? '<span class="badge badge-success">Selesai</span>' :
+                '<span class="badge badge-success">Pengadaan</span>' : data.data
+                .status_pengadaan == 4 ? '<span class="badge badge-info">Selesai</span>' :
                 '<span class="badge badge-danger">Ditolak</span>');
             $('#modalDetailPengadaan').modal('show');
 
