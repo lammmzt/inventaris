@@ -129,6 +129,16 @@
                             <div class="form-control-feedback " id="errorperolehan_inventaris"></div>
                         </div>
                     </div>
+                    <!-- harga format rp -->
+                    <div class="form-group row">
+                        <label for="harga_inventaris" class="col-sm-4 col-form-label">Harga
+                            Inventaris<span class="rq">*</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="harga_inventaris" name="harga_inventaris"
+                                placeholder="Masukan Harga Inventaris" onkeyup="formatRupiah(this)">
+                            <div class="form-control-feedback " id="errorharga_inventaris"></div>
+                        </div>
+                    </div>
                     <div class="form-group row">
                         <label for="sumber_inventaris" class="col-sm-4 col-form-label">Sumber
                             Inventaris<span class="rq">*</label>
@@ -224,6 +234,15 @@
                             <input type="date" class="form-control" id="editperolehan_inventaris"
                                 name="perolehan_inventaris" placeholder="Masukan Perolehan Inventaris">
                             <div class="form-control-feedback " id="erroreditperolehan_inventaris"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="editharga_inventaris" class="col-sm-4 col-form-label">Harga
+                            Inventaris<span class="rq">*</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="editharga_inventaris" name="harga_inventaris"
+                                placeholder="Masukan Harga Inventaris" onkeyup="formatRupiah(this)">
+                            <div class="form-control-feedback " id="erroreditharga_inventaris"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -530,6 +549,23 @@ function dataTablesinventaris() {
 }
 
 
+// format rp
+function formatRupiah(angka, prefix) {
+    var number_string = angka.value.replace(/[^,\d]/g, '').toString(),
+        split = number_string.split(','),
+        sisa = split[0].length % 3,
+        rupiah = split[0].substr(0, sisa),
+        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+    if (ribuan) {
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+    }
+
+    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+    angka.value = prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+}
+
 // get data tipe barang
 function getTipeBarang() {
     $.ajax({
@@ -610,7 +646,8 @@ const inventaris = [
     'status_inventaris',
     'perolehan_inventaris',
     'sumber_inventaris',
-    'status_inventaris'
+    'status_inventaris',
+    'harga_inventaris'
 ];
 
 // hapus error

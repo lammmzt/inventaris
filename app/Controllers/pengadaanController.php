@@ -6,17 +6,17 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Hermawan\DataTables\DataTable;
 use App\Models\pengadaanModel;
 use App\Models\atkModel;
-use App\Models\detailpengadaanModel;
+use App\Models\detailPengadaanModel;
 use Ramsey\Uuid\Uuid;
 
 class pengadaanController extends BaseController
 {
     protected $pengadaanModel;
-    protected $detailpengadaanModel;
+    protected $detailPengadaanModel;
 
     public function __construct()
     {
-        $this->detailpengadaanModel = new detailpengadaanModel();
+        $this->detailPengadaanModel = new detailPengadaanModel();
         $this->pengadaanModel = new pengadaanModel();
     }
 

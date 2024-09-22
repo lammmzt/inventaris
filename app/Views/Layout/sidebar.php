@@ -125,18 +125,18 @@
                 ?>
 
                 <li
-                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_data_pengadaan' ? 'show' : '' ?>">
+                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_inventaris' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-file-earmark-text">
 
                         </span><span class="mtext">Laporan</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="<?= base_url('Admin/Laporan/transaksi') ?>"
-                                class="<?= $active == 'laporan-transaksi '  ? 'active' : '' ?>">Laporan transaksi</a>
+                        <li><a href="<?= base_url('Admin/Laporan/Transaksi') ?>"
+                                class="<?= $active == 'laporan_transaksi'  ? 'active' : '' ?>">Laporan Transaksi</a>
                         </li>
-                        <li><a href="<?= base_url('Admin/laporan_pengadaan') ?>"
-                                class="<?= $active == 'laporan_pengadaan'  ? 'active' : '' ?>">Laporan pengadaan</a>
+                        <li><a href="<?= base_url('Admin/Laporan/Inventaris') ?>"
+                                class="<?= $active == 'laporan_inventaris'  ? 'active' : '' ?>">Laporan Inventaris</a>
                         </li>
                     </ul>
                 </li>

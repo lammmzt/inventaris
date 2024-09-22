@@ -12,7 +12,6 @@ use CodeIgniter\Router\RouteCollection;
 
 $routes->get('/', 'Home::index');
 
-
 // auth route
 $routes->group('Auth', function ($routes) {
         $routes->get('/', 'Auth::index');
@@ -186,6 +185,14 @@ $routes->group('Admin', function ($routes) {
     $routes->group('Setting', function ($routes) {
         $routes->get('/', 'usersController::Setting');
         $routes->post('update', 'usersController::update');
+    });
+
+    $routes->group('Laporan', function ($routes) {
+        $routes->get('Inventaris', 'laporanController::laproranInventaris');
+        $routes->post('ajaxLaporanInventaris', 'laporanController::ajaxLaporanInventaris');
+
+        $routes->get('Transaksi', 'laporanController::laporanTransaksi');
+        $routes->post('ajaxLaporanTransaksi', 'laporanController::ajaxLaporanTransaksi');
     });
 
 });

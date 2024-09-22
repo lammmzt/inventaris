@@ -19,6 +19,7 @@ class inventarisModel extends Model
         'spek_inventaris',
         'status_inventaris',
         'perolehan_inventaris',
+        'harga_inventaris',
         'sumber_inventaris',
         'qr_code',
         'created_at',
@@ -32,7 +33,7 @@ class inventarisModel extends Model
     public function getInventaris($id = false)
     {
         if ($id == false) {
-            return $this->select('inventaris.id_inventaris, inventaris.tipe_barang_id, inventaris.ruangan_id, inventaris.kode_inventaris, inventaris.nama_inventaris, inventaris.qty_inventaris, inventaris.qr_code,inventaris.spek_inventaris, inventaris.status_inventaris, inventaris.perolehan_inventaris, inventaris.sumber_inventaris, tipe_barang.nama_tipe_barang, satuan.nama_satuan, ruangan.nama_ruangan, barang.nama_barang')
+            return $this->select('inventaris.id_inventaris, inventaris.tipe_barang_id, inventaris.ruangan_id, inventaris.harga_inventaris, inventaris.kode_inventaris, inventaris.nama_inventaris, inventaris.qty_inventaris, inventaris.qr_code,inventaris.spek_inventaris, inventaris.status_inventaris, inventaris.perolehan_inventaris, inventaris.sumber_inventaris, tipe_barang.nama_tipe_barang, satuan.nama_satuan, ruangan.nama_ruangan, barang.nama_barang')
                 ->join('tipe_barang', 'tipe_barang.id_tipe_barang = inventaris.tipe_barang_id')
                 ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
                 ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
@@ -40,7 +41,7 @@ class inventarisModel extends Model
             
         }else{
             return $this
-                ->select('inventaris.id_inventaris, inventaris.tipe_barang_id, inventaris.ruangan_id, inventaris.kode_inventaris, inventaris.nama_inventaris, inventaris.qty_inventaris, inventaris.qr_code,inventaris.spek_inventaris, inventaris.status_inventaris, inventaris.perolehan_inventaris, inventaris.sumber_inventaris, tipe_barang.nama_tipe_barang, satuan.nama_satuan, ruangan.nama_ruangan, barang.nama_barang')
+                ->select('inventaris.id_inventaris, inventaris.tipe_barang_id, inventaris.ruangan_id, inventaris.harga_inventaris,inventaris.kode_inventaris, inventaris.nama_inventaris, inventaris.qty_inventaris, inventaris.qr_code,inventaris.spek_inventaris, inventaris.status_inventaris, inventaris.perolehan_inventaris, inventaris.sumber_inventaris, tipe_barang.nama_tipe_barang, satuan.nama_satuan, ruangan.nama_ruangan, barang.nama_barang')
                 ->join('tipe_barang', 'tipe_barang.id_tipe_barang = inventaris.tipe_barang_id')
                 ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
                 ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
