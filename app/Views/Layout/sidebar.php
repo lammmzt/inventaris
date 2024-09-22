@@ -121,7 +121,7 @@
                 <?php endif; ?>
                 <?php
 
-                if (session()->get('role') == 'Admin' || session()->get('role') == 'Petugas BOS'):
+                if (session()->get('role') == 'Admin' || session()->get('role') == 'Petugas BOS' || session()->get('role') == 'Kepala Sekolah'):
                 ?>
 
                 <li

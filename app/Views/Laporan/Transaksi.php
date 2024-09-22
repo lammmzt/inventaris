@@ -40,7 +40,7 @@
                                 <label class="col-sm-12 col-md-12 col-form-label">Jenis Transaksi</label>
                                 <div class="col-sm-12 col-md-12">
                                     <select class="custom-select col-12" id="jenis_transaksi" name="jenis_transaksi">
-                                        <option value="">Semua Transasksi</option>
+                                        <option value="">Semua Transaksi</option>
                                         <option value="0" id="status0">Masuk</option>
                                         <option value="1" id="status1">Keluar</option>
                                     </select>
@@ -62,10 +62,10 @@
                     </div>
                 </form>
                 <div class="pb-20 table-responsive">
-                    <table class="table hover multiple-select-row nowrap" id="laporanTransaksi">
+                    <table class="table hover multiple-select-row nowrap" id="tabelTransaksi">
                         <thead>
                             <th class="table-plus">Tanggal</th>
-                            <th>Status</th>
+                            <th>Jenis Transaksi</th>
                             <th>Nama Pemohon</th>
                             <th>Keperluan</th>
                             <th style="min-width: 200px;">Detail Barang</th>
@@ -92,10 +92,10 @@
 
 <script text="text/javascript">
 // dataTables Laporan Antrean
-function laporanAntrean() {
+function laporanTransaksi() {
     $(document).ready(function() {
 
-        $('#laporanTransaksi').DataTable({
+        $('#tabelTransaksi').DataTable({
             processing: true,
             serverSide: true,
             // responsive: true,
@@ -165,20 +165,20 @@ function laporanAntrean() {
     });
 }
 
-laporanAntrean();
+laporanTransaksi();
 
 $('#btn-reset').on('click', function() {
     $('#tgl_awal').val('');
     $('#tgl_akhir').val('');
     $('#status_antrian').val('');
-    $('#jenis_transaksi').DataTable().ajax.reload();
+    $('#tabelTransaksi').DataTable().ajax.reload();
 });
 
 $('#btn-filter').on('click', function() {
     // $('#btn-filter').html(
     //     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
     // );
-    $('#laporanTransaksi').DataTable().ajax.reload();
+    $('#tabelTransaksi').DataTable().ajax.reload();
 });
 </script>
 

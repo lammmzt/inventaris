@@ -90,8 +90,8 @@ class laporanController extends BaseController
                 return $row->status_inventaris;
             })
             ->add('detail_transaksi', function($row){
-                $detailTransaksi = $this->detailTransaksiModel->getTransByTransId($row->id_transaksi)->findAll();
                 $html = '';
+                $detailTransaksi = $this->detailTransaksiModel->getTransByTransId($row->id_transaksi)->findAll();
                 // - namaa barang - tipe barang - qty - @ satuan
                 foreach($detailTransaksi as $dt){
                     $html .= '<p class="detail_trans">- '.$dt['nama_barang'].' - '.$dt['nama_tipe_barang'].' - '.$dt['qty'].' @ '.$dt['nama_satuan'].'</p><br>';
