@@ -55,9 +55,9 @@ class transaksiController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                     ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>' : '') . ' 
+                     ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>' : ($row->status_transaksi == 3 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Masuk/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a> ' : '')) . '
                         <button class="dropdown-item detail_trans_masuk" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
-                        <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>
+                        
                 </div>
                 ';
             }, 'last')
@@ -283,6 +283,85 @@ class transaksiController extends BaseController
             ->toJson(true);
     }
 
+    // ================= PROSES TRANSAKSI =================
+    public function peroses_pengadaan()
+    {
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Proses Transaksi',
+            'active' => 'Transaksi',
+        ];
+        return view('PetugasBOS/Transaksi/index', $data);
+
+    }
+    
+    public function ajaxDataTablesProsesPengadaan()
+    {
+        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '2')->orWhere('status_transaksi', '3');
+        return DataTable::of($builder)
+             ->add('status_transaksi', function ($row) {
+                if ($row->status_transaksi == 1) {
+                    return '<span class="badge badge-warning">Persetujuan</span>';
+                } elseif ($row->status_transaksi == 2) {
+                    return '<span class="badge badge-primary">Disetujui</span>';
+                } elseif ($row->status_transaksi == 3) {
+                    return '<span class="badge badge-info">Proses pengadaan</span>';
+                } elseif ($row->status_transaksi == 4) {
+                    return '<span class="badge badge-success">Selesai</span>';
+                } else {
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+            })
+            ->add('action', function ($row) {   
+                return '
+                <div class="dropdown">
+                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                     ' . ($row->status_transaksi == 2 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('PetugasBOS/ATK/Transaksi/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>' : '') . ' 
+                        <button class="dropdown-item detail_trans" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
+                        
+                </div>
+                ';
+            }, 'last')
+            ->toJson(true);
+    }
+
+
+    //================================= pegawai =================================
+
+    public function transaksi_pegawai()
+    {
+        $data = [ 
+            'main_menu' => 'Transaksi',
+            'title' => 'Data transaksi',
+            'active' => 'Transaksi',
+        ];
+        return view('Pegawai/Transaksi/index', $data);
+    }
+    
+    public function ajaxDataTablesPegawai()
+    {
+        $user_id = session()->get('id_user');
+        $builder = $this->transaksiModel->getTransaksiKeluar()->where('user_id', $user_id);
+        // dd($builder);
+        return DataTable::of($builder)
+            ->add('status_transaksi', function ($row) {
+                // jika status_transaksi = 1 maka label inventaris dan sebaliknya atk
+                return $row->status_transaksi == 4 ? '<span class="badge badge-success">Selesai</span>' : '<span class="badge badge-warning">Proses</span>';
+            })
+            ->add('action', function ($row) {   
+                return '
+                <div class="dropdown">
+                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                        ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Pegawai/ATK/Transaksi/Keluar/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        ' : '') . ' 
+                        <button class="dropdown-item detail_trans_keluar" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
+                </div>
+                ';
+            }, 'last')
+            ->toJson(true);
+    }
 }
 
 ?>

@@ -63,8 +63,8 @@
                                 <tr>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
                                     <th scope="col" class="datatable-nosort">Nama ATK</th>
-                                    <th scope="col" class="datatable-nosort">Spek</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
+                                    <th scope="col" class="datatable-nosort" style="width: 250px;">Spek</th>
+                                    <th scope="col" class="text-center datatable-nosort" style="width: 100px;">
                                         Permintaan</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 250px;">Catatan
                                     </th>

@@ -150,6 +150,13 @@ class inventarisController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
+            'harga_inventaris' => [
+                'label' => 'Harga inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -189,6 +196,7 @@ class inventarisController extends BaseController
                 'spek_inventaris' => $this->request->getPost('spek_inventaris'),
                 'perolehan_inventaris' => $this->request->getPost('perolehan_inventaris'),
                 'sumber_inventaris' => $this->request->getPost('sumber_inventaris'),
+                'harga_inventaris' => $this->request->getPost('harga_inventaris'),
                 'qr_code' => $kode_inventaris.'.png',
                 'status_inventaris' => '1',
             ];
@@ -230,6 +238,13 @@ class inventarisController extends BaseController
             
             'tipe_barang_id' => [
                 'label' => 'Tipe Barang',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'harga_inventaris' => [
+                'label' => 'Harga inventaris',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
@@ -295,6 +310,7 @@ class inventarisController extends BaseController
                 'spek_inventaris' => $this->request->getPost('spek_inventaris'),
                 'perolehan_inventaris' => $this->request->getPost('perolehan_inventaris'),
                 'sumber_inventaris' => $this->request->getPost('sumber_inventaris'),
+                'harga_inventaris' => $this->request->getPost('harga_inventaris'),
                 'status_inventaris' => $this->request->getPost('status_inventaris'),
             ];
             $this->inventarisModel->save($data);

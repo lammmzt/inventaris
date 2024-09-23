@@ -42,8 +42,22 @@ class detailTransaksiController extends BaseController
                             <option value="2" '. ($row->status_detail_transaksi == '2' ? 'selected' : '') .'>Tolak</option>
                         </select>';
             })
+            ->add('status_detail', function ($row) {
+                if ($row->status_detail_transaksi == '0'){
+                    return '<span class="badge badge-warning">Menunggu</span>';
+                }elseif($row->status_detail_transaksi == '1'){
+                    return '<span class="badge badge-success">Disetujui</span>';
+                }else{
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+                
+            })
+            ->add('catatan_detail_transaksi', function ($row) {
+                return '<textarea class="form-control input_catatan" style="min-width: 100px; height: 50px;" placeholder="Catatan" '. ($row->status_detail_transaksi == '1' ? '' : 'readonly') .'
+                 id="'. $row->id_detail_transaksi .'">'. $row->catatan_detail_transaksi .'</textarea>';
+            })
              ->add('qty', function ($row) {
-                return '<input type="number" class="form-control text-center input_qty" style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
+                return '<input type="number" class="form-control text-center input_qty" '.($row->status_detail_transaksi == '1' ? '' : 'readonly') .' style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
             })
             ->add('action', function ($row) {   
                 return '
@@ -269,8 +283,54 @@ class detailTransaksiController extends BaseController
         ]);
     }
 
+    public function proses_penerimaan (){
+        $id_transaksi = $this->request->getUri()->getSegment(6);
+        // dd($id_transaksi);
+        $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
+
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Proses Transaksi Masuk',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tanggal_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],
+            'status_transaksi' => $data_transaksi['status_transaksi'],  
+        ];
+        return view('Admin/Transaksi/proses_transaksi_masuk', $data);
+    }
+
+    public function updatePenerimaanTransMasuk(){
+        $status_transaksi = $this->request->getPost('status_transaksi');
+        $id_transaksi = $this->request->getPost('id_transaksi');
+
+        // get data detail transaksi
+        $data_detail = $this->detailTransaksiModel->where('transaksi_id', $id_transaksi)->findAll();
+
+        if ($status_transaksi == '4') {
+            foreach ($data_detail as $key => $value) {
+               if($value['status_detail_transaksi'] == '1'){
+                    // cari data atk
+                    $data_atk = $this->atkModel->find($value['atk_id']);
+
+                    // update qty atk
+                    $this->atkModel->update($value['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $value['qty']]);
+               }
+            }
+        }
+
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => $status_transaksi]);
+
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
+    }
+    
+
     // ==================== TRANSAKSI KELUAR ====================
-     public function transaksi_keluar()
+    public function transaksi_keluar()
     {
         $data = [
             'main_menu' => 'Transaksi',
@@ -363,7 +423,7 @@ class detailTransaksiController extends BaseController
             'transaksi_id' => $transaksi_id,
             'atk_id' => $atk_id,
             'qty' => $qty,
-            'status_detail_transaksi' => '1',
+            'status_detail_transaksi' => '0',
         ];
         // insert detail transaksi
         $this->detailTransaksiModel->save($data);
@@ -499,7 +559,7 @@ class detailTransaksiController extends BaseController
         ];
         return view('KaTu/Transaksi/Proses', $data);
     }
-
+    
     public function UpdateProsesPersetujuan(){
         $detail_data = $this->request->getPost('detail_data');
         $id_transaksi = $this->request->getPost('id_transaksi');
@@ -537,11 +597,52 @@ class detailTransaksiController extends BaseController
             'tgl_transaksi' => $data_transaksi['tanggal_transaksi'],
             'ket_transaksi' => $data_transaksi['ket_transaksi'],   
             'nama_user' => $data_transaksi['nama_user'],
+            'status_transaksi' => $data_transaksi['status_transaksi'],
         ];
         return view('PetugasBos/Transaksi/Proses', $data);
     }
-    
 
+    public function UpdateProsesPengadaan(){
+        $status_transaksi = $this->request->getPost('status_transaksi');
+        $id_transaksi = $this->request->getPost('id_transaksi');
+
+        // update status transaksi
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => $status_transaksi]);
+
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
+
+    }
+    
+    public function transaksi_keluar_pegawai()
+    {
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Form Transaksi Keluar',
+            'active' => 'Transaksi',
+        ];
+        return view('Pegawai/Transaksi/transaksi_keluar', $data);
+    }
+
+    public function edit_trans_keluar_pegawai(){
+        $id_transaksi = $this->request->getUri()->getSegment(5);
+        // dd($id_transaksi);
+        $data_transaksi = $this->transaksiModel->getTransaksi($id_transaksi);
+
+        $data = [
+            'main_menu' => 'Transaksi',
+            'title' => 'Edit Transaksi Keluar',
+            'active' => 'Transaksi',
+            'id_transaksi' => $id_transaksi,
+            'tanggal_transaksi' => $data_transaksi['tanggal_transaksi'],
+            'ket_transaksi' => $data_transaksi['ket_transaksi'],   
+            'user_id' => $data_transaksi['user_id'],
+        ];
+        return view('Pegawai/Transaksi/edit_transaksi_keluar', $data);
+    }
 }
 
 ?>

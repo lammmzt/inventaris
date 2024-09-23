@@ -67,6 +67,7 @@
                                     <th scope="col" class="datatable-nosort">Catatan</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
                                         Permintaan</th>
+                                    <th scope="col" class="datatable-nosort">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -144,7 +145,10 @@ function dataTablesDetailBarang() {
                 data: 'qty',
                 class: 'text-center'
             },
-
+            {
+                data: 'status_detail',
+                class: 'text-center',
+            }
         ],
         columnDefs: [{
             targets: "datatable-nosort",
@@ -224,6 +228,34 @@ $(document).on('focusout', '.input_spek', function() {
         }
     });
 });
+
+// event focus lost input catatan
+$(document).on('focusout', '.input_catatan', function() {
+    const id = $(this).attr('id');
+    const catatan = $(this).val();
+    // alert(catatan);
+    var data = {
+        id_detail_pengadaan: id,
+        catatan: catatan
+    };
+
+    // alert(data);
+    $.ajax({
+        url: '<?= base_url('Admin/Pengadaan/updateCatatan') ?>',
+        method: 'post',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status != '200') {
+                getSwall(response.status, response.data);
+            }
+        },
+        error: function(err) {
+            console.log(err);
+        }
+    });
+});
+
 
 // event click button update
 $('#btn_update').click(function() {

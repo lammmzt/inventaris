@@ -93,32 +93,62 @@
                             <img src="vendors/images/coming-soon.png" alt="" width="25" /></span>
                     </a>
                 </li>
-
-
-                <?php
-                 endif;
-
-                if (session()->get('role') == 'Admin' || session()->get('role') == 'Petugas BOS'):
-                ?>
-
                 <li
-                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_data_pengadaan' ? 'show' : '' ?>">
+                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_inventaris' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-file-earmark-text">
 
                         </span><span class="mtext">Laporan</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="<?= base_url('Admin/Laporan/transaksi') ?>"
-                                class="<?= $active == 'laporan-transaksi '  ? 'active' : '' ?>">Laporan transaksi</a>
+                        <li><a href="<?= base_url('Admin/Laporan/Transaksi') ?>"
+                                class="<?= $active == 'laporan_transaksi'  ? 'active' : '' ?>">Laporan Transaksi</a>
                         </li>
-                        <li><a href="<?= base_url('Admin/laporan_pengadaan') ?>"
-                                class="<?= $active == 'laporan_pengadaan'  ? 'active' : '' ?>">Laporan pengadaan</a>
+                        <li><a href="<?= base_url('Admin/Laporan/Inventaris') ?>"
+                                class="<?= $active == 'laporan_inventaris'  ? 'active' : '' ?>">Laporan Inventaris</a>
+                        </li>
+                    </ul>
+                </li>
+                <?php
+                endif;
+                if (session()->get('role') == 'Petugas BOS'):
+                ?>
+                <li
+                    class="dropdown <?= $active == 'ATK' || $active == 'Transaksi' || $active == 'ATK' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-archive"></span><span class="mtext">ATK</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('PetugasBOS/ATK/Transaksi') ?>"
+                                class="<?= $active == 'Transaksi'  ? 'active' : '' ?>">
+                                Transakasi
+                            </a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="<?= base_url('PetugasBOS/Pengadaan') ?>"
+                        class="dropdown-toggle no-arrow <?= $active == 'Pengadaan'  ? 'active' : '' ?>">
+                        <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
+                    </a>
+                </li>
+                <li
+                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-file-earmark-text">
+
+                        </span><span class="mtext">Laporan</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('PetugasBOS/Laporan/Transaksi') ?>"
+                                class="<?= $active == 'laporan_transaksi'  ? 'active' : '' ?>">Laporan Transaksi</a>
+                        </li>
+                        <li><a href="<?= base_url('PetugasBOS/Laporan/Inventaris') ?>"
+                                class="<?= $active == 'laporan_inventaris'  ? 'active' : '' ?>">Laporan Inventaris</a>
                         </li>
                     </ul>
                 </li>
                 <?php endif; ?>
-
                 <?php
                 if (session()->get('role') == 'KA. TU'):
                 ?>
@@ -142,8 +172,58 @@
                     </a>
                 </li>
 
-                <?php endif; ?>
+                <?php
+                endif;
+                if (session()->get('role') == 'Pegawai'):
+                ?>
+                <li
+                    class="dropdown <?= $active == 'ATK' || $active == 'Transaksi' || $active == 'ATK' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-archive"></span><span class="mtext">ATK</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Pegawai/ATK/Transaksi') ?>"
+                                class="<?= $active == 'Transaksi'  ? 'active' : '' ?>">
+                                Transakasi
+                            </a></li>
+                    </ul>
+                </li>
 
+                <li
+                    class="dropdown <?= $active == 'Inventaris' || $active == 'Pengecekan' || $active == 'Inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-box-seam">
+                        </span><span class="mtext">Inventaris</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Pegawai/Inventaris/Pelaporan') ?>"
+                                class="<?= $active == 'Pelaporan'  ? 'active' : '' ?>">
+                                Pelaporan
+                            </a></li>
+                    </ul>
+                </li>
+
+                <?php
+                endif;
+                if (session()->get('role') == 'Kepala Sekolah'):
+                ?>
+                <li
+                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-file-earmark-text">
+
+                        </span><span class="mtext">Laporan</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Kepsek/Laporan/Transaksi') ?>"
+                                class="<?= $active == 'laporan_transaksi'  ? 'active' : '' ?>">Laporan Transaksi</a>
+                        </li>
+                        <li><a href="<?= base_url('Kepsek/Laporan/Inventaris') ?>"
+                                class="<?= $active == 'laporan_inventaris'  ? 'active' : '' ?>">Laporan Inventaris</a>
+                        </li>
+                    </ul>
+                </li>
+                <?php endif; ?>
                 <li>
                     <div class="dropdown-divider"></div>
                 </li>

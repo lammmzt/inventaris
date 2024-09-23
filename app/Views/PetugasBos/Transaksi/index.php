@@ -5,76 +5,19 @@
     <div class="col-md-12">
         <div class="card-box mb-30">
             <div class="pd-20 card-box">
-                <h5 class="h4 text-blue mb-20">Data Transaksi</h5>
-                <div class="tab">
-                    <!-- 2 tab dengan lebar full width ditengah -->
-                    <ul class="nav nav-tabs customtab nav-justified" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#masuk" role="tab"
-                                aria-selected="true">MASUK</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#keluar" role="tab"
-                                aria-selected="false">KELUAR</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="masuk" role="tabpanel">
-                            <div class="pd-20">
-                                <div class="row mb-4">
-                                    <div class="col-sm-6">
-                                        <!-- <h4 class="text-blue h4">Data ATK</h4> -->
-                                    </div>
-                                    <div class="col-sm-6 text-right">
-                                        <a href="<?= base_url('Admin/ATK/Transaksi/Masuk') ?>" class="btn btn-primary">
-                                            <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="pb-20 table-responsive">
-                                    <table class="table hover multiple-select-row nowrap" id="tabelTransaksiMasuk">
-                                        <thead>
-                                            <tr>
-                                                <th class="table-plus">Nama Pengguna</th>
-                                                <th class="table-plus">Tanggal</th>
-                                                <th class="">Status</th>
-                                                <th class="datatable-nosort">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="keluar" role="tabpanel">
-                            <div class="pd-20">
-                                <div class="row mb-4">
-                                    <div class="col-sm-6">
-                                        <!-- <h4 class="text-blue h4">Data ATK</h4> -->
-                                    </div>
-                                    <div class="col-sm-6 text-right">
-                                        <a href="<?= base_url('Admin/ATK/Transaksi/Keluar') ?>" class="btn btn-primary">
-                                            <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="pb-20 table-responsive">
-                                    <table class="table hover multiple-select-row nowrap" id="tabelTransaksiKeluar">
-                                        <thead>
-                                            <tr>
-                                                <th class="table-plus">Nama Pemohon</th>
-                                                <th class="table-plus">Tanggal</th>
-                                                <th class="">Status</th>
-                                                <th class="datatable-nosort">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                <h5 class="h4 text-blue mb-20">Data Transaksi Masuk</h5>
+                <div class="pb-20 table-responsive">
+                    <table class="table hover multiple-select-row nowrap" id="tabelTransaksiMasuk">
+                        <thead>
+                            <tr>
+                                <th class="table-plus">Nama Pengguna</th>
+                                <th class="table-plus">Tanggal</th>
+                                <th class="">Status</th>
+                                <th class="datatable-nosort">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -214,7 +157,7 @@
                     </div>
 
                     <div class="col-md-12">
-                        <div class="table-responsive pt-4">
+                        <div class="table-responsive pt-4 respose">
                             <table class="table table table-striped">
                                 <thead>
                                     <tr>
@@ -246,7 +189,7 @@
 </div>
 <style>
 /* mx height table 500px and srroler down */
-.table-responsive {
+.respose {
     max-height: 400px;
     overflow-y: auto;
 }
@@ -268,7 +211,7 @@ function dataTablesTransMasuk() {
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('Admin/ATK/Transaksi/DataTablesMasuk') ?>",
+            ajax: "<?php echo base_url('PetugasBOS/ATK/Transaksi/DataTablesProsesPengadaan') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
@@ -350,7 +293,7 @@ $(document).ready(function() {
 });
 
 // edit detail_trans_masuk
-$(document).on('click', '.detail_trans_masuk', function() {
+$(document).on('click', '.detail_trans', function() {
     const id = $(this).attr('id');
     // alert(id);
     $.ajax({
@@ -366,9 +309,9 @@ $(document).on('click', '.detail_trans_masuk', function() {
             $('#tanggal_transaksi').val(data.data.tanggal_transaksi);
             $('#keterangan').val(data.data.ket_transaksi);
             $('#status').html(data.data.status_transaksi == 1 ?
-                '<span class="badge badge-warning">Permintaan</span>' :
+                '<span class="badge badge-warning">Persetujuan</span>' :
                 data.data.status_transaksi == 2 ?
-                '<span class="badge badge-primary">persetujuan</span>' :
+                '<span class="badge badge-primary">Disetujui</span>' :
                 data.data.status_transaksi == 3 ?
                 '<span class="badge badge-info">Proses pengadaan</span>' :
                 data.data.status_transaksi == 4 ?
@@ -407,66 +350,6 @@ $(document).on('click', '.detail_trans_masuk', function() {
                         `;
                     }
                     $('#tbody_transaksi_masuk').html(html);
-                }
-
-            });
-        }
-
-    });
-});
-
-// edit detail_trans_keluar
-$(document).on('click', '.detail_trans_keluar', function() {
-    const id = $(this).attr('id');
-    // alert(id);
-    $.ajax({
-        url: '<?= base_url('Admin/ATK/Transaksi/edit') ?>',
-        type: 'post',
-        data: {
-            id_transaksi: id
-        },
-        dataType: 'json',
-        success: function(data) {
-            // console.log(data);
-            $('#nama_pemohon_keluar').val(data.data.nama_user);
-            $('#tanggal_transaksi_keluar').val(data.data.tanggal_transaksi);
-            $('#keterangan_keluar').val(data.data.ket_transaksi);
-            $('#status_keluar').html(data.data.status_transaksi == 4 ?
-                '<span class="badge badge-success">Selesai</span>' :
-                '<span class="badge badge-warning">Permintaan</span>');
-            $('#modalDetailTransKeluar').modal('show');
-
-
-            $.ajax({
-                url: '<?= base_url('Admin/ATK/Transaksi/fetchDetailTransByIdTrans') ?>',
-                type: 'post',
-                data: {
-                    id_transaksi: id
-                },
-                dataType: 'json',
-                success: function(data) {
-                    console.log(data);
-                    let html = '';
-                    if (data.data.length > 0) {
-                        data.data.forEach((item, index) => {
-                            html += `
-                            <tr>
-                                <td class="text-center">${index+1}</td>
-                                <td>${item.nama_barang + ' - ' + item.nama_tipe_barang + '(' + item.merek_atk + ') @ ' + item.nama_satuan}</td>
-                                <td class="text-center">${item.qty}</td>
-                                <td class="text-center">${item.catatan_detail_transaksi}</td>
-                                <td class="text-center">${item.status_detail_transaksi == 1 ? '<span class="badge badge-success">Setuju</span>' : item.status_detail_transaksi == 2 ? '<span class="badge badge-danger">Tolak</span>' : '<span class="badge badge-warning">Proses</span>'}</td>
-                            </tr>
-                            `;
-                        });
-                    } else {
-                        html += `
-                        <tr>
-                            <td colspan="5" class="text-center">Data Kosong</td>
-                        </tr>
-                        `;
-                    }
-                    $('#tbody_transaksi').html(html);
                 }
 
             });

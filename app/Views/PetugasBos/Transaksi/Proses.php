@@ -8,7 +8,7 @@
                 <!-- <h5 class="h4 text-blue mb-20">Form Edit Transaksi Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <a href="<?= base_url('Admin/ATK/Transaksi'); ?>" class="btn btn-primary"><i
+                        <a href="<?= base_url('KaTU/ATK/Transaksi'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>
@@ -40,6 +40,22 @@
                         </div>
                     </div>
                     <div class="row">
+                        <!-- status -->
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="status_transaksi" class="col-sm-4 col-form-label">Status<span
+                                        class="rq">*</span></label>
+                                <div class="col-sm-8">
+                                    <select class="form-control required" id="status_transaksi" name="status_transaksi">
+                                        <option value="2" <?= $status_transaksi == '2' ? 'selected' : ''; ?>>Disetujui
+                                        </option>
+                                        <option value="3" <?= $status_transaksi == '3' ? 'selected' : ''; ?>>Proses
+                                            Pengadaan</option>
+                                    </select>
+                                    <div class="form-control-feedback " id="errorstatus_transaksi"></div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- ket -->
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -66,7 +82,8 @@
                                         Permintaan</th>
                                     <th scope="col" class="text-center datatable-nosort" style="width: 250px;">
                                         Catatan</th>
-                                    <th scope="col" class="text-center datatable-nosort" style="width: 150px;">Action
+                                    <th scope="col" class="text-center datatable-nosort">
+                                        Status
                                     </th>
                                 </tr>
                             </thead>
@@ -103,7 +120,7 @@ function dataTablesDetailBarang() {
         autoWidth: false,
         responsive: true,
         ajax: {
-            url: '<?= base_url('Admin/ATK/Transaksi/DataTablesEditTransKeluar') ?>',
+            url: '<?= base_url('Admin/ATK/Transaksi/DataTablesEditTransMasuk') ?>',
             type: 'POST',
             data: function(data) {
                 data.id_transaksi = $('#id_transaksi').val();
@@ -146,7 +163,7 @@ function dataTablesDetailBarang() {
                 class: 'text-center'
             },
             {
-                data: 'status_detail_transaksi',
+                data: 'status_detail',
                 class: 'text-center'
             },
 
@@ -235,59 +252,41 @@ $(document).on('focusout', '.input_catatan', function() {
 // event click button update
 $('#btn_simpan').click(function() {
 
-    // get all input_status value and id
-    var data = [];
+
     $("#btn_simpan").attr("disabled", "disabled");
     $("#btn_simpan").html(
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
     );
-    $('.input_status').each(function() {
-        var id = $(this).attr('id');
-        var status = $(this).val();
-        if (status == '') {
-            $(this).focus();
-            $("#btn_simpan").removeAttr("disabled");
-            $("#btn_simpan").html('Simpan');
-            getSwall('error', 'Status belum dipilih');
-            data = [];
-            return false;
-        } else {
-            data.push({
-                id: id,
-                status: status
-            });
+
+    var id_transaksi = $('#id_transaksi').val();
+    var status_transaksi = $('#status_transaksi').val();
+
+    var data = {
+        id_transaksi: id_transaksi,
+        status_transaksi: status_transaksi
+    };
+
+    $.ajax({
+        url: '<?= base_url('PetugasBOS/ATK/Transaksi/UpdateProsesPengadaan') ?>',
+        method: 'post',
+        data: data,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status == '200') {
+                getSwall(response.status, response.data);
+                setTimeout(function() {
+                    window.location.href = '<?= base_url('PetugasBOS/ATK/Transaksi') ?>';
+                }, 1500);
+            } else {
+                getSwall(response.status, response.data);
+                $("#btn_simpan").removeAttr("disabled");
+                $("#btn_simpan").html('Simpan');
+            }
+        },
+        error: function(err) {
+            console.log(err);
         }
     });
-
-    // console.log(data);
-    // alert(data);
-
-    if (data.length > 0) {
-        $.ajax({
-            url: '<?= base_url('Admin/ATK/Transaksi/UpdateProsesPersetujuan') ?>',
-            method: 'post',
-            data: {
-                detail_data: data,
-                id_transaksi: $('#id_transaksi').val()
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.status != '200') {
-                    getSwall(response.status, response.data);
-                } else {
-                    getSwall(response.status, response.data);
-                    $("#btn_simpan").removeAttr("disabled");
-                    $("#btn_simpan").html('Simpan');
-                    setTimeout(function() {
-                        window.location.href = '<?= base_url('Admin/ATK/Transaksi'); ?>';
-                    }, 1500);
-                }
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });
-    }
 });
 </script>
 
