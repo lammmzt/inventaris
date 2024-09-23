@@ -110,7 +110,7 @@ function laporanINV() {
 
             ],
             order: [
-                [0, 'asc']
+                [3, 'asc']
             ],
             columnDefs: [{
                     targets: 0,

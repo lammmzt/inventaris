@@ -61,7 +61,7 @@
             <div class="brand-logo">
                 <a href="<?= base_url('/'); ?>" class="">
                     <img src="<?= base_url('Assets/')?>LOGO SMANSA.png" alt="" class="img-navbar" /> <span
-                        class="text-black header-navbar">PPDB SMANSA</span>
+                        class="text-black header-navbar">Inventory SMANSA</span>
                     <style>
                     .img-navbar {
                         width: 50px;

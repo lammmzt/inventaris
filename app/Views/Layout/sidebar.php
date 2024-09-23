@@ -93,7 +93,22 @@
                             <img src="vendors/images/coming-soon.png" alt="" width="25" /></span>
                     </a>
                 </li>
+                <li
+                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-file-earmark-text">
 
+                        </span><span class="mtext">Laporan</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Admin/Laporan/Transaksi') ?>"
+                                class="<?= $active == 'laporan_transaksi'  ? 'active' : '' ?>">Laporan Transaksi</a>
+                        </li>
+                        <li><a href="<?= base_url('Admin/Laporan/Inventaris') ?>"
+                                class="<?= $active == 'laporan_inventaris'  ? 'active' : '' ?>">Laporan Inventaris</a>
+                        </li>
+                    </ul>
+                </li>
                 <?php
                 endif;
                 if (session()->get('role') == 'Petugas BOS'):
@@ -117,13 +132,6 @@
                         <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
                     </a>
                 </li>
-
-                <?php endif; ?>
-                <?php
-
-                if (session()->get('role') == 'Admin' || session()->get('role') == 'Petugas BOS' || session()->get('role') == 'Kepala Sekolah'):
-                ?>
-
                 <li
                     class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_inventaris' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
@@ -132,16 +140,16 @@
                         </span><span class="mtext">Laporan</span>
                     </a>
                     <ul class="submenu">
-                        <li><a href="<?= base_url('Admin/Laporan/Transaksi') ?>"
+                        <li><a href="<?= base_url('PetugasBOS/Laporan/Transaksi') ?>"
                                 class="<?= $active == 'laporan_transaksi'  ? 'active' : '' ?>">Laporan Transaksi</a>
                         </li>
-                        <li><a href="<?= base_url('Admin/Laporan/Inventaris') ?>"
+                        <li><a href="<?= base_url('PetugasBOS/Laporan/Inventaris') ?>"
                                 class="<?= $active == 'laporan_inventaris'  ? 'active' : '' ?>">Laporan Inventaris</a>
                         </li>
                     </ul>
                 </li>
+                <?php endif; ?>
                 <?php
-                endif;
                 if (session()->get('role') == 'KA. TU'):
                 ?>
                 <li
@@ -195,9 +203,27 @@
                     </ul>
                 </li>
 
+                <?php
+                endif;
+                if (session()->get('role') == 'Kepala Sekolah'):
+                ?>
+                <li
+                    class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-file-earmark-text">
+
+                        </span><span class="mtext">Laporan</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('Kepsek/Laporan/Transaksi') ?>"
+                                class="<?= $active == 'laporan_transaksi'  ? 'active' : '' ?>">Laporan Transaksi</a>
+                        </li>
+                        <li><a href="<?= base_url('Kepsek/Laporan/Inventaris') ?>"
+                                class="<?= $active == 'laporan_inventaris'  ? 'active' : '' ?>">Laporan Inventaris</a>
+                        </li>
+                    </ul>
+                </li>
                 <?php endif; ?>
-
-
                 <li>
                     <div class="dropdown-divider"></div>
                 </li>

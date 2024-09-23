@@ -68,7 +68,7 @@
                             <th>Jenis Transaksi</th>
                             <th>Nama Pemohon</th>
                             <th>Keperluan</th>
-                            <th style="min-width: 200px;">Detail Barang</th>
+                            <th style="min-width: 200px;" class="datatable-nosort">Detail Barang</th>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -113,7 +113,7 @@ function laporanTransaksi() {
                 },
                 {
                     data: 'tipe_transaksi',
-                    className: 'text-center',
+                    class: 'text-center',
                 },
                 {
                     data: 'nama_user'
@@ -122,9 +122,17 @@ function laporanTransaksi() {
                     data: 'ket_transaksi'
                 },
                 {
-                    data: 'detail_transaksi'
+                    data: 'detail_transaksi',
+                    class: 'datatable-nosort'
                 }
 
+            ],
+            columnDefs: [{
+                targets: "datatable-nosort",
+                orderable: false,
+            }],
+            order: [
+                [0, 'asc']
             ],
             dom: 'Bfrtip',
             buttons: [{

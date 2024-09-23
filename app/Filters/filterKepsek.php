@@ -6,7 +6,7 @@ use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 
-class filterKepsesk implements FilterInterface
+class filterKepsek implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {
@@ -17,7 +17,7 @@ class filterKepsesk implements FilterInterface
 
     public function after(RequestInterface $request, ResponseInterface $response, $arguments = null)
     {
-        if (session()->get('role') == 'Kepsesk') {
+        if (session()->get('role') == 'Kepala Sekolah') {
             return redirect()->to('Kepsek/Dashboard');
         }
     }
