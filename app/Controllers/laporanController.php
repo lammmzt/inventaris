@@ -33,7 +33,7 @@ class laporanController extends BaseController
             'title' => 'Laporan Inventaris',
             'active' => 'laporan_inventaris',
         ];
-        return view('laporan/inventaris', $data);
+        return view('Laporan/inventaris', $data);
     }
 
 
@@ -59,7 +59,7 @@ class laporanController extends BaseController
             'title' => 'Laporan Transaksi',
             'active' => 'laporan_transaksi',
         ];
-        return view('laporan/Transaksi', $data);
+        return view('Laporan/Transaksi', $data);
     }
     
     public function ajaxLaporanTransaksi()

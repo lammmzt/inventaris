@@ -49,7 +49,7 @@
                     </div>
                 </form>
                 <div class="pb-20 table-responsive">
-                    <table class="table hover multiple-select-row nowrap" id="laporanInventaris">
+                    <table class="table hover multiple-select-row nowrap" id="tabelInventaris">
                         <thead>
                             <th class="table-plus">Kode Inventaris</th>
                             <th>Nama Inventaris</th>
@@ -76,7 +76,7 @@
 function laporanINV() {
     $(document).ready(function() {
 
-        $('#laporanInventaris').DataTable({
+        $('#tabelInventaris').DataTable({
             processing: true,
             serverSide: true,
             // responsive: true,
@@ -177,14 +177,14 @@ laporanINV();
 $('#btn-reset').on('click', function() {
     $('#tgl_awal').val('');
     $('#tgl_akhir').val('');
-    $('#laporanInventaris').DataTable().ajax.reload();
+    $('#tabelInventaris').DataTable().ajax.reload();
 });
 
 $('#btn-filter').on('click', function() {
     // $('#btn-filter').html(
     //     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
     // );
-    $('#laporanInventaris').DataTable().ajax.reload();
+    $('#tabelInventaris').DataTable().ajax.reload();
 });
 </script>
 
