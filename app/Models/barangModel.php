@@ -21,22 +21,30 @@ class barangModel extends Model
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
 
-
     public function getBarang($id = false)
     {
         if ($id == false) {
-            return $this->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang');
+            return $this
+            ->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang');
         }
-        return $this->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')->where(['id_barang' => $id])->first();
+        return $this
+        ->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')
+        ->where(['id_barang' => $id])->first();
     }
 
     public function getBarangByCode($code)
     {
-        return $this->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')->where(['kode_barang' => $code])->first();
+        return $this
+        ->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')
+        ->where(['kode_barang' => $code])
+        ->first();
     }
 
     public function getBarangByJenisBarang($type)
     {
-        return $this->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')->where(['jenis_barang' => $type])->findAll();
+        return $this
+        ->select('id_barang, kode_barang, nama_barang, status_barang, jenis_barang')
+        ->where(['jenis_barang' => $type])
+        ->findAll();
     }
 }

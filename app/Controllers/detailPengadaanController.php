@@ -55,7 +55,7 @@ class detailPengadaanController extends BaseController
                 }
             })
             ->add('catatan_detail_pengadaan', function ($row) {
-                return '<textarea class="form-control input_catatan" style="min-width: 100px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Catatan"
+                return '<textarea class="form-control input_catatan text-black" style="min-width: 100px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Catatan"
                  id="'. $row->id_detail_pengadaan .'">'. $row->catatan_detail_pengadaan .'</textarea>';
             })
              ->add('nama_spek', function ($row) {

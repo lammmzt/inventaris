@@ -368,7 +368,8 @@ class inventarisController extends BaseController
         if (!$validation->run($this->request->getPost())) {
             return $this->response->setJSON([
                 'error' => true,
-                'data' => $validation->getErrors()
+                'data' => $validation->getErrors(),
+                'status' => '422'
             ]);
         }
     

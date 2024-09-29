@@ -69,8 +69,6 @@
 <?= $this->endSection('content');?>
 
 <?= $this->section('dataTables');?>
-
-
 <script text="text/javascript">
 // dataTables Laporan Antrean
 function laporanINV() {
