@@ -308,18 +308,25 @@ class detailPengadaanController extends BaseController
     public function UpdateProsesPersetujuan(){
         $detail_data = $this->request->getPost('detail_data');
         $id_pengadaan = $this->request->getPost('id_pengadaan');
-        
+        $status_setuji = 0;
         for ($i=0; $i < count($detail_data); $i++) { 
             $data = [
                 'id_detail_pengadaan' => $detail_data[$i]['id'],
                 'status_detail_pengadaan' => $detail_data[$i]['status'],
             ];
-            
+            if($detail_data[$i]['status'] == '1'){
+                $status_setuji++;
+            }
             $this->detailPengadaanModel->update($data['id_detail_pengadaan'], ['status_detail_pengadaan' => $data['status_detail_pengadaan']]);
             
         }
-
-        $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '2']);
+        
+        // jika setuju tidak sama denan 0
+        if($status_setuji != 0){
+            $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '2']);
+        }else{
+            $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '0']);
+        }
 
         return $this->response->setJSON([
             'error' => false,

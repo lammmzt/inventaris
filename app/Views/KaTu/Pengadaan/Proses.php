@@ -416,7 +416,7 @@ $('#btn_simpan').click(function() {
                     $("#btn_simpan").removeAttr("disabled");
                     $("#btn_simpan").html('Simpan');
                     setTimeout(function() {
-                        window.location.href = '<?= base_url('Admin/Pengadaan'); ?>';
+                        window.location.href = '<?= base_url('KaTU/Pengadaan'); ?>';
                     }, 1500);
                 }
             },
