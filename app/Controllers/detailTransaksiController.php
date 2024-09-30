@@ -563,18 +563,26 @@ class detailTransaksiController extends BaseController
     public function UpdateProsesPersetujuan(){
         $detail_data = $this->request->getPost('detail_data');
         $id_transaksi = $this->request->getPost('id_transaksi');
-        
+        $status_setuju = 0;
         for ($i=0; $i < count($detail_data); $i++) { 
             $data = [
                 'id_detail_transaksi' => $detail_data[$i]['id'],
                 'status_detail_transaksi' => $detail_data[$i]['status'],
             ];
+            if($data['status_detail_transaksi'] == '1'){
+                $status_setuju = 1;
+            }
             
             $this->detailTransaksiModel->update($data['id_detail_transaksi'], ['status_detail_transaksi' => $data['status_detail_transaksi']]);
             
         }
 
-        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '2']);
+        if($status_setuju == 1){
+            $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '2']);
+         }else{
+            $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '0']);
+        }
+
 
         return $this->response->setJSON([
             'error' => false,
@@ -643,6 +651,9 @@ class detailTransaksiController extends BaseController
         ];
         return view('Pegawai/Transaksi/edit_transaksi_keluar', $data);
     }
+
+
+    
 }
 
 ?>

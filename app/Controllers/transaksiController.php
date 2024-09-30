@@ -362,6 +362,38 @@ class transaksiController extends BaseController
             }, 'last')
             ->toJson(true);
     }
+
+
+    // ==================== DASHBOARD ====================
+    public function ajaxDataTablesGetAllData()
+    {
+        $builder = $this->transaksiModel->getTransActive();
+        return DataTable::of($builder)
+            ->add('tipe_transaksi', function ($row) {
+                if ($row->tipe_transaksi == 0) {
+                    return '<span class="badge badge-success">Masuk</span>';
+                } else {
+                    return '<span class="badge badge-danger">Keluar</span>';
+                }
+            })
+            ->add('tanggal_transaksi', function ($row) {
+                return date('d-m-Y', strtotime($row->tanggal_transaksi));
+            })
+           ->add('status_transaksi', function ($row) {
+                if ($row->status_transaksi == 1) {
+                    return '<span class="badge badge-warning">Persetujuan</span>';
+                } elseif ($row->status_transaksi == 2) {
+                    return '<span class="badge badge-primary">Disetujui</span>';
+                } elseif ($row->status_transaksi == 3) {
+                    return '<span class="badge badge-info">Proses pengadaan</span>';
+                } elseif ($row->status_transaksi == 4) {
+                    return '<span class="badge badge-success">Selesai</span>';
+                } else {
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+            })
+            ->toJson(true);
+    }
 }
 
 ?>

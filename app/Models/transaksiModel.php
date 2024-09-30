@@ -52,4 +52,14 @@ class transaksiModel extends Model
             ->join('users', 'users.id_user = transaksi.user_id')
             ->where('tipe_transaksi', '1');
     }
+
+    public function getTransActive(){
+         return $this
+                ->select('transaksi.id_transaksi, transaksi.user_id, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
+                ->join('users', 'users.id_user = transaksi.user_id')
+                // jika status 1 atau 2 atau 3
+                ->where('status_transaksi', '1')
+                ->orWhere('status_transaksi', '2')
+                ->orWhere('status_transaksi', '3');
+    }
 }

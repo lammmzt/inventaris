@@ -165,6 +165,24 @@ class pengecekanController extends BaseController
             'status' => '200'
         ]);
     }
+
+    // ======================== DASHBOARD ========================
+    public function ajaxDataTablesAll(){
+        $builder = $this->pengecekanModel->getPengecekanActive();
+        return DataTable::of($builder)
+           ->add('status_pengecekan', function ($row) {
+                if($row->status_pengecekan == 1){
+                    return '<span class="badge badge-success">Baik</span>';
+                }elseif($row->status_pengecekan == 2){
+                    return '<span class="badge badge-warning">Perbaikan</span>';
+                }elseif($row->status_pengecekan == 3){
+                    return '<span class="badge badge-danger">Rusak</span>';
+                }else{
+                    return '<span class="badge badge-danger">Hilang</span>';
+                }
+            })
+            ->toJson(true);
+    }
     
 
 }

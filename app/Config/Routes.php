@@ -11,7 +11,8 @@ use CodeIgniter\Router\RouteCollection;
 // $routes->setAutoRoute(true);
 
 $routes->get('/', 'Home::index');
-
+$routes->get('getAllDataTras', 'transaksiController::ajaxDataTablesGetAllData');
+$routes->get('getAllDataTPengecekan', 'pengecekanController::ajaxDataTablesAll');
 // auth route
 $routes->group('Auth', function ($routes) {
         $routes->get('/', 'Auth::index');

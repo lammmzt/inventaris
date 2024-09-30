@@ -3,124 +3,153 @@
 
 
 <div class="row pb-10">
-    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
-        <div class="card-box height-100-p widget-style3">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-30 text-dark" id="total_antrian"></div>
-                    <div class="font-15 text-secondary weight-500">
-                        Total barang
+    <div class="col-md-12 mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="">Welcome, <?= session()->get('username'); ?></h4>
+                <p class="text_date">Today is <?= date('l, d F Y'); ?></p>
+            </div>
+            <div class="col-md-6 text-right">
+                <h6 class="" id="clock"></h6>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card-box mb-30">
+            <div class="pd-20">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <h4 class="text-blue h4">Data Transaksi</h4>
                     </div>
+                    <!-- <div class="col-sm-6 text-right">
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addBarang" type="button">
+                            <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </div> -->
                 </div>
-                <div class="widget-icon">
-                    <div class="icon" data-color="#00eccf">
-                        <i class="icon-copy fa fa-users" aria-hidden="true"></i>
-                    </div>
+                <div class="pb-20 table-responsive">
+                    <table class="table hover multiple-select-row nowrap" id="tabelTransaksi">
+                        <thead>
+                            <tr>
+                                <th class="table-plus">Nama Pemohon</th>
+                                <th class="">Jenis</th>
+                                <th class="">Tanggal</th>
+                                <th class="">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
-        <div class="card-box height-100-p widget-style3">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-30 text-dark" id="antrian_active"></div>
-                    <div class="font-15 text-secondary weight-500">
-                        barang Aktif
+    <div class="col-md-6">
+        <div class="card-box mb-30">
+            <div class="pd-20">
+                <div class="row mb-4">
+                    <div class="col-sm-6">
+                        <h4 class="text-blue h4">Data Kondisi Inventaris</h4>
                     </div>
+                    <!-- <div class="col-sm-6 text-right">
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addBarang" type="button">
+                            <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
+                        </a>
+                    </div> -->
                 </div>
-                <div class="widget-icon" data-color="#09cc06">
-                    <div class="icon">
-                        <i class="icon-copy fa fa-user-plus" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
-        <div class="card-box height-100-p widget-style3">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-30 text-dark" id="sisa_antrian"></div>
-                    <div class="font-15 text-secondary weight-500">barang tidak aktif</div>
-                </div>
-                <div class="widget-icon">
-                    <div class="icon" data-color="#ff5b5b">
-                        <i class="icon-copy fa fa-user-times" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
-        <div class="card-box height-100-p widget-style3">
-            <div class="d-flex flex-wrap">
-                <div class="widget-data">
-                    <div class="weight-700 font-30 text-dark" id="antrian_now"></div>
-                    <div class="font-15  text-secondary weight-500">
-                        barang saat ini
-                    </div>
-                </div>
-                <div class="widget-icon">
-                    <div class="icon">
-                        <i class="icon-copy fa fa-user" aria-hidden="true"></i>
-                    </div>
+                <div class="pb-20 table-responsive">
+                    <table class="table hover multiple-select-row nowrap" id="tabelKondisi">
+                        <thead>
+                            <tr>
+                                <th class="table-plus">Nama Pelapor</th>
+                                <th class="">Nama Barang</th>
+                                <th class="">Tanggal</th>
+                                <th class="">Ruangan</th>
+                                <th class="">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="bg-white pd-20 card-box mb-30">
-            <h4 class="h4 text-blue">
-                Grafik barang
-            </h4>
-            <div id="chart1"></div>
-        </div>
-    </div>
-</div>
-
+<style>
+.text_date {
+    font-size: 14px;
+    color: #6c757d;
+}
+</style>
 
 <?= $this->endSection('content'); ?>
 
 <?= $this->section('dataTables'); ?>
 
 <script text="text/javascript">
-// dataTables users
-function dataTablesAntrian() {
+// Clock
+function showTime() {
+    // jam indonesia
+    var date = new Date();
+    var h = date.getHours(); // 0 - 23
+    var m = date.getMinutes(); // 0 - 59
+    var s = date.getSeconds(); // 0 - 59
+    var session = "AM";
+
+    if (h == 0) {
+        h = 12;
+    }
+
+    if (h > 12) {
+        h = h - 12;
+        session = "PM";
+    }
+
+    h = (h < 10) ? "0" + h : h;
+
+    m = (m < 10) ? "0" + m : m;
+
+    s = (s < 10) ? "0" + s : s;
+
+    var time = h + ":" + m + ":" + s + " " + session;
+    document.getElementById("clock").innerText = time;
+    document.getElementById("clock").textContent = time;
+
+    setTimeout(showTime, 1000);
+
+}
+
+showTime();
+
+// Datatables transaksi
+function dataTablesTransaksi() {
     $(document).ready(function() {
-        $('#tableAntrian').DataTable({
+        $('#tabelTransaksi').DataTable({
             processing: true,
             serverSide: true,
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('Admin/Antrian/AjaxAntrianNotActive') ?>",
+            ajax: "<?php echo base_url('getAllDataTras') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
-                    data: 'nama_siswa',
-                    class: 'table-plus'
+                    data: 'nama_user',
+                    name: 'nama_user'
                 },
                 {
-                    data: 'kode_pendaftaran'
+                    data: 'tipe_transaksi',
+                    name: 'tipe_transaksi'
                 },
                 {
-                    data: 'jalur_pendaftaran'
+                    data: 'tanggal_transaksi',
+                    name: 'tanggal_transaksi'
                 },
                 {
-                    data: 'status_antrian',
-                },
-                {
-                    data: 'no_antrian',
-                },
-                {
-                    data: 'action',
-                    class: 'datatable-nosort'
+                    data: 'status_transaksi',
+                    name: 'status_transaksi'
                 },
 
             ],
@@ -128,159 +157,63 @@ function dataTablesAntrian() {
                 targets: "datatable-nosort",
                 orderable: false,
             }],
+            order: [
+                [1, 'desc']
+            ],
         });
     });
 }
-dataTablesAntrian();
 
+dataTablesTransaksi();
 
-function getSwall(status, message) {
-    swal({
-        title: message,
-        type: status == '200' ? 'success' : 'error',
-        showCancelButton: false,
-        showConfirmButton: true,
-        timer: 1500
-
-    })
-}
-
-
-const listFields = ['nama_siswa', 'nisn', 'jenis_kelamin', 'kode_pendaftaran', 'asal_sekolah', 'no_tlp',
-    'alamat',
-    'jalur_pendaftaran', 'tanggal_antrian', 'ket_antrian'
-];
-
-
-function fetchAntrian() {
-    $.ajax({
-        url: '<?= base_url('Admin/Antrian/getResultbarang') ?>',
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (response.error == false) {
-                $('#total_antrian').html(response.data.total_barang);
-                $('#antrian_active').html(response.data.total_barang);
-                $('#antrian_now').html(response.data.total_barang);
-                $('#sisa_antrian').html(response.data.total_barang);
-            }
-        }
-    });
-}
-
-setInterval(function() {
-    fetchAntrian();
-}, 1000);
-
-// details user
-$(document).on('click', '.detailsAntrian', function() {
-    var id = $(this).attr('id');
-    $.ajax({
-        url: '<?= base_url('Admin/Antrian/edit') ?>',
-        method: 'post',
-        data: {
-            id: id
-        },
-        dataType: 'json',
-        success: function(response) {
-            $('#detailsAntrian').modal('show');
-            listFields.forEach(function(item) {
-                $("#detail" + item).val(response.data[item]);
-            });
-            $("#detailqr_code").attr('src', '<?= base_url('Assets/qr_code/') ?>' + response
-                .data
-                .qr_code);
-            $("#detailno_antrian").html(response.data.no_antrian);
-            $("#detailsesi_antrian").html(response.data.sesi_antrian);
-        }
-    });
-});;
-
-// chart
-function getChartbarang() {
-    let data = [];
-    let tanggal = [];
-    $.ajax({
-        url: '<?= base_url('Admin/Antrian/getStatistic') ?>',
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (response.error == false) {
-                // alert(response.data);
-                for (let i = 0; i < response.data.length; i++) {
-                    dataArray = [
-                        response.data[i].total,
-                        response.data[i].gagal,
-                        response.data[i].sukses
-                    ];
-                    // console.log(dataArray);
-                    data.push(dataArray);
-                    tanggal.push(response.data[i].tanggal);
-                }
-            }
-            console.log(data);
-            console.log(tanggal);
-        }
-    });
-
-    var options3 = {
-        series: [{
-            name: 'Net Profit',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 80, 89, 90, 100, 20]
-        }, {
-            name: 'Revenue',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 80, 89, 90, 100, 20]
-        }, {
-            name: 'Free Cash Flow',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 80, 89, 90, 100, 20]
-        }],
-        chart: {
-            type: 'bar',
-            height: 350,
-            toolbar: {
-                show: false,
-            }
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: '25%',
-                endingShape: 'rounded'
-            },
-        },
-        dataLabels: {
-            enabled: false
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ['transparent']
-        },
-        xaxis: {
-            categories: ['11 Jun', '12 Jun', '13 Jun', '14 Jun', '15 Jun', '16 Jun', '17 Jun', '18 Jun', '19 Jun',
-                '20 Jun', '21 Jun', '22 Jun', '23 Jun', '24 Jun'
+// Datatables kondisi
+function dataTablesKondisi() {
+    $(document).ready(function() {
+        $('#tabelKondisi').DataTable({
+            processing: true,
+            serverSide: true,
+            scrollCollapse: true,
+            autoWidth: false,
+            responsive: true,
+            ajax: "<?php echo base_url('getAllDataTPengecekan') ?>",
+            "lengthMenu": [
+                [5, 10, 25, 50, -1],
+                [5, 10, 25, 50, "All"]
             ],
-        },
-        yaxis: {
-            title: {
-                text: '$(thousands)'
-            }
-        },
-        fill: {
-            opacity: 1
-        },
-        tooltip: {
-            y: {
-                formatter: function(val) {
-                    return "$" + val + "thousands"
-                }
-            }
-        }
-    };
-    var chart = new ApexCharts(document.querySelector("#chart1"), options3);
-    chart.render();
+            columns: [{
+                    data: 'nama_user',
+                    name: 'nama_user'
+                },
+                {
+                    data: 'nama_inventaris',
+                    name: 'nama_inventaris'
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at'
+                },
+                {
+                    data: 'nama_ruangan',
+                    name: 'nama_ruangan'
+                },
+                {
+                    data: 'status_pengecekan',
+                    name: 'status_pengecekan'
+                },
+
+            ],
+            columnDefs: [{
+                targets: "datatable-nosort",
+                orderable: false,
+            }],
+            order: [
+                [1, 'desc']
+            ],
+        });
+    });
 }
-getChartbarang();
+
+dataTablesKondisi();
 </script>
 
 <?= $this->endSection('dataTables'); ?>s
