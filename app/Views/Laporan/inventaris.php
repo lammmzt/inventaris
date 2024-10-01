@@ -166,14 +166,14 @@ function laporanINV() {
                         columns: [0, 1, 2, 3, 4, 5]
                     },
                 },
-                {
-                    extend: 'excel',
-                    title: 'Data Inventaris',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
-                    }
-                },
+                // {
+                //     extend: 'excel',
+                //     title: 'Data Inventaris',
+                //     className: 'btn btn-primary',
+                //     exportOptions: {
+                //         columns: [0, 1, 2, 3, 4, 5]
+                //     }
+                // },
                 // {
                 //     extend: 'pdf',
 

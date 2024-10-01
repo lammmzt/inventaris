@@ -165,14 +165,14 @@ function laporanTransaksi() {
                         });
                     },
                 },
-                {
-                    extend: 'excel',
-                    title: 'Data Transaksi',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
-                    }
-                },
+                // {
+                //     extend: 'excel',
+                //     title: 'Data Transaksi',
+                //     className: 'btn btn-primary',
+                //     exportOptions: {
+                //         columns: [0, 1, 2, 3, 4]
+                //     }
+                // },
                 // {
                 //     extend: 'pdf',
                 //     title: 'Data Antrian',
@@ -188,7 +188,7 @@ function laporanTransaksi() {
                 //     exportOptions: {
                 //         columns: [0, 1, 2, 3, 4]
                 //     }
-                // }
+                // }    
             ]
         });
 
