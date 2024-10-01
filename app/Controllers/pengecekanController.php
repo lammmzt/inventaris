@@ -168,7 +168,12 @@ class pengecekanController extends BaseController
 
     // ======================== DASHBOARD ========================
     public function ajaxDataTablesAll(){
-        $builder = $this->pengecekanModel->getPengecekanActive();
+        $role= session()->get('role');
+        if($role == 'Admin' || $role == 'Kepala Sekolah'){
+            $builder = $this->pengecekanModel->getPengecekanActive()->Where('status_pengecekan', '2')->orWhere('status_pengecekan', '3');
+        }else{
+            $builder = $this->pengecekanModel->getPengecekanActive()->where('user_id', session()->get('id_user'))->limit(5);
+        }
         return DataTable::of($builder)
            ->add('status_pengecekan', function ($row) {
                 if($row->status_pengecekan == 1){

@@ -71,36 +71,6 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="card-box mb-30">
-            <div class="pd-20">
-                <div class="row mb-4">
-                    <div class="col-sm-6">
-                        <h4 class="text-blue h4">Data Kondisi Inventaris</h4>
-                    </div>
-                    <!-- <div class="col-sm-6 text-right">
-                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addBarang" type="button">
-                            <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
-                        </a>
-                    </div> -->
-                </div>
-                <div class="pb-20 table-responsive">
-                    <table class="table hover multiple-select-row nowrap" id="tabelKondisi">
-                        <thead>
-                            <tr>
-                                <th class="table-plus">Nama Pelapor</th>
-                                <th class="">Nama Barang</th>
-                                <th class="">Tanggal</th>
-                                <th class="">Ruangan</th>
-                                <th class="">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <style>
@@ -158,7 +128,7 @@ function dataTablesTransaksi() {
             scrollCollapse: true,
             autoWidth: false,
             responsive: true,
-            ajax: "<?php echo base_url('getAllDataTras') ?>",
+            ajax: "<?php echo base_url('DataTablesDashboardTrans') ?>",
             "lengthMenu": [
                 [5, 10, 25, 50, -1],
                 [5, 10, 25, 50, "All"]
@@ -194,54 +164,6 @@ function dataTablesTransaksi() {
 
 dataTablesTransaksi();
 
-// Datatables kondisi
-function dataTablesKondisi() {
-    $(document).ready(function() {
-        $('#tabelKondisi').DataTable({
-            processing: true,
-            serverSide: true,
-            scrollCollapse: true,
-            autoWidth: false,
-            responsive: true,
-            ajax: "<?php echo base_url('getAllDataPengecekan') ?>",
-            "lengthMenu": [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "All"]
-            ],
-            columns: [{
-                    data: 'nama_user',
-                    name: 'nama_user'
-                },
-                {
-                    data: 'nama_inventaris',
-                    name: 'nama_inventaris'
-                },
-                {
-                    data: 'created_at',
-                    name: 'created_at'
-                },
-                {
-                    data: 'nama_ruangan',
-                    name: 'nama_ruangan'
-                },
-                {
-                    data: 'status_pengecekan',
-                    name: 'status_pengecekan'
-                },
-
-            ],
-            columnDefs: [{
-                targets: "datatable-nosort",
-                orderable: false,
-            }],
-            order: [
-                [1, 'desc']
-            ],
-        });
-    });
-}
-
-dataTablesKondisi();
 
 // Datatables pengadaan
 function dataTablesPengadaan() {

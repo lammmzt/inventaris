@@ -45,8 +45,6 @@ class pengecekanModel extends Model
             ->join('users', 'users.id_user = pengecekan.user_id')
             ->join('inventaris', 'inventaris.id_inventaris = pengecekan.inventaris_id')
             ->join('tipe_barang', 'tipe_barang.id_tipe_barang = inventaris.tipe_barang_id')
-            ->join('ruangan', 'ruangan.id_ruangan = inventaris.ruangan_id')
-            ->Where('status_pengecekan', '2')
-            ->orWhere('status_pengecekan', '3');
+            ->join('ruangan', 'ruangan.id_ruangan = inventaris.ruangan_id');
     }
 }
