@@ -94,7 +94,6 @@
 // dataTables Laporan Antrean
 function laporanTransaksi() {
     $(document).ready(function() {
-
         $('#tabelTransaksi').DataTable({
             processing: true,
             serverSide: true,
@@ -137,36 +136,59 @@ function laporanTransaksi() {
             dom: 'Bfrtip',
             buttons: [{
                     extend: 'print',
-                    title: 'Data Antrian',
+                    title: '',
+                    messageTop: '<img src="<?= base_url('Assets/kop surat 2.png') ?>" style="width: 100%;"> <br> <h3 class="text-center text-black" style="margin-top: 20px; margin-bottom: 20px; color: black;">Laporan Transaksi</h3>',
                     className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
-                    }
+                    messageBottom: '<table class="footers" style="width: 100%; margin-top: 40px;"><tr><td style="width: 50%;"></td><td style="width: 50%; text-align: center; margin-bottom: 5px">Pekalongan, .............................. <br>Yang Membuat<br><br><br><br></br><br>(...........................................)</td></tr></table>',
+                    customize: function(win) {
+                        $(win.document.body).find('table thead tr th').css({
+                            'font-size': '12px',
+                            'text-align': 'center',
+                            'font-weight': 'bold',
+                            'background-color': '#D3D3D3',
+                            'color': 'black',
+                            'border': '1px solid black'
+                        });
+                        $(win.document.body).find('table tbody tr td').css({
+                            'font-size': '12px',
+                            'text-align': 'center',
+                            'border': '1px solid black'
+                        });
+
+                        $(win.document.body).find('table.footers tr td').css({
+                            'border': '0',
+                            'padding': '0px',
+                            'color': 'black',
+                            'margin': '0px',
+                            'font-size': '12px',
+                            'text-align': 'center',
+                        });
+                    },
                 },
                 {
                     extend: 'excel',
-                    title: 'Data Antrian',
+                    title: 'Data Transaksi',
                     className: 'btn btn-primary',
                     exportOptions: {
                         columns: [0, 1, 2, 3, 4]
                     }
                 },
-                {
-                    extend: 'pdf',
-                    title: 'Data Antrian',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
-                    }
-                },
-                {
-                    extend: 'csv',
-                    title: 'Data Antrian',
-                    className: 'btn btn-primary',
-                    exportOptions: {
-                        columns: [0, 1, 2, 3, 4]
-                    }
-                }
+                // {
+                //     extend: 'pdf',
+                //     title: 'Data Antrian',
+                //     className: 'btn btn-primary',
+                //     exportOptions: {
+                //         columns: [0, 1, 2, 3, 4]
+                //     }
+                // },
+                // {
+                //     extend: 'csv',
+                //     title: 'Data Antrian',
+                //     className: 'btn btn-primary',
+                //     exportOptions: {
+                //         columns: [0, 1, 2, 3, 4]
+                //     }
+                // }
             ]
         });
 
@@ -175,17 +197,24 @@ function laporanTransaksi() {
 
 laporanTransaksi();
 
+var tgl_awal = $('#tgl_awal').val();
+var tgl_akhir = $('#tgl_akhir').val();
+
 $('#btn-reset').on('click', function() {
     $('#tgl_awal').val('');
     $('#tgl_akhir').val('');
     $('#status_antrian').val('');
     $('#tabelTransaksi').DataTable().ajax.reload();
+    tgl_awal = $('#tgl_awal').val();
+    tgl_akhir = $('#tgl_akhir').val();
 });
 
 $('#btn-filter').on('click', function() {
     // $('#btn-filter').html(
     //     '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
     // );
+    tgl_awal = $('#tgl_awal').val();
+    tgl_akhir = $('#tgl_akhir').val();
     $('#tabelTransaksi').DataTable().ajax.reload();
 });
 </script>
