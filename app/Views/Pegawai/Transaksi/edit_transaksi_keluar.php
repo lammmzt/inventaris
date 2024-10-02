@@ -14,8 +14,8 @@
                 </div>
                 <form id="form_tambah_transaksi_keluar">
                     <input type="hidden" name="id_transaksi" id="id_transaksi" value="<?= $id_transaksi; ?>">
-                    <input type="hidden" class="form-control required" id="user_id" name="user_id"
-                        value="<?= $user_id; ?>" readonly>
+                    <input type="hidden" class="form-control required" id="id_user" name="id_user"
+                        value="<?= $id_user; ?>" readonly>
                     <div class="row">
 
                         <div class="col-md-6">
@@ -43,10 +43,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="atk_id" class="col-sm-2 col-form-label">Nama ATK<span
+                        <label for="id_atk" class="col-sm-2 col-form-label">Nama ATK<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-9">
-                            <select class="custom-select2 form-control" name="atk_id" id="atk_id"
+                            <select class="custom-select2 form-control" name="id_atk" id="id_atk"
                                 style="width: 100%; height: 38px;">
 
                             </select>
@@ -173,7 +173,7 @@ function getATK() {
                 //     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' +
                 //     '</option>';
             });
-            $('#atk_id').html(html);
+            $('#id_atk').html(html);
         }
     });
 };
@@ -232,8 +232,8 @@ $(document).on('click', '.deleteTransKeluar', function() {
 });
 
 // event change tipe barang
-$('#atk_id').change(function() {
-    if ($('#atk_id').val() !== '') {
+$('#id_atk').change(function() {
+    if ($('#id_atk').val() !== '') {
         $('#btn_plus').prop('disabled', false);
     } else {
         $('#btn_plus').attr('disabled', true);
@@ -242,11 +242,11 @@ $('#atk_id').change(function() {
 
 // function to update detail
 function updatedDetailTranskeluar() {
-    var atk_id = $('#atk_id').val();
+    var id_atk = $('#id_atk').val();
     var id_transaksi = $('#id_transaksi').val();
 
     var data = {
-        atk_id: atk_id,
+        id_atk: id_atk,
         id_transaksi: id_transaksi,
         qty: 1
     };
@@ -308,7 +308,7 @@ $('#btn_update').click(function() {
     var id_transaksi = $('#id_transaksi').val();
     var tanggal_transaksi = $('#tanggal_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
-    var user_id = $('#user_id').val();
+    var id_user = $('#id_user').val();
     $("#btn_update").attr("disabled", "disabled");
     $("#btn_update").html(
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
@@ -317,7 +317,7 @@ $('#btn_update').click(function() {
         id_transaksi: id_transaksi,
         tanggal_transaksi: tanggal_transaksi,
         ket_transaksi: ket_transaksi,
-        user_id: user_id
+        id_user: id_user
     };
 
     $.ajax({

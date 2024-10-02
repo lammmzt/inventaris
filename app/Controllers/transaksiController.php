@@ -170,7 +170,7 @@ class transaksiController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'user_id' => [
+            'id_user' => [
                 'label' => 'Nama Pengguna',
                 'rules' => 'required',
                 'errors' => [
@@ -187,7 +187,7 @@ class transaksiController extends BaseController
             ]);
         } else {
             $data = [
-                'user_id' => $this->request->getPost('user_id'),
+                'id_user' => $this->request->getPost('id_user'),
                 'ket_transaksi' => $this->request->getPost('ket_transaksi'),
                 'tanggal_transaksi' => $this->request->getPost('tanggal_transaksi'),
             ];
@@ -341,8 +341,8 @@ class transaksiController extends BaseController
     
     public function ajaxDataTablesPegawai()
     {
-        $user_id = session()->get('id_user');
-        $builder = $this->transaksiModel->getTransaksiKeluar()->where('user_id', $user_id);
+        $id_user = session()->get('id_user');
+        $builder = $this->transaksiModel->getTransaksiKeluar()->where('id_user', $id_user);
         // dd($builder);
         return DataTable::of($builder)
             ->add('status_transaksi', function ($row) {
@@ -400,8 +400,8 @@ class transaksiController extends BaseController
         if($role == 'KA. TU'){
             $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '1');
         }else if($role = 'Pegawai'){
-            $user_id = session()->get('id_user');
-            $builder = $this->transaksiModel->getTransaksi()->where('user_id', $user_id)->where('status_transaksi', '1');
+            $id_user = session()->get('id_user');
+            $builder = $this->transaksiModel->getTransaksi()->where('id_user', $id_user)->where('status_transaksi', '1');
         }else{
             $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '2');
         }

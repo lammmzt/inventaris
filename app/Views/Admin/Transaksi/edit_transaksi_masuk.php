@@ -40,10 +40,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="atk_id" class="col-sm-2 col-form-label">Nama ATK<span
+                        <label for="id_atk" class="col-sm-2 col-form-label">Nama ATK<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-9">
-                            <select class="custom-select2 form-control" name="atk_id" id="atk_id"
+                            <select class="custom-select2 form-control" name="id_atk" id="id_atk"
                                 style="width: 100%; height: 38px;">
 
                             </select>
@@ -175,7 +175,7 @@ function getATK() {
                 //     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' +
                 //     '</option>';
             });
-            $('#atk_id').html(html);
+            $('#id_atk').html(html);
         }
     });
 };
@@ -232,8 +232,8 @@ $(document).on('click', '.deleteTransMasuk', function() {
 });
 
 // event change tipe barang
-$('#atk_id').change(function() {
-    if ($('#atk_id').val() !== '') {
+$('#id_atk').change(function() {
+    if ($('#id_atk').val() !== '') {
         $('#btn_plus').prop('disabled', false);
     } else {
         $('#btn_plus').attr('disabled', true);
@@ -242,11 +242,11 @@ $('#atk_id').change(function() {
 
 // function to update detail
 function updatedDetailTransMasuk() {
-    var atk_id = $('#atk_id').val();
+    var id_atk = $('#id_atk').val();
     var id_transaksi = $('#id_transaksi').val();
 
     var data = {
-        atk_id: atk_id,
+        id_atk: id_atk,
         id_transaksi: id_transaksi,
         qty: 1
     };

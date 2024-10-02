@@ -40,10 +40,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="tipe_barang_id" class="col-sm-2 col-form-label">Nama ATK<span
+                        <label for="id_tipe_barang" class="col-sm-2 col-form-label">Nama ATK<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-9">
-                            <select class="custom-select2 form-control" name="tipe_barang_id" id="tipe_barang_id"
+                            <select class="custom-select2 form-control" name="id_tipe_barang" id="id_tipe_barang"
                                 style="width: 100%; height: 38px;">
 
                             </select>
@@ -176,7 +176,7 @@ function getTipeBarang() {
                         '</option>';
                 });
             }
-            $('#tipe_barang_id').html(html);
+            $('#id_tipe_barang').html(html);
         }
     });
 };
@@ -236,8 +236,8 @@ $(document).on('click', '.delete_pengadaan', function() {
 });
 
 // event change tipe barang
-$('#tipe_barang_id').change(function() {
-    if ($('#tipe_barang_id').val() !== '') {
+$('#id_tipe_barang').change(function() {
+    if ($('#id_tipe_barang').val() !== '') {
         $('#btn_plus').prop('disabled', false);
     } else {
         $('#btn_plus').attr('disabled', true);
@@ -246,12 +246,12 @@ $('#tipe_barang_id').change(function() {
 
 // function to update detail
 function updateDetailPengadaan() {
-    var tipe_barang_id = $('#tipe_barang_id').val();
+    var id_tipe_barang = $('#id_tipe_barang').val();
     var id_pengadaan = $('#id_pengadaan').val();
-    // alert(tipe_barang_id);
+    // alert(id_tipe_barang);
 
     var data = {
-        tipe_barang_id: tipe_barang_id,
+        id_tipe_barang: id_tipe_barang,
         id_pengadaan: id_pengadaan,
     };
     $.ajax({

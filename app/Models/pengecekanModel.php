@@ -10,8 +10,8 @@ class pengecekanModel extends Model
     protected $primaryKey = 'id_pengecekan';
     protected $allowedFields = [
         'id_pengecekan',
-        'user_id',
-        'inventaris_id',
+        'id_user',
+        'id_inventaris',
         'ket_pengecekan',
         'status_pengecekan',
         'foto_pengecekan',
@@ -27,24 +27,24 @@ class pengecekanModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('pengecekan.id_pengecekan, pengecekan.user_id, pengecekan.inventaris_id, pengecekan.ket_pengecekan, pengecekan.foto_pengecekan, pengecekan.status_pengecekan, pengecekan.created_at, users.nama_user, inventaris.nama_inventaris')
-                ->join('users', 'users.id_user = pengecekan.user_id')
-                ->join('inventaris', 'inventaris.id_inventaris = pengecekan.inventaris_id');
+                ->select('pengecekan.id_pengecekan, pengecekan.id_user, pengecekan.id_inventaris, pengecekan.ket_pengecekan, pengecekan.foto_pengecekan, pengecekan.status_pengecekan, pengecekan.created_at, users.nama_user, inventaris.nama_inventaris')
+                ->join('users', 'users.id_user = pengecekan.id_user')
+                ->join('inventaris', 'inventaris.id_inventaris = pengecekan.id_inventaris');
         }
         return $this
-            ->select('pengecekan.id_pengecekan, pengecekan.user_id, pengecekan.inventaris_id, pengecekan.ket_pengecekan, pengecekan.status_pengecekan, pengecekan.foto_pengecekan, users.nama_user,pengecekan.created_at, inventaris.nama_inventaris')
-            ->join('users', 'users.id_user = pengecekan.user_id')
-            ->join('inventaris', 'inventaris.id_inventaris = pengecekan.inventaris_id')
+            ->select('pengecekan.id_pengecekan, pengecekan.id_user, pengecekan.id_inventaris, pengecekan.ket_pengecekan, pengecekan.status_pengecekan, pengecekan.foto_pengecekan, users.nama_user,pengecekan.created_at, inventaris.nama_inventaris')
+            ->join('users', 'users.id_user = pengecekan.id_user')
+            ->join('inventaris', 'inventaris.id_inventaris = pengecekan.id_inventaris')
             ->where(['id_pengecekan' => $id])->first();
     }
 
     public function getPengecekanActive()
     {
         return $this
-            ->select('pengecekan.id_pengecekan, pengecekan.user_id, pengecekan.inventaris_id, pengecekan.ket_pengecekan, pengecekan.foto_pengecekan, pengecekan.status_pengecekan, pengecekan.created_at, users.nama_user, inventaris.nama_inventaris,  ruangan.nama_ruangan, tipe_barang.nama_tipe_barang')
-            ->join('users', 'users.id_user = pengecekan.user_id')
-            ->join('inventaris', 'inventaris.id_inventaris = pengecekan.inventaris_id')
-            ->join('tipe_barang', 'tipe_barang.id_tipe_barang = inventaris.tipe_barang_id')
-            ->join('ruangan', 'ruangan.id_ruangan = inventaris.ruangan_id');
+            ->select('pengecekan.id_pengecekan, pengecekan.id_user, pengecekan.id_inventaris, pengecekan.ket_pengecekan, pengecekan.foto_pengecekan, pengecekan.status_pengecekan, pengecekan.created_at, users.nama_user, inventaris.nama_inventaris,  ruangan.nama_ruangan, tipe_barang.nama_tipe_barang')
+            ->join('users', 'users.id_user = pengecekan.id_user')
+            ->join('inventaris', 'inventaris.id_inventaris = pengecekan.id_inventaris')
+            ->join('tipe_barang', 'tipe_barang.id_tipe_barang = inventaris.id_tipe_barang')
+            ->join('ruangan', 'ruangan.id_ruangan = inventaris.id_ruangan');
     }
 }

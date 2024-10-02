@@ -101,6 +101,46 @@ class laporanController extends BaseController
             ->toJson(true);
         
     }
+
+    // fetch laporan detal transaksi / mount 2024
+    public function getAllDataTransInYear()
+    {
+        $year = date('Y');
+        $mountNow = date('m');
+        $data_detail_transaksi = $this->detailTransaksiModel->getDataInYear($year);
+        // dd($data_detail_transaksi);
+        $data_result = [];
+
+        // hitung data qty masuk dan keluar perbulan sampai bulan sekarang
+        for($i = 01; $i <= $mountNow; $i++){
+            $qty_masuk = 0;
+            $qty_keluar = 0;
+            foreach($data_detail_transaksi as $dt){
+                $date = date('m', strtotime($dt['tanggal_transaksi']));
+                if($date == $i){
+                    if($dt['tipe_transaksi'] == 0){
+                        $qty_masuk += $dt['qty'];
+                    }else{
+                        $qty_keluar += $dt['qty'];
+                    }
+                }
+            }
+
+            $data_result[] = [
+                'mount' => $i,
+                'qty_masuk' => $qty_masuk,
+                'qty_keluar' => $qty_keluar,
+            ];
+
+            // dd($data_result);
+        }
+
+       return $this->response->setJSON([
+            'error' => false,
+            'data' => $data_result,
+            'status' => '200'
+    ]);
+    }
 }
 
 

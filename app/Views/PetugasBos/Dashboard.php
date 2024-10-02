@@ -14,6 +14,7 @@
             </div>
         </div>
     </div>
+
     <div class="col-md-6">
         <div class="card-box mb-30">
             <div class="pd-20">

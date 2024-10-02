@@ -150,7 +150,7 @@ class pengadaanController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'user_id' => [
+            'id_user' => [
                 'label' => 'Nama Pengguna',
                 'rules' => 'required',
                 'errors' => [
@@ -167,7 +167,7 @@ class pengadaanController extends BaseController
             ]);
         } else {
             $data = [
-                'user_id' => $this->request->getPost('user_id'),
+                'id_user' => $this->request->getPost('id_user'),
                 'ket_pengadaan' => $this->request->getPost('ket_pengadaan'),
                 'tanggal_pengadaan' => $this->request->getPost('tanggal_pengadaan'),
             ];

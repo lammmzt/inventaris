@@ -17,12 +17,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label for="user_id" class="col-sm-4 col-form-label">Nama Pemohon<span
+                                <label for="id_user" class="col-sm-4 col-form-label">Nama Pemohon<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="user_id" readonly name="user_id"
+                                    <input type="text" class="form-control" id="id_user" readonly name="id_user"
                                         value="<?= $nama_user; ?>">
-                                    <div class="form-control-feedback " id="erroruser_id"></div>
+                                    <div class="form-control-feedback " id="errorid_user"></div>
                                 </div>
                             </div>
                         </div>

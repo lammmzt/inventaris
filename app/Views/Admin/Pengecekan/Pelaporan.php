@@ -94,7 +94,7 @@ video {
                 <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
                 enctype="multipart/form-data"> -->
                 <div class="modal-body">
-                    <input type="hidden" name="inventaris_id" id="inventaris_id">
+                    <input type="hidden" name="id_inventaris" id="id_inventaris">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
@@ -227,7 +227,7 @@ function getDataInventaris(id) {
         success: function(response) {
             if (response.status == '200') {
                 $('#addinventaris').modal('show');
-                $('#inventaris_id').val(response.data.inventaris.id_inventaris);
+                $('#id_inventaris').val(response.data.inventaris.id_inventaris);
                 $('#kode_inventaris').val(response.data.inventaris.kode_inventaris);
                 $('#nama_inventaris').val(response.data.inventaris.nama_inventaris);
                 $('#nama_ruangan').val(response.data.inventaris.nama_ruangan);

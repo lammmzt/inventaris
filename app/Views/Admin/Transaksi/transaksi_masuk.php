@@ -39,10 +39,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="atk_id" class="col-sm-2 col-form-label">Nama ATK<span
+                        <label for="id_atk" class="col-sm-2 col-form-label">Nama ATK<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-9">
-                            <select class="custom-select2 form-control" name="atk_id" id="atk_id"
+                            <select class="custom-select2 form-control" name="id_atk" id="id_atk"
                                 style="width: 100%; height: 38px;">
 
                             </select>
@@ -120,7 +120,7 @@ function getATK() {
                 //     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' +
                 //     '</option>';
             });
-            $('#atk_id').html(html);
+            $('#id_atk').html(html);
         }
     });
 };
@@ -141,8 +141,8 @@ function getSwall(status, message) {
 var detail_transaksi = [];
 
 // event change tipe barang
-$('#atk_id').change(function() {
-    if ($('#atk_id').val() !== '') {
+$('#id_atk').change(function() {
+    if ($('#id_atk').val() !== '') {
         $('#btn_plus').prop('disabled', false);
     } else {
         $('#btn_plus').attr('disabled', true);
@@ -151,14 +151,14 @@ $('#atk_id').change(function() {
 
 // fungsi tambah detail transaksi
 function addDetailTransaksi() {
-    var atk_id = $('#atk_id').val();
-    var atk_text = $('#atk_id option:selected').text();
-    var stok = $('#atk_id option:selected').data('stok');
+    var id_atk = $('#id_atk').val();
+    var atk_text = $('#id_atk option:selected').text();
+    var stok = $('#id_atk option:selected').data('stok');
     var qty = 1;
-    var index = detail_transaksi.findIndex(x => x.atk_id == atk_id);
+    var index = detail_transaksi.findIndex(x => x.id_atk == id_atk);
     if (index == -1) {
         detail_transaksi.push({
-            atk_id: atk_id,
+            id_atk: id_atk,
             atk_text: atk_text,
             stok: stok,
             qty: qty
@@ -275,8 +275,8 @@ $('#btn_simpan').click(function() {
                 $('#form_tambah_transaksi_masuk')[0].reset();
                 detail_transaksi = [];
                 renderDetailTransaksi();
-                $('#atk_id').val('');
-                $('#atk_id').trigger('change');
+                $('#id_atk').val('');
+                $('#id_atk').trigger('change');
                 $('#errortgl_transaksi').html('');
                 $("#errortgl_transaksi").removeClass('has-danger');
                 $("#errortgl_transaksi").removeClass('has-success');

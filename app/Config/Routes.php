@@ -15,6 +15,7 @@ $routes->get('getAllDataTras', 'transaksiController::ajaxDataTablesGetAllData');
 $routes->get('DataTablesDashboardTrans', 'transaksiController::ajaxDataTablesDashboard');
 $routes->get('getAllDataPengecekan', 'pengecekanController::ajaxDataTablesAll');
 $routes->get('DataTablesGetAllPengadaan', 'pengadaanController::ajaxDataTablesGetAll');
+$routes->get('getAllDataTransInYear', 'laporanController::getAllDataTransInYear');
 // auth route
 $routes->group('Auth', function ($routes) {
         $routes->get('/', 'Auth::index');

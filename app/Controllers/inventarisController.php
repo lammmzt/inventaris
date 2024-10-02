@@ -108,7 +108,7 @@ class inventarisController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'tipe_barang_id' => [
+            'id_tipe_barang' => [
                 'label' => 'Tipe Barang',
                 'rules' => 'required',
                 'errors' => [
@@ -143,7 +143,7 @@ class inventarisController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'ruangan_id' => [
+            'id_ruangan' => [
                 'label' => 'Ruangan',
                 'rules' => 'required',
                 'errors' => [
@@ -188,10 +188,10 @@ class inventarisController extends BaseController
             $result->saveToFile('Assets/qr_code/' . $kode_inventaris . '.png');
             $data = [
                 'id_inventaris' => Uuid::uuid4()->toString(),
-                'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
+                'id_tipe_barang' => $this->request->getPost('id_tipe_barang'),
                 'kode_inventaris' => $kode_inventaris,
                 'qty_inventaris' => $this->request->getPost('qty_inventaris'),
-                'ruangan_id' => $this->request->getPost('ruangan_id'),
+                'id_ruangan' => $this->request->getPost('id_ruangan'),
                 'nama_inventaris' => $this->request->getPost('nama_inventaris'),
                 'spek_inventaris' => $this->request->getPost('spek_inventaris'),
                 'perolehan_inventaris' => $this->request->getPost('perolehan_inventaris'),
@@ -236,7 +236,7 @@ class inventarisController extends BaseController
                 ],
             ],
             
-            'tipe_barang_id' => [
+            'id_tipe_barang' => [
                 'label' => 'Tipe Barang',
                 'rules' => 'required',
                 'errors' => [
@@ -278,7 +278,7 @@ class inventarisController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'ruangan_id' => [
+            'id_ruangan' => [
                 'label' => 'Ruangan',
                 'rules' => 'required',
                 'errors' => [
@@ -303,9 +303,9 @@ class inventarisController extends BaseController
         } else {
             $data = [
                 'id_inventaris' => $this->request->getPost('id_inventaris'),
-                'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
+                'id_tipe_barang' => $this->request->getPost('id_tipe_barang'),
                 'qty_inventaris' => $this->request->getPost('qty_inventaris'),
-                'ruangan_id' => $this->request->getPost('ruangan_id'),
+                'id_ruangan' => $this->request->getPost('id_ruangan'),
                 'nama_inventaris' => $this->request->getPost('nama_inventaris'),
                 'spek_inventaris' => $this->request->getPost('spek_inventaris'),
                 'perolehan_inventaris' => $this->request->getPost('perolehan_inventaris'),
@@ -460,8 +460,8 @@ class inventarisController extends BaseController
                     // insert data tipe barang
                     $data_tipe_barang = [
                         'id_tipe_barang' => Uuid::uuid4()->toString(),
-                        'barang_id' => $barang[$nama_barang],
-                        'satuan_id' => $data_satuan[$satuan],
+                        'id_barang' => $barang[$nama_barang],
+                        'id_satuan' => $data_satuan[$satuan],
                         'nama_tipe_barang' => $nama_tipe_barang,
                         'status_tipe_barang' => '1',
                     ];
@@ -507,8 +507,8 @@ class inventarisController extends BaseController
                     // insert data inventaris
                     $data_inventaris = [
                         'id_inventaris' => Uuid::uuid4()->toString(),
-                        'tipe_barang_id' => $tipe_barang[$nama_tipe_barang],
-                        'ruangan_id' => $ruangan[$nama_ruangan],
+                        'id_tipe_barang' => $tipe_barang[$nama_tipe_barang],
+                        'id_ruangan' => $ruangan[$nama_ruangan],
                         'kode_inventaris' => $kode_inventaris,
                         'nama_inventaris' => $nama_inventaris,
                         'spek_inventaris' => $spek_inventaris,

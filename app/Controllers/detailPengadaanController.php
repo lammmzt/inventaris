@@ -108,8 +108,8 @@ class detailPengadaanController extends BaseController
 
         $data = [   
             'id_pengadaan' => Uuid::uuid4()->toString(),
-            'user_id' => session()->get('id_user'),
-            // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e3
+            'id_user' => session()->get('id_user'),
+            // 'id_user' => '6f416504-27d9-42fc-8b96-dd23aba4e3
             'ket_pengadaan' => $ket_pengadaan,
             'status_pengadaan' => '1',
         ];
@@ -122,8 +122,8 @@ class detailPengadaanController extends BaseController
         // dd($detail_pengadaan);
         for ($i=0; $i < count($detail_pengadaan); $i++) { 
             $dt_trx = [
-                'pengadaan_id' => $data['id_pengadaan'],
-                'tipe_barang_id' => $detail_pengadaan[$i]['tipe_barang_id'],
+                'id_pengadaan' => $data['id_pengadaan'],
+                'id_tipe_barang' => $detail_pengadaan[$i]['id_tipe_barang'],
                 'qty' => $detail_pengadaan[$i]['qty'],
                 'spek' => $detail_pengadaan[$i]['spek'],
                 'status_detail_pengadaan' => '0',
@@ -160,12 +160,12 @@ class detailPengadaanController extends BaseController
     }
 
     public function updateDetail(){
-        $pengadaan_id = $this->request->getPost('id_pengadaan');
-        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
+        $id_pengadaan = $this->request->getPost('id_pengadaan');
+        $id_tipe_barang = $this->request->getPost('id_tipe_barang');
         $qty = $this->request->getPost('qty');
         
         // get data detail pengadaan
-        $data_detail = $this->detailPengadaanModel->where('pengadaan_id', $pengadaan_id)->where('tipe_barang_id', $tipe_barang_id)->first();
+        $data_detail = $this->detailPengadaanModel->where('id_pengadaan', $id_pengadaan)->where('id_tipe_barang', $id_tipe_barang)->first();
 
 
         // cek jika data detail pengadaan sudah ada
@@ -175,8 +175,8 @@ class detailPengadaanController extends BaseController
         } else {
             // insert detail pengadaan
             $data = [
-                'pengadaan_id' => $pengadaan_id,
-                'tipe_barang_id' => $tipe_barang_id,
+                'id_pengadaan' => $id_pengadaan,
+                'id_tipe_barang' => $id_tipe_barang,
                 'qty' => '1',
                 'spek' => '',
                 'status_detail_pengadaan' => '0',
