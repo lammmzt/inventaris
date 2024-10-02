@@ -67,9 +67,9 @@ class atkController extends BaseController
     {
         $validation =  \Config\Services::validation();
 
-        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
+        $id_tipe_barang = $this->request->getPost('id_tipe_barang');
         $merek_atk = $this->request->getPost('merek_atk');
-        $data_merk_by_tipe = $this->atkModel->where('tipe_barang_id', $tipe_barang_id)->where('merek_atk', $merek_atk)->countAllResults();
+        $data_merk_by_tipe = $this->atkModel->where('id_tipe_barang', $id_tipe_barang)->where('merek_atk', $merek_atk)->countAllResults();
         
         // dd($data_merk_by_tipe);
         
@@ -90,7 +90,7 @@ class atkController extends BaseController
                     'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
-            'tipe_barang_id' => [
+            'id_tipe_barang' => [
                 'label' => 'Tipe Barang',
                 'rules' => 'required',
                 'errors' => [
@@ -117,8 +117,9 @@ class atkController extends BaseController
            
             $data = [
                 'id_atk' => Uuid::uuid4()->toString(),
-                'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
+                'id_tipe_barang' => $this->request->getPost('id_tipe_barang'),
                 'merek_atk' => $this->request->getPost('merek_atk'),
+                'qty_atk' => $this->request->getPost('qty_atk'),
                 'status_atk' => '1',
             ];
             $this->atkModel->insert($data);
@@ -146,9 +147,9 @@ class atkController extends BaseController
         $validation =  \Config\Services::validation();
         $merek_atk_old = $this->atkModel->find($this->request->getPost('id_atk'));
         
-        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
+        $id_tipe_barang = $this->request->getPost('id_tipe_barang');
         $merek_atk = $this->request->getPost('merek_atk');
-        $data_merk_by_tipe = $this->atkModel->where('tipe_barang_id', $tipe_barang_id)->where('merek_atk', $merek_atk)->countAllResults();
+        $data_merk_by_tipe = $this->atkModel->where('id_tipe_barang', $id_tipe_barang)->where('merek_atk', $merek_atk)->countAllResults();
         
         if($merek_atk_old['merek_atk'] == $merek_atk){
             $is_unique = '';
@@ -168,7 +169,7 @@ class atkController extends BaseController
                     'is_unique' => '{field} sudah ada di tipe barang yang sama',
                 ],
             ],
-            'tipe_barang_id' => [
+            'id_tipe_barang' => [
                 'label' => 'Tipe Barang',
                 'rules' => 'required',
                 'errors' => [
@@ -187,7 +188,7 @@ class atkController extends BaseController
         } else {
             $data = [
                 'id_atk' => $this->request->getPost('id_atk'),
-                'tipe_barang_id' => $this->request->getPost('tipe_barang_id'),
+                'id_tipe_barang' => $this->request->getPost('id_tipe_barang'),
                 'qty_atk' => $this->request->getPost('qty_atk'),
                 'merek_atk' => $this->request->getPost('merek_atk'),
             ];

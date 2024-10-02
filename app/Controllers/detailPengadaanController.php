@@ -55,7 +55,7 @@ class detailPengadaanController extends BaseController
                 }
             })
             ->add('catatan_detail_pengadaan', function ($row) {
-                return '<textarea class="form-control input_catatan" style="min-width: 100px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Catatan"
+                return '<textarea class="form-control input_catatan text-black" style="min-width: 100px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Catatan"
                  id="'. $row->id_detail_pengadaan .'">'. $row->catatan_detail_pengadaan .'</textarea>';
             })
              ->add('nama_spek', function ($row) {
@@ -108,8 +108,8 @@ class detailPengadaanController extends BaseController
 
         $data = [   
             'id_pengadaan' => Uuid::uuid4()->toString(),
-            'user_id' => session()->get('id_user'),
-            // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e3
+            'id_user' => session()->get('id_user'),
+            // 'id_user' => '6f416504-27d9-42fc-8b96-dd23aba4e3
             'ket_pengadaan' => $ket_pengadaan,
             'status_pengadaan' => '1',
         ];
@@ -122,8 +122,8 @@ class detailPengadaanController extends BaseController
         // dd($detail_pengadaan);
         for ($i=0; $i < count($detail_pengadaan); $i++) { 
             $dt_trx = [
-                'pengadaan_id' => $data['id_pengadaan'],
-                'tipe_barang_id' => $detail_pengadaan[$i]['tipe_barang_id'],
+                'id_pengadaan' => $data['id_pengadaan'],
+                'id_tipe_barang' => $detail_pengadaan[$i]['id_tipe_barang'],
                 'qty' => $detail_pengadaan[$i]['qty'],
                 'spek' => $detail_pengadaan[$i]['spek'],
                 'status_detail_pengadaan' => '0',
@@ -160,12 +160,12 @@ class detailPengadaanController extends BaseController
     }
 
     public function updateDetail(){
-        $pengadaan_id = $this->request->getPost('id_pengadaan');
-        $tipe_barang_id = $this->request->getPost('tipe_barang_id');
+        $id_pengadaan = $this->request->getPost('id_pengadaan');
+        $id_tipe_barang = $this->request->getPost('id_tipe_barang');
         $qty = $this->request->getPost('qty');
         
         // get data detail pengadaan
-        $data_detail = $this->detailPengadaanModel->where('pengadaan_id', $pengadaan_id)->where('tipe_barang_id', $tipe_barang_id)->first();
+        $data_detail = $this->detailPengadaanModel->where('id_pengadaan', $id_pengadaan)->where('id_tipe_barang', $id_tipe_barang)->first();
 
 
         // cek jika data detail pengadaan sudah ada
@@ -175,8 +175,8 @@ class detailPengadaanController extends BaseController
         } else {
             // insert detail pengadaan
             $data = [
-                'pengadaan_id' => $pengadaan_id,
-                'tipe_barang_id' => $tipe_barang_id,
+                'id_pengadaan' => $id_pengadaan,
+                'id_tipe_barang' => $id_tipe_barang,
                 'qty' => '1',
                 'spek' => '',
                 'status_detail_pengadaan' => '0',
@@ -308,18 +308,25 @@ class detailPengadaanController extends BaseController
     public function UpdateProsesPersetujuan(){
         $detail_data = $this->request->getPost('detail_data');
         $id_pengadaan = $this->request->getPost('id_pengadaan');
-        
+        $status_setuji = 0;
         for ($i=0; $i < count($detail_data); $i++) { 
             $data = [
                 'id_detail_pengadaan' => $detail_data[$i]['id'],
                 'status_detail_pengadaan' => $detail_data[$i]['status'],
             ];
-            
+            if($detail_data[$i]['status'] == '1'){
+                $status_setuji++;
+            }
             $this->detailPengadaanModel->update($data['id_detail_pengadaan'], ['status_detail_pengadaan' => $data['status_detail_pengadaan']]);
             
         }
-
-        $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '2']);
+        
+        // jika setuju tidak sama denan 0
+        if($status_setuji != 0){
+            $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '2']);
+        }else{
+            $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '0']);
+        }
 
         return $this->response->setJSON([
             'error' => false,

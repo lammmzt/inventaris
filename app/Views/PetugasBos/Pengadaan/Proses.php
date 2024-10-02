@@ -196,8 +196,8 @@ function getSwall(status, message) {
 
 
 // event change tipe barang
-$('#tipe_barang_id').change(function() {
-    if ($('#tipe_barang_id').val() !== '') {
+$('#id_tipe_barang').change(function() {
+    if ($('#id_tipe_barang').val() !== '') {
         $('#btn_plus').prop('disabled', false);
     } else {
         $('#btn_plus').attr('disabled', true);

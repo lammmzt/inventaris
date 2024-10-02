@@ -10,7 +10,7 @@ class atkModel extends Model
     protected $primaryKey = 'id_atk';
     protected $allowedFields = [
         'id_atk',
-        'tipe_barang_id',
+        'id_tipe_barang',
         'kode_atk',
         'merek_atk',
         'qty_atk',
@@ -28,16 +28,16 @@ class atkModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('atk.id_atk,atk.kode_atk, atk.merek_atk, atk.qty_atk, atk.status_atk, atk.tipe_barang_id, satuan.nama_satuan, tipe_barang.nama_tipe_barang, barang.nama_barang')
-                ->join('tipe_barang', 'tipe_barang.id_tipe_barang = atk.tipe_barang_id')
-                ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
-                ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id');
+                ->select('atk.id_atk,atk.kode_atk, atk.merek_atk, atk.qty_atk, atk.status_atk, atk.id_tipe_barang, satuan.nama_satuan, tipe_barang.nama_tipe_barang, barang.nama_barang')
+                ->join('tipe_barang', 'tipe_barang.id_tipe_barang = atk.id_tipe_barang')
+                ->join('barang', 'barang.id_barang = tipe_barang.id_barang')
+                ->join('satuan', 'satuan.id_satuan = tipe_barang.id_satuan');
         }
         return $this
-            ->select('atk.id_atk, atk.tipe_barang_id, atk.kode_atk, atk.merek_atk, atk.qty_atk, atk.status_atk, satuan.nama_satuan, tipe_barang.nama_tipe_barang, barang.nama_barang')
-            ->join('tipe_barang', 'tipe_barang.id_tipe_barang = atk.tipe_barang_id')
-            ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
-            ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
+            ->select('atk.id_atk, atk.id_tipe_barang, atk.kode_atk, atk.merek_atk, atk.qty_atk, atk.status_atk, satuan.nama_satuan, tipe_barang.nama_tipe_barang, barang.nama_barang')
+            ->join('tipe_barang', 'tipe_barang.id_tipe_barang = atk.id_tipe_barang')
+            ->join('barang', 'barang.id_barang = tipe_barang.id_barang')
+            ->join('satuan', 'satuan.id_satuan = tipe_barang.id_satuan')
             ->where(['id_atk' => $id])
             ->first();
     }

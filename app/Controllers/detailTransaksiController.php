@@ -140,8 +140,8 @@ class detailTransaksiController extends BaseController
 
         $data = [   
             'id_transaksi' => Uuid::uuid4()->toString(),
-            'user_id' => session()->get('id_user'),
-            // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
+            'id_user' => session()->get('id_user'),
+            // 'id_user' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
             'tipe_transaksi' => '0',
             'ket_transaksi' => $ket_transaksi,
             'status_transaksi' => '1',
@@ -155,8 +155,8 @@ class detailTransaksiController extends BaseController
 
         for ($i=0; $i < count($detail_transaksi); $i++) { 
             $dt_trx = [
-                'transaksi_id' => $data['id_transaksi'],
-                'atk_id' => $detail_transaksi[$i]['atk_id'],
+                'id_transaksi' => $data['id_transaksi'],
+                'id_atk' => $detail_transaksi[$i]['id_atk'],
                 'qty' => $detail_transaksi[$i]['qty'],
                 'status_detail_transaksi' => '0',
             ];
@@ -165,10 +165,10 @@ class detailTransaksiController extends BaseController
             $this->detailTransaksiModel->save($dt_trx);
             
             // // cari data atk
-            // $data_atk = $this->atkModel->find($detail_transaksi[$i]['atk_id']);
+            // $data_atk = $this->atkModel->find($detail_transaksi[$i]['id_atk']);
 
             // // update qty atk
-            // $this->atkModel->update($detail_transaksi[$i]['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $detail_transaksi[$i]['qty']]);
+            // $this->atkModel->update($detail_transaksi[$i]['id_atk'], ['qty_atk' => $data_atk['qty_atk'] + $detail_transaksi[$i]['qty']]);
         }
 
         return $this->response->setJSON([
@@ -195,22 +195,22 @@ class detailTransaksiController extends BaseController
     }
 
     public function updateDetailATKMasuk(){ 
-        $transaksi_id = $this->request->getPost('id_transaksi');
+        $id_transaksi = $this->request->getPost('id_transaksi');
         $qty = $this->request->getPost('qty');
-        $atk_id = $this->request->getPost('atk_id');
+        $id_atk = $this->request->getPost('id_atk');
         
         // find data atk
-        // $data_atk = $this->atkModel->find($atk_id);
+        // $data_atk = $this->atkModel->find($id_atk);
 
         // find detail transaksi
-        $data_detail = $this->detailTransaksiModel->where('transaksi_id', $transaksi_id)->where('atk_id', $atk_id)->first();
+        $data_detail = $this->detailTransaksiModel->where('id_transaksi', $id_transaksi)->where('id_atk', $id_atk)->first();
 
         if ($data_detail) {
             // update qty
             $this->detailTransaksiModel->update($data_detail['id_detail_transaksi'], ['qty' => $data_detail['qty'] + $qty]);
 
             // update qty atk
-            // $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
+            // $this->atkModel->update($id_atk, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
 
             return $this->response->setJSON([
                 'error' => false,
@@ -220,15 +220,15 @@ class detailTransaksiController extends BaseController
         }
 
         $data = [
-            'transaksi_id' => $transaksi_id,
-            'atk_id' => $atk_id,
+            'id_transaksi' => $id_transaksi,
+            'id_atk' => $id_atk,
             'qty' => $qty,
         ];
         // insert detail transaksi
         $this->detailTransaksiModel->save($data);
 
         // // update qty atk
-        // $this->atkModel->update($atk_id, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
+        // $this->atkModel->update($id_atk, ['qty_atk' => $data_atk['qty_atk'] + $qty]);
         
         return $this->response->setJSON([
             'error' => false,
@@ -245,13 +245,13 @@ class detailTransaksiController extends BaseController
         $data_detail = $this->detailTransaksiModel->find($id_detail_transaksi);
 
         // cari data atk
-        // $data_atk = $this->atkModel->find($data_detail['atk_id']);
+        // $data_atk = $this->atkModel->find($data_detail['id_atk']);
 
         // update qty detail transaksi
         $this->detailTransaksiModel->update($id_detail_transaksi, ['qty' => $qty]);
         
         // update qty atk
-        // $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty'] + $qty]);
+        // $this->atkModel->update($data_detail['id_atk'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty'] + $qty]);
 
         return $this->response->setJSON([
             'error' => false,
@@ -269,10 +269,10 @@ class detailTransaksiController extends BaseController
         $data_detail = $this->detailTransaksiModel->find($id_detail_transaksi);
 
         // cari data atk
-        // $data_atk = $this->atkModel->find($data_detail['atk_id']);
+        // $data_atk = $this->atkModel->find($data_detail['id_atk']);
 
         // update qty atk
-        // $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
+        // $this->atkModel->update($data_detail['id_atk'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
         
         // delete detail transaksi
         $this->detailTransaksiModel->delete($id_detail_transaksi);
@@ -305,16 +305,16 @@ class detailTransaksiController extends BaseController
         $id_transaksi = $this->request->getPost('id_transaksi');
 
         // get data detail transaksi
-        $data_detail = $this->detailTransaksiModel->where('transaksi_id', $id_transaksi)->findAll();
+        $data_detail = $this->detailTransaksiModel->where('id_transaksi', $id_transaksi)->findAll();
 
         if ($status_transaksi == '4') {
             foreach ($data_detail as $key => $value) {
                if($value['status_detail_transaksi'] == '1'){
                     // cari data atk
-                    $data_atk = $this->atkModel->find($value['atk_id']);
+                    $data_atk = $this->atkModel->find($value['id_atk']);
 
                     // update qty atk
-                    $this->atkModel->update($value['atk_id'], ['qty_atk' => $data_atk['qty_atk'] + $value['qty']]);
+                    $this->atkModel->update($value['id_atk'], ['qty_atk' => $data_atk['qty_atk'] + $value['qty']]);
                }
             }
         }
@@ -343,16 +343,16 @@ class detailTransaksiController extends BaseController
     public function insertTransaksiKeluar(){
         $ket_transaksi = $this->request->getPost('ket_transaksi');
         $tgl_transaksi = $this->request->getPost('tgl_transaksi');
-        $user_id = $this->request->getPost('user_id');
+        $id_user = $this->request->getPost('id_user');
         
-        if($user_id == null){
-            $user_id = session()->get('id_user');
+        if($id_user == null){
+            $id_user = session()->get('id_user');
         }
 
         $data = [   
             'id_transaksi' => Uuid::uuid4()->toString(),
-            'user_id' => $user_id,
-            // 'user_id' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
+            'id_user' => $id_user,
+            // 'id_user' => '6f416504-27d9-42fc-8b96-dd23aba4e31b',
             'tipe_transaksi' => '1',
             'ket_transaksi' => $ket_transaksi,
             'status_transaksi' => '1',
@@ -366,8 +366,8 @@ class detailTransaksiController extends BaseController
 
         for ($i=0; $i < count($detail_transaksi); $i++) { 
             $dt_trx = [
-                'transaksi_id' => $data['id_transaksi'],
-                'atk_id' => $detail_transaksi[$i]['atk_id'],
+                'id_transaksi' => $data['id_transaksi'],
+                'id_atk' => $detail_transaksi[$i]['id_atk'],
                 'qty' => $detail_transaksi[$i]['qty'],
                 'status_detail_transaksi' => '0',
             ];
@@ -395,18 +395,18 @@ class detailTransaksiController extends BaseController
             'id_transaksi' => $id_transaksi,
             'tanggal_transaksi' => $data_transaksi['tanggal_transaksi'],
             'ket_transaksi' => $data_transaksi['ket_transaksi'],   
-            'user_id' => $data_transaksi['user_id'],
+            'id_user' => $data_transaksi['id_user'],
         ];
         return view('Admin/Transaksi/edit_transaksi_keluar', $data);
     }
     
     public function updateDetailATKKeluar(){
-        $transaksi_id = $this->request->getPost('id_transaksi');
+        $id_transaksi = $this->request->getPost('id_transaksi');
         $qty = $this->request->getPost('qty');
-        $atk_id = $this->request->getPost('atk_id');
+        $id_atk = $this->request->getPost('id_atk');
         
         // find detail transaksi
-        $data_detail = $this->detailTransaksiModel->where('transaksi_id', $transaksi_id)->where('atk_id', $atk_id)->first();
+        $data_detail = $this->detailTransaksiModel->where('id_transaksi', $id_transaksi)->where('id_atk', $id_atk)->first();
 
         if ($data_detail) {
             // update qty
@@ -420,8 +420,8 @@ class detailTransaksiController extends BaseController
         }
 
         $data = [
-            'transaksi_id' => $transaksi_id,
-            'atk_id' => $atk_id,
+            'id_transaksi' => $id_transaksi,
+            'id_atk' => $id_atk,
             'qty' => $qty,
             'status_detail_transaksi' => '0',
         ];
@@ -487,10 +487,10 @@ class detailTransaksiController extends BaseController
                 $data_detail = $this->detailTransaksiModel->find($data['id_detail_transaksi']);
 
                 // cari data atk
-                $data_atk = $this->atkModel->find($data_detail['atk_id']);
+                $data_atk = $this->atkModel->find($data_detail['id_atk']);
 
                 // update qty atk
-                $this->atkModel->update($data_detail['atk_id'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
+                $this->atkModel->update($data_detail['id_atk'], ['qty_atk' => $data_atk['qty_atk'] - $data_detail['qty']]);
             }
             
             $this->detailTransaksiModel->update($data['id_detail_transaksi'], ['status_detail_transaksi' => $data['status_detail_transaksi']]);
@@ -563,18 +563,26 @@ class detailTransaksiController extends BaseController
     public function UpdateProsesPersetujuan(){
         $detail_data = $this->request->getPost('detail_data');
         $id_transaksi = $this->request->getPost('id_transaksi');
-        
+        $status_setuju = 0;
         for ($i=0; $i < count($detail_data); $i++) { 
             $data = [
                 'id_detail_transaksi' => $detail_data[$i]['id'],
                 'status_detail_transaksi' => $detail_data[$i]['status'],
             ];
+            if($data['status_detail_transaksi'] == '1'){
+                $status_setuju = 1;
+            }
             
             $this->detailTransaksiModel->update($data['id_detail_transaksi'], ['status_detail_transaksi' => $data['status_detail_transaksi']]);
             
         }
 
-        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '2']);
+        if($status_setuju == 1){
+            $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '2']);
+         }else{
+            $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '0']);
+        }
+
 
         return $this->response->setJSON([
             'error' => false,
@@ -639,10 +647,13 @@ class detailTransaksiController extends BaseController
             'id_transaksi' => $id_transaksi,
             'tanggal_transaksi' => $data_transaksi['tanggal_transaksi'],
             'ket_transaksi' => $data_transaksi['ket_transaksi'],   
-            'user_id' => $data_transaksi['user_id'],
+            'id_user' => $data_transaksi['id_user'],
         ];
         return view('Pegawai/Transaksi/edit_transaksi_keluar', $data);
     }
+
+
+    
 }
 
 ?>

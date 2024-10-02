@@ -170,7 +170,7 @@ class transaksiController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'user_id' => [
+            'id_user' => [
                 'label' => 'Nama Pengguna',
                 'rules' => 'required',
                 'errors' => [
@@ -187,7 +187,7 @@ class transaksiController extends BaseController
             ]);
         } else {
             $data = [
-                'user_id' => $this->request->getPost('user_id'),
+                'id_user' => $this->request->getPost('id_user'),
                 'ket_transaksi' => $this->request->getPost('ket_transaksi'),
                 'tanggal_transaksi' => $this->request->getPost('tanggal_transaksi'),
             ];
@@ -341,8 +341,8 @@ class transaksiController extends BaseController
     
     public function ajaxDataTablesPegawai()
     {
-        $user_id = session()->get('id_user');
-        $builder = $this->transaksiModel->getTransaksiKeluar()->where('user_id', $user_id);
+        $id_user = session()->get('id_user');
+        $builder = $this->transaksiModel->getTransaksiKeluar()->where('id_user', $id_user);
         // dd($builder);
         return DataTable::of($builder)
             ->add('status_transaksi', function ($row) {
@@ -360,6 +360,75 @@ class transaksiController extends BaseController
                 </div>
                 ';
             }, 'last')
+            ->toJson(true);
+    }
+
+
+    // ==================== DASHBOARD ====================
+    public function ajaxDataTablesGetAllData()
+    {
+        $builder = $this->transaksiModel->getTransActive();
+        return DataTable::of($builder)
+            ->add('tipe_transaksi', function ($row) {
+                if ($row->tipe_transaksi == 0) {
+                    return '<span class="badge badge-success">Masuk</span>';
+                } else {
+                    return '<span class="badge badge-danger">Keluar</span>';
+                }
+            })
+            ->add('tanggal_transaksi', function ($row) {
+                return date('d-m-Y', strtotime($row->tanggal_transaksi));
+            })
+           ->add('status_transaksi', function ($row) {
+                if ($row->status_transaksi == 1) {
+                    return '<span class="badge badge-warning">Persetujuan</span>';
+                } elseif ($row->status_transaksi == 2) {
+                    return '<span class="badge badge-primary">Disetujui</span>';
+                } elseif ($row->status_transaksi == 3) {
+                    return '<span class="badge badge-info">Proses pengadaan</span>';
+                } elseif ($row->status_transaksi == 4) {
+                    return '<span class="badge badge-success">Selesai</span>';
+                } else {
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+            })
+            ->toJson(true);
+    }
+    public function ajaxDataTablesDashboard()
+    {
+        $role = session()->get('role');
+        if($role == 'KA. TU'){
+            $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '1');
+        }else if($role = 'Pegawai'){
+            $id_user = session()->get('id_user');
+            $builder = $this->transaksiModel->getTransaksi()->where('id_user', $id_user)->where('status_transaksi', '1');
+        }else{
+            $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '2');
+        }
+        return DataTable::of($builder)
+            ->add('tipe_transaksi', function ($row) {
+                if ($row->tipe_transaksi == 0) {
+                    return '<span class="badge badge-success">Masuk</span>';
+                } else {
+                    return '<span class="badge badge-danger">Keluar</span>';
+                }
+            })
+            ->add('tanggal_transaksi', function ($row) {
+                return date('d-m-Y', strtotime($row->tanggal_transaksi));
+            })
+           ->add('status_transaksi', function ($row) {
+                if ($row->status_transaksi == 1) {
+                    return '<span class="badge badge-warning">Persetujuan</span>';
+                } elseif ($row->status_transaksi == 2) {
+                    return '<span class="badge badge-primary">Disetujui</span>';
+                } elseif ($row->status_transaksi == 3) {
+                    return '<span class="badge badge-info">Proses pengadaan</span>';
+                } elseif ($row->status_transaksi == 4) {
+                    return '<span class="badge badge-success">Selesai</span>';
+                } else {
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+            })
             ->toJson(true);
     }
 }

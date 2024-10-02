@@ -16,14 +16,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
-                                <label for="user_id" class="col-sm-4 col-form-label">Nama Pemohon<span
+                                <label for="id_user" class="col-sm-4 col-form-label">Nama Pemohon<span
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
-                                    <select class="custom-select2 form-control required" name="user_id" id="user_id"
+                                    <select class="custom-select2 form-control required" name="id_user" id="id_user"
                                         style="width: 100%; height: 38px;">
 
                                     </select>
-                                    <div class="form-control-feedback " id="erroruser_id"></div>
+                                    <div class="form-control-feedback " id="errorid_user"></div>
                                 </div>
                             </div>
                         </div>
@@ -54,10 +54,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="atk_id" class="col-sm-2 col-form-label">Nama ATK<span
+                        <label for="id_atk" class="col-sm-2 col-form-label">Nama ATK<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-9">
-                            <select class="custom-select2 form-control" name="atk_id" id="atk_id"
+                            <select class="custom-select2 form-control" name="id_atk" id="id_atk"
                                 style="width: 100%; height: 38px;">
 
                             </select>
@@ -127,7 +127,7 @@ function getUser() {
             $.each(response.data, function(key, value) {
                 html += '<option value="' + value.id_user + '">' + value.nama_user + '</option>';
             });
-            $('#user_id').html(html);
+            $('#id_user').html(html);
         }
     });
 };
@@ -150,7 +150,7 @@ function getATK() {
                 //     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' +
                 //     '</option>';
             });
-            $('#atk_id').html(html);
+            $('#id_atk').html(html);
         }
     });
 };
@@ -174,8 +174,8 @@ function getSwall(status, message) {
 var detail_transaksi = [];
 
 // event change tipe barang
-$('#atk_id').change(function() {
-    if ($('#atk_id').val() !== '') {
+$('#id_atk').change(function() {
+    if ($('#id_atk').val() !== '') {
         $('#btn_plus').prop('disabled', false);
     } else {
         $('#btn_plus').attr('disabled', true);
@@ -184,13 +184,13 @@ $('#atk_id').change(function() {
 
 // fungsi tambah detail transaksi
 function addDetailTransaksi() {
-    var atk_id = $('#atk_id').val();
-    var atk_text = $('#atk_id option:selected').text();
+    var id_atk = $('#id_atk').val();
+    var atk_text = $('#id_atk option:selected').text();
     var qty = 1;
-    var index = detail_transaksi.findIndex(x => x.atk_id == atk_id);
+    var index = detail_transaksi.findIndex(x => x.id_atk == id_atk);
     if (index == -1) {
         detail_transaksi.push({
-            atk_id: atk_id,
+            id_atk: id_atk,
             atk_text: atk_text,
             qty: qty
         });
@@ -258,26 +258,26 @@ $('#btn_simpan').click(function() {
 
     var tgl_transaksi = $('#tgl_transaksi').val();
     var ket_transaksi = $('#ket_transaksi').val();
-    var user_id = $('#user_id').val();
+    var id_user = $('#id_user').val();
 
     var data = {
         tgl_transaksi: tgl_transaksi,
         ket_transaksi: ket_transaksi,
         detail_transaksi: detail_transaksi,
-        user_id: user_id
+        id_user: id_user
     };
 
-    if (user_id == '') {
-        $("#user_id").addClass('form-control-danger');
-        $("#erroruser_id").addClass('has-danger');
-        $("#erroruser_id").html("User tidak boleh kosong");
-        $('#user_id').focus();
+    if (id_user == '') {
+        $("#id_user").addClass('form-control-danger');
+        $("#errorid_user").addClass('has-danger');
+        $("#errorid_user").html("User tidak boleh kosong");
+        $('#id_user').focus();
         return false;
     } else {
-        $('#erroruser_id').html('');
-        $("#erroruser_id").removeClass('has-danger');
-        $("#erroruser_id").addClass('has-success');
-        $("#user_id").removeClass('form-control-danger');
+        $('#errorid_user').html('');
+        $("#errorid_user").removeClass('has-danger');
+        $("#errorid_user").addClass('has-success');
+        $("#id_user").removeClass('form-control-danger');
     }
 
     if (tgl_transaksi == '') {
@@ -322,15 +322,15 @@ $('#btn_simpan').click(function() {
                 $('#form_tambah_transaksi_keluar')[0].reset();
                 detail_transaksi = [];
                 renderDetailTransaksi();
-                $('#user_id').val('');
-                $('#user_id').trigger('change');
-                $('#atk_id').val('');
-                $('#atk_id').trigger('change');
+                $('#id_user').val('');
+                $('#id_user').trigger('change');
+                $('#id_atk').val('');
+                $('#id_atk').trigger('change');
                 $('#tgl_transaksi').val('');
                 $('#ket_transaksi').val('');
-                $('#erroruser_id').html('');
-                $("#erroruser_id").removeClass('has-danger');
-                $("#erroruser_id").removeClass('has-success');
+                $('#errorid_user').html('');
+                $("#errorid_user").removeClass('has-danger');
+                $("#errorid_user").removeClass('has-success');
                 $('#errortgl_transaksi').html('');
                 $("#errortgl_transaksi").removeClass('has-danger');
                 $("#errortgl_transaksi").removeClass('has-success');

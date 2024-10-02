@@ -53,7 +53,7 @@ class pengecekanController extends BaseController
         $kode_inventaris = $this->request->getPost('kode_inventaris');
         // $kode_inventaris = 'BRG-20240915-9622';
         $data_inventarus = $this->inventarisModel->getInventaris()->where(['kode_inventaris' => $kode_inventaris])->first();
-        $data_pelaporan = $this->pengecekanModel->getpengecekan()->where(['inventaris_id' => $data_inventarus['id_inventaris']])->limit(5)->orderBy('id_pengecekan', 'DESC')->findAll();
+        $data_pelaporan = $this->pengecekanModel->getpengecekan()->where(['id_inventaris' => $data_inventarus['id_inventaris']])->limit(5)->orderBy('id_pengecekan', 'DESC')->findAll();
         if( $data_inventarus != null){
             return $this->response->setJSON([
                 'error' => false,
@@ -89,7 +89,7 @@ class pengecekanController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'inventaris_id' => [
+            'id_inventaris' => [
                 'label' => 'Inventaris',
                 'rules' => 'required',
                 'errors' => [
@@ -118,11 +118,11 @@ class pengecekanController extends BaseController
             $data = [
                 'ket_pengecekan' => $this->request->getPost('ket_pengecekan'),
                 'status_pengecekan' => $this->request->getPost('status_pengecekan'),
-                'inventaris_id' => $this->request->getPost('inventaris_id'),
+                'id_inventaris' => $this->request->getPost('id_inventaris'),
                 'foto_pengecekan' => $newName,
-                'user_id' => $id_user,
+                'id_user' => $id_user,
             ];
-            $this->inventarisModel->update($this->request->getPost('inventaris_id'), ['status_inventaris' => $this->request->getPost('status_pengecekan')]);
+            $this->inventarisModel->update($this->request->getPost('id_inventaris'), ['status_inventaris' => $this->request->getPost('status_pengecekan')]);
             $this->pengecekanModel->insert($data);
             return $this->response->setJSON([
                 'error' => false,
@@ -164,6 +164,29 @@ class pengecekanController extends BaseController
             'data' => $data,
             'status' => '200'
         ]);
+    }
+
+    // ======================== DASHBOARD ========================
+    public function ajaxDataTablesAll(){
+        $role= session()->get('role');
+        if($role == 'Admin' || $role == 'Kepala Sekolah'){
+            $builder = $this->pengecekanModel->getPengecekanActive()->Where('status_pengecekan', '2')->orWhere('status_pengecekan', '3');
+        }else{
+            $builder = $this->pengecekanModel->getPengecekanActive()->where('id_user', session()->get('id_user'))->limit(5);
+        }
+        return DataTable::of($builder)
+           ->add('status_pengecekan', function ($row) {
+                if($row->status_pengecekan == 1){
+                    return '<span class="badge badge-success">Baik</span>';
+                }elseif($row->status_pengecekan == 2){
+                    return '<span class="badge badge-warning">Perbaikan</span>';
+                }elseif($row->status_pengecekan == 3){
+                    return '<span class="badge badge-danger">Rusak</span>';
+                }else{
+                    return '<span class="badge badge-danger">Hilang</span>';
+                }
+            })
+            ->toJson(true);
     }
     
 

@@ -49,7 +49,7 @@ class usersController extends BaseController
                             <button class="dropdown-item view_user" id="' . $row->id_user . '"><i class="dw dw-eye"></i> View</a>
                             <button class="dropdown-item edit_user" id="' . $row->id_user . '"><i class="dw dw-edit2"></i> Edit</button>
                             <button class="dropdown-item reset_pass" id="' . $row->id_user . '"><i class="dw dw-refresh2"></i> Reset Password</button>
-							<button class="dropdown-item delete_user" id="' . $row->id_user . '"><i class="dw dw-delete-3"></i> Delete</button>
+							'.($row->role == 'Admin' ? '' : '<button class="dropdown-item delete_user" id="' . $row->id_user . '"><i class="dw dw-delete-3"></i> Delete</button>').'
 						</div>
 				</div>
                 ';

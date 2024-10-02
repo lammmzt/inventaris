@@ -72,14 +72,14 @@
                 <!-- <form action="<?= base_url('Admin/inventaris/save') ?>" method="post"> -->
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="tipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
+                        <label for="id_tipe_barang" class="col-sm-4 col-form-label">Nama Barang<span
                                 class="rq">*</span></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="tipe_barang_id"
-                                id="tipe_barang_id" style="width: 100%; height: 38px;">
+                            <select class="custom-select2 form-control required" name="id_tipe_barang"
+                                id="id_tipe_barang" style="width: 100%; height: 38px;">
 
                             </select>
-                            <div class="form-control-feedback " id="errortipe_barang_id"></div>
+                            <div class="form-control-feedback " id="errorid_tipe_barang"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -102,13 +102,13 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="ruangan_id" class="col-sm-4 col-form-label">Ruangan<span class="rq">*</span></label>
+                        <label for="id_ruangan" class="col-sm-4 col-form-label">Ruangan<span class="rq">*</span></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="ruangan_id" id="ruangan_id"
+                            <select class="custom-select2 form-control required" name="id_ruangan" id="id_ruangan"
                                 style="width: 100%; height: 38px;">
                                 <option value="">Pilih Ruangan</option>
                             </select>
-                            <div class="form-control-feedback " id="errorruangan_id"></div>
+                            <div class="form-control-feedback " id="errorid_ruangan"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -178,14 +178,14 @@
                 <div class="modal-body">
                     <input type="hidden" id="editid_inventaris" name="id_inventaris">
                     <div class="form-group row">
-                        <label for="edittipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
+                        <label for="editid_tipe_barang" class="col-sm-4 col-form-label">Nama Barang<span
                                 class="rq">*</span></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="tipe_barang_id"
-                                id="edittipe_barang_id" style="width: 100%; height: 38px;">
+                            <select class="custom-select2 form-control required" name="id_tipe_barang"
+                                id="editid_tipe_barang" style="width: 100%; height: 38px;">
 
                             </select>
-                            <div class="form-control-feedback " id="erroreditipe_barang_id"></div>
+                            <div class="form-control-feedback " id="errorediid_tipe_barang"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -208,14 +208,14 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="editruangan_id" class="col-sm-4 col-form-label">Ruangan<span
+                        <label for="editid_ruangan" class="col-sm-4 col-form-label">Ruangan<span
                                 class="rq">*</span></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="ruangan_id" id="editruangan_id"
+                            <select class="custom-select2 form-control required" name="id_ruangan" id="editid_ruangan"
                                 style="width: 100%; height: 38px;">
                                 <option value="">Pilih Ruangan</option>
                             </select>
-                            <div class="form-control-feedback " id="erroreditruangan_id"></div>
+                            <div class="form-control-feedback " id="erroreditid_ruangan"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -378,7 +378,7 @@
                 <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
                     enctype="multipart/form-data"> -->
                 <div class="modal-body">
-                    <input type="hidden" name="inventaris_id" id="inventaris_id_pelaporan">
+                    <input type="hidden" name="id_inventaris" id="id_inventaris_pelaporan">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
@@ -583,7 +583,7 @@ function getTipeBarang() {
                     ' - ' + value.nama_tipe_barang +
                     '</option>';
             });
-            $('#tipe_barang_id').html(html);
+            $('#id_tipe_barang').html(html);
         }
     });
 };
@@ -601,7 +601,7 @@ function getRuangan() {
                 html += '<option value="' + value.id_ruangan + '">' + value.nama_ruangan +
                     '</option>';
             });
-            $('#ruangan_id').html(html);
+            $('#id_ruangan').html(html);
         }
     });
 };
@@ -639,8 +639,8 @@ const inventaris = [
     'nama_inventaris',
     'id_inventaris',
     'kode_inventaris',
-    'tipe_barang_id',
-    'ruangan_id',
+    'id_tipe_barang',
+    'id_ruangan',
     'qty_inventaris',
     'spek_inventaris',
     'status_inventaris',
@@ -767,7 +767,7 @@ function getEditBarang($id_barang) {
                 }
             });
 
-            $('#edittipe_barang_id').html(html);
+            $('#editid_tipe_barang').html(html);
         }
     });
 }
@@ -791,7 +791,7 @@ function getEditRuangan($id_ruangan) {
                         value.nama_ruangan + '</option>';
                 }
             });
-            $('#editruangan_id').html(html);
+            $('#editid_ruangan').html(html);
         }
     });
 }
@@ -812,11 +812,11 @@ $(document).on('click', '.edit_inventaris', function() {
             $.each(response.data, function(key, value) {
                 $('#edit' + key).val(value);
             });
-            const old_tipe_barang_id = response.data.tipe_barang_id;
-            // alert(old_tipe_barang_id);
-            getEditBarang(old_tipe_barang_id);
-            const old_ruangan_id = response.data.ruangan_id;
-            getEditRuangan(old_ruangan_id);
+            const old_id_tipe_barang = response.data.id_tipe_barang;
+            // alert(old_id_tipe_barang);
+            getEditBarang(old_id_tipe_barang);
+            const old_id_ruangan = response.data.id_ruangan;
+            getEditRuangan(old_id_ruangan);
 
             // status inventaris
             var html = '';
@@ -1126,7 +1126,7 @@ $(document).on('click', '.perbaiki_inventaris', function() {
         success: function(response) {
             if (response.status == '200') {
                 $('#editPelaporan').modal('show');
-                $('#inventaris_id_pelaporan').val(response.data.inventaris.id_inventaris);
+                $('#id_inventaris_pelaporan').val(response.data.inventaris.id_inventaris);
                 $('#kode_inventaris_pelaporan').val(response.data.inventaris.kode_inventaris);
                 $('#nama_inventaris_pelaporan').val(response.data.inventaris.nama_inventaris);
                 $('#nama_ruangan_pelaporan').val(response.data.inventaris.nama_ruangan);

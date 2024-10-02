@@ -51,14 +51,14 @@
                 <!-- <form action="<?= base_url('Admin/ATK/save') ?>" method="post"> -->
                 <div class="modal-body">
                     <div class="form-group row">
-                        <label for="tipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
+                        <label for="id_tipe_barang" class="col-sm-4 col-form-label">Nama Barang<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="tipe_barang_id"
-                                id="tipe_barang_id" style="width: 100%; height: 38px;">
+                            <select class="custom-select2 form-control required" name="id_tipe_barang"
+                                id="id_tipe_barang" style="width: 100%; height: 38px;">
 
                             </select>
-                            <div class="form-control-feedback " id="errortipe_barang_id"></div>
+                            <div class="form-control-feedback " id="errorid_tipe_barang"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -110,14 +110,14 @@
                 <div class="modal-body">
                     <input type="hidden" id="editid_atk" name="id_atk">
                     <div class="form-group row">
-                        <label for="edittipe_barang_id" class="col-sm-4 col-form-label">Nama Barang<span
+                        <label for="editid_tipe_barang" class="col-sm-4 col-form-label">Nama Barang<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="tipe_barang_id"
-                                id="edittipe_barang_id" style="width: 100%; height: 38px;">
+                            <select class="custom-select2 form-control required" name="id_tipe_barang"
+                                id="editid_tipe_barang" style="width: 100%; height: 38px;">
 
                             </select>
-                            <div class="form-control-feedback " id="erroreditipe_barang_id"></div>
+                            <div class="form-control-feedback " id="erroreditid_tipe_barang"></div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -218,7 +218,7 @@ function getTipeBarang() {
                     ' - ' + value.nama_tipe_barang +
                     '</option>';
             });
-            $('#tipe_barang_id').html(html);
+            $('#id_tipe_barang').html(html);
         }
     });
 };
@@ -251,7 +251,7 @@ function getSwall(status, message) {
 const atk = [
     'merek_atk',
     'id_atk',
-    'tipe_barang_id',
+    'id_tipe_barang',
     'qty_atk'
 ];
 
@@ -355,7 +355,7 @@ function getEditBarang($id_barang) {
                 }
             });
 
-            $('#edittipe_barang_id').html(html);
+            $('#editid_tipe_barang').html(html);
         }
     });
 }
@@ -375,8 +375,8 @@ $(document).on('click', '.edit_atk', function() {
             $.each(response.data, function(key, value) {
                 $('#edit' + key).val(value);
             });
-            const old_tipe_barang_id = response.data.tipe_barang_id;
-            getEditBarang(old_tipe_barang_id);
+            const old_id_tipe_barang = response.data.id_tipe_barang;
+            getEditBarang(old_id_tipe_barang);
         }
     });
 });

@@ -122,14 +122,14 @@ class tipeBarangController extends BaseController
                     'is_unique' => '{field} sudah ada',
                 ],
             ],
-            'barang_id' => [
+            'id_barang' => [
                 'label' => 'Jenis tipeBarang',
                 'rules' => 'required',
                 'errors' => [
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'satuan_id' => [
+            'id_satuan' => [
                 'label' => 'Satuan',
                 'rules' => 'required',
                 'errors' => [
@@ -148,9 +148,9 @@ class tipeBarangController extends BaseController
         } else {
             $data = [
                 'id_tipe_barang' => Uuid::uuid4()->toString(),
-                'barang_id' => $this->request->getPost('barang_id'),
+                'id_barang' => $this->request->getPost('id_barang'),
                 'nama_tipe_barang' => $this->request->getPost('nama_tipe_barang'),
-                'satuan_id' => $this->request->getPost('satuan_id'),
+                'id_satuan' => $this->request->getPost('id_satuan'),
                 'status_tipe_barang' => '1',
             ];
             $this->tipeBarangModel->insert($data);
@@ -184,7 +184,7 @@ class tipeBarangController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'satuan_id' => [
+            'id_satuan' => [
                 'label' => 'Satuan',
                 'rules' => 'required',
                 'errors' => [
@@ -203,7 +203,7 @@ class tipeBarangController extends BaseController
             $data = [
                 'id_tipe_barang' => $this->request->getPost('id_tipe_barang'),
                 'nama_tipe_barang' => $this->request->getPost('nama_tipe_barang'),
-                'satuan_id' => $this->request->getPost('satuan_id'),
+                'id_satuan' => $this->request->getPost('id_satuan'),
             ];
             $this->tipeBarangModel->save($data);
             return $this->response->setJSON([

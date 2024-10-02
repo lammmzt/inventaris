@@ -40,10 +40,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="tipe_barang_id" class="col-sm-2 col-form-label">Nama Barang<span
+                        <label for="id_tipe_barang" class="col-sm-2 col-form-label">Nama Barang<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-9">
-                            <select class="custom-select2 form-control" name="tipe_barang_id" id="tipe_barang_id"
+                            <select class="custom-select2 form-control" name="id_tipe_barang" id="id_tipe_barang"
                                 style="width: 100%; height: 38px;">
 
                             </select>
@@ -121,7 +121,7 @@ function getTipeBarang(jenis_barang) {
                         '</option>';
                 });
             }
-            $('#tipe_barang_id').html(html);
+            $('#id_tipe_barang').html(html);
         }
     });
 };
@@ -150,8 +150,8 @@ function getSwall(status, message) {
 var detail_pengadaan = [];
 
 // event change tipe barang
-$('#tipe_barang_id').change(function() {
-    if ($('#tipe_barang_id').val() !== '') {
+$('#id_tipe_barang').change(function() {
+    if ($('#id_tipe_barang').val() !== '') {
         $('#btn_plus').prop('disabled', false);
     } else {
         $('#btn_plus').attr('disabled', true);
@@ -160,13 +160,13 @@ $('#tipe_barang_id').change(function() {
 
 // fungsi tambah detail pengadaan
 function addDetailPengadaan() {
-    var tipe_barang_id = $('#tipe_barang_id').val();
-    var nama_barang = $('#tipe_barang_id option:selected').text();
+    var id_tipe_barang = $('#id_tipe_barang').val();
+    var nama_barang = $('#id_tipe_barang option:selected').text();
     var qty = 1;
-    var index = detail_pengadaan.findIndex(x => x.tipe_barang_id == tipe_barang_id);
+    var index = detail_pengadaan.findIndex(x => x.id_tipe_barang == id_tipe_barang);
     if (index == -1) {
         detail_pengadaan.push({
-            tipe_barang_id: tipe_barang_id,
+            id_tipe_barang: id_tipe_barang,
             nama_barang: nama_barang,
             spek: '',
             qty: qty
@@ -281,8 +281,8 @@ $('#btn_simpan').click(function() {
                 $('#form_tambah_pengadaan_masuk')[0].reset();
                 detail_pengadaan = [];
                 renderDetailpengadaan();
-                $('#tipe_barang_id').val('');
-                $('#tipe_barang_id').trigger('change');
+                $('#id_tipe_barang').val('');
+                $('#id_tipe_barang').trigger('change');
                 $('#errorket_pengadaan').html('');
                 $("#errorket_pengadaan").removeClass('has-danger');
                 $("#errorket_pengadaan").removeClass('has-success');

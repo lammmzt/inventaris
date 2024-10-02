@@ -10,8 +10,8 @@ class detailTransaksiModel extends Model
     protected $primaryKey = 'id_detail_transaksi';
     protected $allowedFields = [
         'id_detail_transaksi',
-        'transaksi_id',
-        'atk_id',
+        'id_transaksi',
+        'id_atk',
         'qty',
         'status_detail_transaksi',
         'catatan_detail_transaksi',
@@ -28,14 +28,14 @@ class detailTransaksiModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.transaksi_id, detail_transaksi.atk_id, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi')
-                ->join('atk', 'atk.id_atk = detail_transaksi.atk_id')
-                ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.transaksi_id');
+                ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_atk, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi')
+                ->join('atk', 'atk.id_atk = detail_transaksi.id_atk')
+                ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.id_transaksi');
         }
         return $this
-            ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.transaksi_id, detail_transaksi.atk_id, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi')
-            ->join('atk', 'atk.id_atk = detail_transaksi.atk_id')
-            ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.transaksi_id')
+            ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_atk, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi')
+            ->join('atk', 'atk.id_atk = detail_transaksi.id_atk')
+            ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.id_transaksi')
             ->where(['id_detail_transaksi' => $id])
             ->first();
     }
@@ -43,12 +43,24 @@ class detailTransaksiModel extends Model
     public function getTransByTransId($id)
     {
         return $this
-            ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.transaksi_id, detail_transaksi.atk_id, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, tipe_barang.nama_tipe_barang, barang.nama_barang, satuan.nama_satuan, detail_transaksi.catatan_detail_transaksi, atk.qty_atk')
-            ->join('atk', 'atk.id_atk = detail_transaksi.atk_id')
-            ->join('tipe_barang', 'tipe_barang.id_tipe_barang = atk.tipe_barang_id')
-            ->join('barang', 'barang.id_barang = tipe_barang.barang_id')
-            ->join('satuan', 'satuan.id_satuan = tipe_barang.satuan_id')
-            ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.transaksi_id')
-            ->where(['transaksi_id' => $id]);
+            ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_atk, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, tipe_barang.nama_tipe_barang, barang.nama_barang, satuan.nama_satuan, detail_transaksi.catatan_detail_transaksi, atk.qty_atk')
+            ->join('atk', 'atk.id_atk = detail_transaksi.id_atk')
+            ->join('tipe_barang', 'tipe_barang.id_tipe_barang = atk.id_tipe_barang')
+            ->join('barang', 'barang.id_barang = tipe_barang.id_barang')
+            ->join('satuan', 'satuan.id_satuan = tipe_barang.id_satuan')
+            ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.id_transaksi')
+            ->where(['detail_transaksi.id_transaksi' => $id]);
+    }
+
+    public function getDataInYear($year)
+    {
+        return $this
+            ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_atk, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi, transaksi.tipe_transaksi')
+            ->join('atk', 'atk.id_atk = detail_transaksi.id_atk')
+            ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.id_transaksi')
+            ->where('YEAR(transaksi.tanggal_transaksi)', $year)
+            ->where('transaksi.status_transaksi', '4')
+            ->where('detail_transaksi.status_detail_transaksi', '1')
+            ->findAll();
     }
 }

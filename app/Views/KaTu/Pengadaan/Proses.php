@@ -183,7 +183,7 @@ function getTipeBarang() {
                         '</option>';
                 });
             }
-            $('#tipe_barang_id').html(html);
+            $('#id_tipe_barang').html(html);
         }
     });
 };
@@ -243,8 +243,8 @@ $(document).on('click', '.delete_pengadaan', function() {
 });
 
 // event change tipe barang
-$('#tipe_barang_id').change(function() {
-    if ($('#tipe_barang_id').val() !== '') {
+$('#id_tipe_barang').change(function() {
+    if ($('#id_tipe_barang').val() !== '') {
         $('#btn_plus').prop('disabled', false);
     } else {
         $('#btn_plus').attr('disabled', true);
@@ -253,12 +253,12 @@ $('#tipe_barang_id').change(function() {
 
 // function to update detail
 function updateDetailPengadaan() {
-    var tipe_barang_id = $('#tipe_barang_id').val();
+    var id_tipe_barang = $('#id_tipe_barang').val();
     var id_pengadaan = $('#id_pengadaan').val();
-    // alert(tipe_barang_id);
+    // alert(id_tipe_barang);
 
     var data = {
-        tipe_barang_id: tipe_barang_id,
+        id_tipe_barang: id_tipe_barang,
         id_pengadaan: id_pengadaan,
     };
     $.ajax({
@@ -416,7 +416,7 @@ $('#btn_simpan').click(function() {
                     $("#btn_simpan").removeAttr("disabled");
                     $("#btn_simpan").html('Simpan');
                     setTimeout(function() {
-                        window.location.href = '<?= base_url('Admin/Pengadaan'); ?>';
+                        window.location.href = '<?= base_url('KaTU/Pengadaan'); ?>';
                     }, 1500);
                 }
             },

@@ -80,7 +80,7 @@
             </div>
             <form id="form_tambah_barang">
                 <div class="modal-body">
-                    <input type="hidden" name="barang_id" value="<?= $id_barang; ?>">
+                    <input type="hidden" name="id_barang" value="<?= $id_barang; ?>">
                     <div class="form-group row">
                         <label for="nama_tipe_barang" class="col-sm-4 col-form-label">Nama Tipe Barang<span
                                 class="rq">*</span></label></label>
@@ -91,14 +91,14 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="satuan_id" class="col-sm-4 col-form-label">Satuan<span
+                        <label for="id_satuan" class="col-sm-4 col-form-label">Satuan<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="satuan_id" id="satuan_id"
+                            <select class="custom-select2 form-control required" name="id_satuan" id="id_satuan"
                                 style="width: 100%; height: 38px;">
                                 <option value="">Pilih Satuan</option>
                             </select>
-                            <div class="form-control-feedback " id="errorsatuan_id"></div>
+                            <div class="form-control-feedback " id="errorid_satuan"></div>
                         </div>
                     </div>
                 </div>
@@ -141,14 +141,14 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="editsatuan_id" class="col-sm-4 col-form-label">Satuan<span
+                        <label for="editid_satuan" class="col-sm-4 col-form-label">Satuan<span
                                 class="rq">*</span></label></label>
                         <div class="col-sm-8">
-                            <select class="custom-select2 form-control required" name="satuan_id" id="editsatuan_id"
+                            <select class="custom-select2 form-control required" name="id_satuan" id="editid_satuan"
                                 style="width: 100%; height: 38px;">
                                 <option value="">Pilih Satuan</option>
                             </select>
-                            <div class="form-control-feedback " id="erroreditsatuan_id"></div>
+                            <div class="form-control-feedback " id="erroreditid_satuan"></div>
                         </div>
                     </div>
 
@@ -240,7 +240,7 @@ const barang = [
     'nama_tipe_barang',
     'id_barang',
     'id_tipe_barang',
-    'satuan_id',
+    'id_satuan',
 ];
 
 // get data satuan
@@ -256,7 +256,7 @@ function getSatuan() {
                 html += '<option value="' + value.id_satuan + '">' + value.nama_satuan +
                     '</option>';
             });
-            $('#satuan_id').html(html);
+            $('#id_satuan').html(html);
         }
     });
 };
@@ -347,7 +347,7 @@ $(document).on('click', '.edit_tipe_barang', function() {
             $.each(response.data, function(key, value) {
                 $('#edit' + key).val(value);
             });
-            const old_satuan_id = response.data.satuan_id;
+            const old_id_satuan = response.data.id_satuan;
             // alert(old_id_tipe_barang);
             $.ajax({
                 url: '<?= base_url('Admin/Satuan/fetchAll') ?>',
@@ -356,7 +356,7 @@ $(document).on('click', '.edit_tipe_barang', function() {
                 success: function(response) {
                     var html = '';
                     $.each(response.data, function(key, value) {
-                        if (value.id_satuan == old_satuan_id) {
+                        if (value.id_satuan == old_id_satuan) {
                             // alert(value.id_satuan);
                             html += '<option value="' + value
                                 .id_satuan +
@@ -368,7 +368,7 @@ $(document).on('click', '.edit_tipe_barang', function() {
                                 '</option>';
                         }
                     });
-                    $('#editsatuan_id').html(html);
+                    $('#editid_satuan').html(html);
                 }
             });
         }

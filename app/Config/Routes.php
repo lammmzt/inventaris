@@ -11,7 +11,11 @@ use CodeIgniter\Router\RouteCollection;
 // $routes->setAutoRoute(true);
 
 $routes->get('/', 'Home::index');
-
+$routes->get('getAllDataTras', 'transaksiController::ajaxDataTablesGetAllData');
+$routes->get('DataTablesDashboardTrans', 'transaksiController::ajaxDataTablesDashboard');
+$routes->get('getAllDataPengecekan', 'pengecekanController::ajaxDataTablesAll');
+$routes->get('DataTablesGetAllPengadaan', 'pengadaanController::ajaxDataTablesGetAll');
+$routes->get('getAllDataTransInYear', 'laporanController::getAllDataTransInYear');
 // auth route
 $routes->group('Auth', function ($routes) {
         $routes->get('/', 'Auth::index');
@@ -198,16 +202,16 @@ $routes->group('Admin', function ($routes) {
 });
 
 // group route Pegawai
-$routes->group('Pegawai', function ($routes) {
-    $routes->get('Dashboard', 'Home::index');
-    $routes->group('Transaksi', function ($routes) {
-        $routes->get('/', 'transaksiController::transaksi_keluar');
-    });
-});
+// $routes->group('Pegawai', function ($routes) {
+//     $routes->get('Dashboard', 'Home::Pegawai');
+//     $routes->group('Transaksi', function ($routes) {
+//         $routes->get('/', 'transaksiController::transaksi_keluar');
+//     });
+// });
 
 // group route Ka TU
 $routes->group('KaTU', function ($routes) {
-    $routes->get('Dashboard', 'Home::index');
+    $routes->get('Dashboard', 'Home::ka_tu');
     
     $routes->group('ATK/Transaksi', function ($routes) {
         $routes->get('/', 'transaksiController::prosesSetujuTransaksi');
@@ -227,7 +231,7 @@ $routes->group('KaTU', function ($routes) {
 
 // group route petugasBOS
 $routes->group('PetugasBOS', function ($routes) {
-    $routes->get('Dashboard', 'Home::index');
+    $routes->get('Dashboard', 'Home::petugas_bos');
     
     $routes->group('ATK/Transaksi', function ($routes) {
         $routes->get('/', 'transaksiController::peroses_pengadaan');
@@ -253,7 +257,7 @@ $routes->group('PetugasBOS', function ($routes) {
 
 // group route Pegawai
 $routes->group('Pegawai', function ($routes) {
-    $routes->get('Dashboard', 'Home::index');
+    $routes->get('Dashboard', 'Home::Pegawai');
     
     $routes->group('ATK/Transaksi', function ($routes) {
         $routes->get('/', 'transaksiController::transaksi_pegawai');
@@ -274,7 +278,7 @@ $routes->group('Pegawai', function ($routes) {
 
 // group route Kepala Sekolah
 $routes->group('Kepsek', function ($routes) {
-    $routes->get('Dashboard', 'Home::index');
+    $routes->get('Dashboard', 'Home::Kepsek');
     
     $routes->group('Laporan', function ($routes) {
         $routes->get('Inventaris', 'laporanController::laproranInventaris');

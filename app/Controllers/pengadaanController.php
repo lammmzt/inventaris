@@ -150,7 +150,7 @@ class pengadaanController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
-            'user_id' => [
+            'id_user' => [
                 'label' => 'Nama Pengguna',
                 'rules' => 'required',
                 'errors' => [
@@ -167,7 +167,7 @@ class pengadaanController extends BaseController
             ]);
         } else {
             $data = [
-                'user_id' => $this->request->getPost('user_id'),
+                'id_user' => $this->request->getPost('id_user'),
                 'ket_pengadaan' => $this->request->getPost('ket_pengadaan'),
                 'tanggal_pengadaan' => $this->request->getPost('tanggal_pengadaan'),
             ];
@@ -285,6 +285,33 @@ class pengadaanController extends BaseController
                 ';
             }, 'last')
             ->toJson(true);
+    }
+
+    public function ajaxDataTablesGetAll(){
+        $role= session()->get('role');
+        if($role == 'Admin' || $role == 'Kepala Sekolah'){
+           $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '1')->orWhere('status_pengadaan', '2')->orWhere('status_pengadaan', '3');
+        }else if($role == 'KA. TU'){
+            $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '1');
+        }else{
+            $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '2');
+        }
+        return DataTable::of($builder)
+            ->add('status_pengadaan', function ($row) {
+                if($row->status_pengadaan == 1){
+                    return '<span class="badge badge-warning">Persetujuan</span>';
+                }else if($row->status_pengadaan == 2){
+                    return '<span class="badge badge-primary">Disetujui</span>';
+                }else if($row->status_pengadaan == 3){
+                    return '<span class="badge badge-info">Proses Pengadaan</span>';
+                }else if($row->status_pengadaan == 4){
+                    return '<span class="badge badge-success">Selesai</span>';
+                }else{
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+            })
+            ->toJson(true);
+            
     }
     
 

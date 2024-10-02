@@ -41,51 +41,51 @@
 
     </style>
     <script>
-        window.dataLayer = window.dataLayer || [];
+    window.dataLayer = window.dataLayer || [];
 
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
 
-        gtag("config", "G-GBZ3SGGX85");
+    gtag("config", "G-GBZ3SGGX85");
     </script>
     <!-- Google Tag Manager -->
     <script>
-        (function(w, d, s, l, i) {
-            w[l] = w[l] || [];
-            w[l].push({
-                "gtm.start": new Date().getTime(),
-                event: "gtm.js"
-            });
-            var f = d.getElementsByTagName(s)[0],
-                j = d.createElement(s),
-                dl = l != "dataLayer" ? "&l=" + l : "";
-            j.async = true;
-            j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-            f.parentNode.insertBefore(j, f);
-        })(window, document, "script", "dataLayer", "GTM-NXZMQSS");
+    (function(w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+            "gtm.start": new Date().getTime(),
+            event: "gtm.js"
+        });
+        var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+    })(window, document, "script", "dataLayer", "GTM-NXZMQSS");
     </script>
     <!-- End Google Tag Manager -->
 
     <style>
-        .rq {
-            color: red;
-        }
+    .rq {
+        color: red;
+    }
 
+    .footer {
+        position: relative;
+        bottom: 0;
+        width: 100%;
+        color: #333;
+        padding: 10px 0;
+    }
+
+    @media (max-width: 764px) {
         .footer {
-            position: relative;
-            bottom: 0;
-            width: 100%;
-            color: #333;
-            padding: 10px 0;
+            text-align: center;
         }
-
-        @media (max-width: 764px) {
-            .footer {
-                text-align: center;
-            }
-        }
+    }
     </style>
 </head>
 
@@ -118,7 +118,7 @@
                 <?php
                 if ($active != 'Dashboard') :
                 ?>
-                    <?= $this->include('Layout/breadcrumb'); ?>
+                <?= $this->include('Layout/breadcrumb'); ?>
                 <?php endif; ?>
 
                 <!-- render the section -->
@@ -149,8 +149,8 @@
     <script src="<?= base_url('Assets/'); ?>src/plugins/datatables/js/dataTables.responsive.min.js"></script>
     <script src="<?= base_url('Assets/'); ?>src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
     <script src="<?= base_url('Assets/'); ?>vendors/scripts/dashboard3.js"></script>
+    <!-- <script src="<?= base_url('Assets/'); ?>vendors/scripts/dashboard.js"></script> -->
     <!-- buttons for Export datatable -->
-
     <script src="<?= base_url('Assets/'); ?>src/plugins/datatables/js/dataTables.buttons.min.js"></script>
     <script src="<?= base_url('Assets/'); ?>src/plugins/datatables/js/buttons.bootstrap4.min.js"></script>
     <script src="<?= base_url('Assets/'); ?>src/plugins/datatables/js/buttons.print.min.js"></script>
@@ -166,33 +166,33 @@
     <script src="<?= base_url('Assets/'); ?>src/plugins/sweetalert2/sweetalert2.all.js"></script>
 
     <script type="text/javascript">
-        $(document).on('focusout', '.required', function() {
-            const id = $(this).attr('id');
-            if ($(this).val() == '') {
-                $(this).addClass('form-control-danger');
-                $(`#error${id}`).html('Field ini tidak boleh kosong');
-                $(`#error${id}`).addClass('has-danger');
-            } else {
-                $(this).addClass('form-control-success');
-                $(this).removeClass('form-control-danger');
-                $(`#error${id}`).html('');
-                $(`#error${id}`).removeClass('has-danger');
-            }
-        });
+    $(document).on('focusout', '.required', function() {
+        const id = $(this).attr('id');
+        if ($(this).val() == '') {
+            $(this).addClass('form-control-danger');
+            $(`#error${id}`).html('Field ini tidak boleh kosong');
+            $(`#error${id}`).addClass('has-danger');
+        } else {
+            $(this).addClass('form-control-success');
+            $(this).removeClass('form-control-danger');
+            $(`#error${id}`).html('');
+            $(`#error${id}`).removeClass('has-danger');
+        }
+    });
 
-        $(document).on('keyup', '.required', function() {
-            const id = $(this).attr('id');
-            if ($(this).val() != '') {
-                $(this).removeClass('form-control-danger');
-                $(this).addClass('form-control-success');
-                $(`#error${id}`).html('');
-                $(`#error${id}`).removeClass('has-danger');
-            } else {
-                $(this).addClass('form-control-danger');
-                $(`#error${id}`).html('Field ini tidak boleh kosong');
-                $(`#error${id}`).addClass('has-danger');
-            }
-        });
+    $(document).on('keyup', '.required', function() {
+        const id = $(this).attr('id');
+        if ($(this).val() != '') {
+            $(this).removeClass('form-control-danger');
+            $(this).addClass('form-control-success');
+            $(`#error${id}`).html('');
+            $(`#error${id}`).removeClass('has-danger');
+        } else {
+            $(this).addClass('form-control-danger');
+            $(`#error${id}`).html('Field ini tidak boleh kosong');
+            $(`#error${id}`).addClass('has-danger');
+        }
+    });
     </script>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NXZMQSS" height="0" width="0"
