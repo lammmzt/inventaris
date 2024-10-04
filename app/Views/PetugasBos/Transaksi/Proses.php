@@ -8,7 +8,7 @@
                 <!-- <h5 class="h4 text-blue mb-20">Form Edit Transaksi Masuk</h5> -->
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        <a href="<?= base_url('PetugasBos/ATK/Transaksi'); ?>" class="btn btn-primary"><i
+                        <a href="<?= base_url('PetugasBOS/ATK/Transaksi'); ?>" class="btn btn-primary"><i
                                 class="fa fa-arrow-left"></i> Kembali</a>
                     </div>
                 </div>

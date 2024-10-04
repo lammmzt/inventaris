@@ -78,7 +78,7 @@ class transaksiController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        ' . ($row->status_transaksi == 1 ? '
                         <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>' : '') . ' 
                         <button class="dropdown-item detail_trans_keluar" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
                 </div>
@@ -401,7 +401,7 @@ class transaksiController extends BaseController
             $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '1');
         }else if($role = 'Pegawai'){
             $id_user = session()->get('id_user');
-            $builder = $this->transaksiModel->getTransaksi()->where('id_user', $id_user)->where('status_transaksi', '1');
+            $builder = $this->transaksiModel->getTransaksi()->where('transaksi.id_user', $id_user)->where('status_transaksi', '1');
         }else{
             $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '2');
         }

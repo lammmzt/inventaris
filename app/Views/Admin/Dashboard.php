@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12 mb-4">
+    <div class="col-md-12 mb-4 table-responsive">
         <div class="card-box height-100-p pd-20">
             <h2 class="h4 mb-20">Transaksi ATK Tahun <?= date('Y'); ?></h2>
             <div id="chart5"></div>

@@ -97,7 +97,7 @@ class Filters extends BaseFilters
                 '/', 'Auth/logout','Auth/login', 'Pegawai/Dashboard', 'Pegawai/ATK/Transaksi', 'Pegawai/ATK/Transaksi/*', 'Pegawai/Inventaris', 'Pegawai/Inventaris/*', 'Admin/ATK/Transaksi/DataTablesEditTransMasuk', 'Admin/ATK/Transaksi/edit', 'Admin/ATK/Transaksi/fetchDetailTransByIdTrans','Admin/ATK/Transaksi/edit', 'Admin/ATK/Transaksi/fetchDetailTransByIdTrans','Admin/ATK/Transaksi/DataTablesEditTransKeluar', 'Admin/ATK/Transaksi/updateQtyMasuk', 'Admin/ATK/Transaksi/updatedCatatan', 'Admin/ATK/fetchAll', 'Admin/ATK/,Transaksi/DataTablesEditTransKeluar', 'Admin/ATK/Transaksi/deleteTransKeluar', 'Admin/ATK/Transaksi/updateDetailATKKeluar', 'Admin/ATK/Transaksi/insertTransaksiKeluar', 'Admin/ATK/Transaksi/updateTransKeluar', 'Admin/Inventaris/fetchInventarisByKodeInventaris', 'Admin/Inventaris/Pelaporan/save','Admin/User/updatePass', 'Admin/User/fetchDataUser', 'Admin/Setting', 'DataTablesGetAllPengadaan','DataTablesDashboardTrans','getAllDataPengecekan'
             ]],
             'filterKepsek' => ['except' => [    
-                '/', 'Auth/logout','Auth/login', 'Kepsek/Dashboard', 'Kepsek/Laporan/*', 'Kepsek/Setting','Admin/User/updatePass', 'Admin/User/fetchDataUser', 'Admin/Setting', 'Admin/Laporan/ajaxLaporanInventaris', 'Admin/Laporan/ajaxLaporanTransaksi', 'getAllDataTras', 'getAllDataPengecekan', 'DataTablesGetAllPengadaan'
+                '/', 'Auth/logout','Auth/login', 'Kepsek/Dashboard', 'Kepsek/Laporan/*', 'Kepsek/Setting','Admin/User/updatePass', 'Admin/User/fetchDataUser', 'Admin/Setting', 'Admin/Laporan/ajaxLaporanInventaris', 'Admin/Laporan/ajaxLaporanTransaksi', 'getAllDataTras', 'getAllDataPengecekan', 'DataTablesGetAllPengadaan','getAllDataTransInYear'
             ]],
         ],
     ];

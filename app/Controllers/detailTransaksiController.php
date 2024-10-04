@@ -27,8 +27,13 @@ class detailTransaksiController extends BaseController
     {
         $id_transaksi = $this->request->getPost('id_transaksi');
         // $id_transaksi = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
-            
-        $builder = $this->detailTransaksiModel->getTransByTransId($id_transaksi);
+        $role = session()->get('role');
+
+        if($role == 'Petugas BOS'){
+            $builder = $this->detailTransaksiModel->getTransByTransId($id_transaksi)->where(['status_detail_transaksi' => '1']);
+        }else{
+            $builder = $this->detailTransaksiModel->getTransByTransId($id_transaksi);
+        }
         // dd($builder);
         
         return DataTable::of($builder)

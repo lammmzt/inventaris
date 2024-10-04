@@ -463,7 +463,10 @@ $(document).on('click', '.delete_atk', function() {
                     success: function(response) {
                         $('#tableatk').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                    }
+                    },
+                    error: function() {
+                        alert('data tidak dapat dihapus');
+                    },
                 });
             }
         });

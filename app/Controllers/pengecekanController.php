@@ -172,7 +172,7 @@ class pengecekanController extends BaseController
         if($role == 'Admin' || $role == 'Kepala Sekolah'){
             $builder = $this->pengecekanModel->getPengecekanActive()->Where('status_pengecekan', '2')->orWhere('status_pengecekan', '3');
         }else{
-            $builder = $this->pengecekanModel->getPengecekanActive()->where('id_user', session()->get('id_user'))->limit(5);
+            $builder = $this->pengecekanModel->getPengecekanActive()->where('pengecekan.id_user', session()->get('id_user'))->limit(5);
         }
         return DataTable::of($builder)
            ->add('status_pengecekan', function ($row) {
