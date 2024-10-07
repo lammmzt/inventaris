@@ -53,7 +53,7 @@ class pengecekanController extends BaseController
         $kode_inventaris = $this->request->getPost('kode_inventaris');
         // $kode_inventaris = 'BRG-20240915-9622';
         $data_inventarus = $this->inventarisModel->getInventaris()->where(['kode_inventaris' => $kode_inventaris])->first();
-        $data_pelaporan = $this->pengecekanModel->getpengecekan()->where(['id_inventaris' => $data_inventarus['id_inventaris']])->limit(5)->orderBy('id_pengecekan', 'DESC')->findAll();
+        $data_pelaporan = $this->pengecekanModel->getpengecekan()->where(['pengecekan.id_inventaris' => $data_inventarus['id_inventaris']])->limit(5)->orderBy('id_pengecekan', 'DESC')->findAll();
         if( $data_inventarus != null){
             return $this->response->setJSON([
                 'error' => false,

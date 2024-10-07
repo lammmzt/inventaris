@@ -84,8 +84,8 @@ class detailPengadaanController extends BaseController
     public function pengadaan_masuk()
     {
         $data = [
-            'main_menu' => 'pengadaan',
-            'title' => 'Form pengadaan Masuk',
+            'main_menu' => 'Pengadaan',
+            'title' => 'Form pengadaan',
             'active' => 'pengadaan',
         ];
         return view('Admin/pengadaan/pengadaan_masuk', $data);
@@ -149,7 +149,7 @@ class detailPengadaanController extends BaseController
         $data_pengadaan['created_at'] = date('Y-m-d', strtotime($data_pengadaan['created_at']));
         $data = [
             'main_menu' => 'Pengadaan',
-            'title' => 'Edit pengadaan Masuk',
+            'title' => 'Edit pengadaan',
             'active' => 'Pengadaan',
             'id_pengadaan' => $id_pengadaan,
             'tgl_pengadaan' => $data_pengadaan['created_at'],
@@ -260,7 +260,7 @@ class detailPengadaanController extends BaseController
         $data_pengadaan['created_at'] = date('Y-m-d', strtotime($data_pengadaan['created_at']));
         $data = [
             'main_menu' => 'Pengadaan',
-            'title' => 'Edit pengadaan Masuk',
+            'title' => 'Proses pengadaan',
             'active' => 'Pengadaan',
             'id_pengadaan' => $id_pengadaan,
             'tgl_pengadaan' => $data_pengadaan['created_at'],
@@ -294,7 +294,7 @@ class detailPengadaanController extends BaseController
         $data_pengadaan['created_at'] = date('Y-m-d', strtotime($data_pengadaan['created_at']));
         $data = [
             'main_menu' => 'Pengadaan',
-            'title' => 'Edit pengadaan Masuk',
+            'title' => 'Proses pengadaan Masuk',
             'active' => 'Pengadaan',
             'id_pengadaan' => $id_pengadaan,
             'tgl_pengadaan' => $data_pengadaan['created_at'],
@@ -343,7 +343,7 @@ class detailPengadaanController extends BaseController
         $data_pengadaan['created_at'] = date('Y-m-d', strtotime($data_pengadaan['created_at']));
         $data = [
             'main_menu' => 'Pengadaan',
-            'title' => 'Edit pengadaan Masuk',
+            'title' => 'Proses pengadaan Masuk',
             'active' => 'Pengadaan',
             'id_pengadaan' => $id_pengadaan,
             'tgl_pengadaan' => $data_pengadaan['created_at'],

@@ -342,7 +342,7 @@ class transaksiController extends BaseController
     public function ajaxDataTablesPegawai()
     {
         $id_user = session()->get('id_user');
-        $builder = $this->transaksiModel->getTransaksiKeluar()->where('id_user', $id_user);
+        $builder = $this->transaksiModel->getTransaksiKeluar()->where('transaksi.id_user', $id_user);
         // dd($builder);
         return DataTable::of($builder)
             ->add('status_transaksi', function ($row) {
