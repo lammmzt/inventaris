@@ -925,7 +925,11 @@ $(document).on('click', '.delete_inventaris', function() {
                     success: function(response) {
                         $('#tableInventaris').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                    }
+                    },
+                    error: function() {
+                        //alert('data tidak dapat dihapus');
+                        getSwall('error', 'Data tidak dapat dihapus');
+                    },
                 });
             }
         });

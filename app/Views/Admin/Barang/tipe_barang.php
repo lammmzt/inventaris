@@ -465,7 +465,11 @@ $(document).on('click', '.delete_tipe_barang', function() {
                     success: function(response) {
                         $('#tableTipeBarang').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                    }
+                    },
+                    error: function() {
+                        //alert('data tidak dapat dihapus');
+                        getSwall('error', 'Data tidak dapat dihapus');
+                    },
                 });
             }
         });

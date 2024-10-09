@@ -465,7 +465,8 @@ $(document).on('click', '.delete_atk', function() {
                         getSwall(response.status, response.data);
                     },
                     error: function() {
-                        alert('data tidak dapat dihapus');
+                        //alert('data tidak dapat dihapus');
+                        getSwall('error', 'Data tidak dapat dihapus');
                     },
                 });
             }

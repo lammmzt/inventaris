@@ -333,7 +333,11 @@ $(document).on('click', '.delete_satuan', function() {
                     success: function(response) {
                         $('#tablesatuan').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                    }
+                    },
+                    error: function() {
+                        //alert('data tidak dapat dihapus');
+                        getSwall('error', 'Data tidak dapat dihapus');
+                    },
                 });
             }
         });
