@@ -87,7 +87,7 @@ function laporanINV() {
                 }
             },
             columns: [{
-                    data: 'kode_inventaris'
+                    data: 'id_inventaris'
                 },
                 {
                     data: 'nama_inventaris'

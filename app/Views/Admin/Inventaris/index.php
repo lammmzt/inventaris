@@ -77,7 +77,7 @@
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="id_tipe_barang"
                                 id="id_tipe_barang" style="width: 100%; height: 38px;">
-
+                                <option value="">Pilih Barang</option>
                             </select>
                             <div class="form-control-feedback " id="errorid_tipe_barang"></div>
                         </div>
@@ -376,15 +376,14 @@
             </div>
             <form id="form_tambah_pelaporan" enctype="multipart/form-data">
                 <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
-                    enctype="multipart/form-data"> -->
+                enctype="multipart/form-data"> -->
                 <div class="modal-body">
-                    <input type="hidden" name="id_inventaris" id="id_inventaris_pelaporan">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label>Kode Inventaris</label><input type="text" class="form-control"
-                                    id="kode_inventaris" name="kode_inventaris" placeholder="Kode Inventaris" required
-                                    readonly>
+                                    id="id_inventaris_pelaporan" name="id_inventaris" placeholder="Kode Inventaris"
+                                    required readonly>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
@@ -638,7 +637,7 @@ function getSwall(status, message) {
 const inventaris = [
     'nama_inventaris',
     'id_inventaris',
-    'kode_inventaris',
+    'id_inventaris',
     'id_tipe_barang',
     'id_ruangan',
     'qty_inventaris',
@@ -1023,7 +1022,7 @@ $(function() {
                                         }
                                     },
                                     {
-                                        data: 'kode_inventaris'
+                                        data: 'id_inventaris'
                                     },
                                     {
                                         data: 'message'
@@ -1124,14 +1123,13 @@ $(document).on('click', '.perbaiki_inventaris', function() {
         url: '<?= base_url('Admin/Inventaris/fetchInventarisByKodeInventaris') ?>',
         method: 'post',
         data: {
-            kode_inventaris: id
+            id_inventaris: id
         },
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
                 $('#editPelaporan').modal('show');
                 $('#id_inventaris_pelaporan').val(response.data.inventaris.id_inventaris);
-                $('#kode_inventaris_pelaporan').val(response.data.inventaris.kode_inventaris);
                 $('#nama_inventaris_pelaporan').val(response.data.inventaris.nama_inventaris);
                 $('#nama_ruangan_pelaporan').val(response.data.inventaris.nama_ruangan);
                 if (response.data.inventaris.status_inventaris == '1') {

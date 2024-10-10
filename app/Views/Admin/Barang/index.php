@@ -155,7 +155,7 @@ function dataTablesBarang() {
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
-                    data: 'kode_barang',
+                    data: 'id_barang',
                     class: 'table-plus'
                 },
                 {

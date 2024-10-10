@@ -17,8 +17,8 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Kode Barang</label>
-                                    <input class="form-control" type="text" readonly id="kode_barang"
-                                        value="<?= $kode_barang; ?>" />
+                                    <input class="form-control" type="text" readonly id="id_barang"
+                                        value="<?= $id_barang; ?>" />
                                     <input class="form-control" type="hidden" readonly id="id_barang"
                                         value="<?= $id_barang; ?>" />
                                 </div>

@@ -36,7 +36,7 @@ class detailPengadaanController extends BaseController
                 return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' @ ' . $row->nama_satuan;
             })
             ->add('spek', function ($row) {
-                return '<textarea class="form-control input_spek" style="min-width: 200px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
+                return '<textarea class="form-control input_spek" style="min-width: 200px; height: 50px;" '. ($row->status_detail_pengadaan == '1'  || $row->status_detail_pengadaan == '3' ? '' : 'readonly') .' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
             })
             ->add('status_detail_pengadaan', function ($row) {
                 return '<select class="form-control input_status required" id="'. $row->id_detail_pengadaan .'">
@@ -55,7 +55,7 @@ class detailPengadaanController extends BaseController
                 }
             })
             ->add('catatan_detail_pengadaan', function ($row) {
-                return '<textarea class="form-control input_catatan text-black" style="min-width: 100px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Catatan"
+                return '<textarea class="form-control input_catatan text-black" style="min-width: 100px; height: 50px;" placeholder="Catatan"
                  id="'. $row->id_detail_pengadaan .'">'. $row->catatan_detail_pengadaan .'</textarea>';
             })
              ->add('nama_spek', function ($row) {

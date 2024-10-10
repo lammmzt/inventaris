@@ -245,47 +245,6 @@ function dataTablesTransMasuk() {
     });
 }
 
-// datatables transaksi keluar
-function dataTablesTransKeluar() {
-    $(document).ready(function() {
-        $('#tabelTransaksiKeluar').DataTable({
-            processing: true,
-            serverSide: true,
-            scrollCollapse: true,
-            autoWidth: false,
-            responsive: true,
-            ajax: "<?php echo base_url('Admin/ATK/Transaksi/DataTablesKeluar') ?>",
-            "lengthMenu": [
-                [5, 10, 25, 50, -1],
-                [5, 10, 25, 50, "All"]
-            ],
-            columns: [{
-                    data: 'nama_user'
-                },
-                {
-                    data: 'tanggal_transaksi',
-                    class: 'text-center'
-                },
-                {
-                    data: 'status_transaksi',
-                    class: 'text-center'
-                },
-                {
-                    data: 'action',
-                    class: 'datatable-nosort text-center'
-                },
-
-            ],
-            columnDefs: [{
-                targets: "datatable-nosort",
-                orderable: false,
-            }],
-            order: [
-                [2, 'asc']
-            ]
-        });
-    });
-}
 
 $(document).ready(function() {
     dataTablesTransMasuk();
@@ -309,9 +268,13 @@ $(document).on('click', '.detail_trans', function() {
             $('#nama_pemohon_keluar').val(data.data.nama_user);
             $('#tanggal_transaksi_keluar').val(data.data.tanggal_transaksi);
             $('#keterangan_keluar').val(data.data.ket_transaksi);
-            $('#status_keluar').html(data.data.status_transaksi == 4 ?
-                '<span class="badge badge-success">Selesai</span>' :
-                '<span class="badge badge-warning">Permintaan</span>');
+            if (data.data.status_transaksi == 1) {
+                $('#status_keluar').html('<span class="badge badge-warning">Permintaan</span>');
+            } else if (data.data.status_transaksi == 2) {
+                $('#status_keluar').html('<span class="badge badge-primary">Ditsetujui</span>');
+            } else {
+                $('#status_keluar').html('<span class="badge badge-success">Selesai</span>');
+            }
             $('#modalDetailTransKeluar').modal('show');
 
 
