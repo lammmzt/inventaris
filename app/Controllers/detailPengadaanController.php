@@ -26,9 +26,13 @@ class detailPengadaanController extends BaseController
     public function ajaxDataTables()
     {
         $id_pengadaan = $this->request->getPost('id_pengadaan');
-        // $id_pengadaan = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
+        $role = session()->get('role');
+        if($role == 'Petugas BOS'){
+            $builder = $this->detailPengadaanModel->getDetailPengadaanByID($id_pengadaan)->where('status_detail_pengadaan', '1');
+        }else{
+            $builder = $this->detailPengadaanModel->getDetailPengadaanByID($id_pengadaan);
+        }
             
-        $builder = $this->detailPengadaanModel->getDetailPengadaanByID($id_pengadaan);
         // dd($builder);
         
         return DataTable::of($builder)
@@ -36,7 +40,7 @@ class detailPengadaanController extends BaseController
                 return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' @ ' . $row->nama_satuan;
             })
             ->add('spek', function ($row) {
-                return '<textarea class="form-control input_spek" style="min-width: 200px; height: 50px;" '. ($row->status_detail_pengadaan == '1'  || $row->status_detail_pengadaan == '3' ? '' : 'readonly') .' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
+                return '<textarea class="form-control input_spek" ' . ($row->status_detail_pengadaan == '2' ? 'readonly' : '') . ' style="min-width: 200px; height: 50px;" placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
             })
             ->add('status_detail_pengadaan', function ($row) {
                 return '<select class="form-control input_status required" id="'. $row->id_detail_pengadaan .'">
@@ -55,14 +59,14 @@ class detailPengadaanController extends BaseController
                 }
             })
             ->add('catatan_detail_pengadaan', function ($row) {
-                return '<textarea class="form-control input_catatan text-black" style="min-width: 100px; height: 50px;" placeholder="Catatan"
+                return '<textarea class="form-control input_catatan text-black" style="min-width: 100px; height: 50px;" placeholder="Catatan"' . ($row->status_detail_pengadaan == '2' ? 'readonly' : '') . '
                  id="'. $row->id_detail_pengadaan .'">'. $row->catatan_detail_pengadaan .'</textarea>';
             })
              ->add('nama_spek', function ($row) {
-                return '<textarea class="form-control input_spek" style="min-width: 200px; height: 50px;" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
+                return '<textarea class="form-control input_spek" style="min-width: 200px; height: 50px;" ' . ($row->status_detail_pengadaan == '2' ? 'readonly' : '') . ' placeholder="Masukan spesifikasi" id="'. $row->id_detail_pengadaan .'">'. $row->spek .'</textarea>';
             })
              ->add('qty', function ($row) {
-                return '<input type="number" class="form-control text-center input_qty" '. ($row->status_detail_pengadaan == '1' ? '' : 'readonly') .' style="min-width: 50px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_pengadaan .'">';
+                return '<input type="number" class="form-control text-center input_qty"  ' . ($row->status_detail_pengadaan == '2' ? 'readonly' : '') . ' style="min-width: 50px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_pengadaan .'">';
             })
             ->add('action', function ($row) {   
                 return '

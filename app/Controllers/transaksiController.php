@@ -399,7 +399,7 @@ class transaksiController extends BaseController
         $role = session()->get('role');
         if($role == 'KA. TU'){
             $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '1');
-        }else if($role = 'Pegawai'){
+        }else if($role == 'Pegawai'){
             $id_user = session()->get('id_user');
             $builder = $this->transaksiModel->getTransaksi()->where('transaksi.id_user', $id_user)->where('status_transaksi', '1');
         }else{

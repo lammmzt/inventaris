@@ -366,9 +366,9 @@ $(document).on('click', '.detail_trans_masuk', function() {
             $('#tanggal_transaksi').val(data.data.tanggal_transaksi);
             $('#keterangan').val(data.data.ket_transaksi);
             $('#status').html(data.data.status_transaksi == 1 ?
-                '<span class="badge badge-warning">Permintaan</span>' :
+                '<span class="badge badge-warning">Persetujuan</span>' :
                 data.data.status_transaksi == 2 ?
-                '<span class="badge badge-primary">persetujuan</span>' :
+                '<span class="badge badge-primary">Disetujui</span>' :
                 data.data.status_transaksi == 3 ?
                 '<span class="badge badge-info">Proses pengadaan</span>' :
                 data.data.status_transaksi == 4 ?

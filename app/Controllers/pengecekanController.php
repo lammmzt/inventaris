@@ -112,7 +112,7 @@ class pengecekanController extends BaseController
             
             if ($file->isValid() && !$file->hasMoved()) {
                 $newName = $file->getRandomName();
-                $file->move('assets/uploads/pengecekan', $newName);
+                $file->move('Assets/uploads/pengecekan', $newName);
             }
 
             $data = [

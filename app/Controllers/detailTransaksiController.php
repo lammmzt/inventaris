@@ -562,7 +562,7 @@ class detailTransaksiController extends BaseController
             'ket_transaksi' => $data_transaksi['ket_transaksi'],   
             'nama_user' => $data_transaksi['nama_user'],
         ];
-        return view('KaTu/Transaksi/Proses', $data);
+        return view('KaTU/Transaksi/Proses', $data);
     }
     
     public function UpdateProsesPersetujuan(){
@@ -612,7 +612,7 @@ class detailTransaksiController extends BaseController
             'nama_user' => $data_transaksi['nama_user'],
             'status_transaksi' => $data_transaksi['status_transaksi'],
         ];
-        return view('PetugasBos/Transaksi/Proses', $data);
+        return view('PetugasBOS/Transaksi/Proses', $data);
     }
 
     public function UpdateProsesPengadaan(){

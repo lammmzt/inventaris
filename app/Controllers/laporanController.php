@@ -74,9 +74,9 @@ class laporanController extends BaseController
         }
 
         if($jenis_transaksi == ''){
-            $builder = $this->transaksiModel->getTransaksi()->where('tanggal_transaksi >=', $tgl_awal)->where('tanggal_transaksi <=', $tgl_akhir);
+            $builder = $this->transaksiModel->getTransaksi()->where('tanggal_transaksi >=', $tgl_awal)->where('tanggal_transaksi <=', $tgl_akhir)->where('status_transaksi', '4');
         }else{
-            $builder = $this->transaksiModel->getTransaksi()->where('tanggal_transaksi >=', $tgl_awal)->where('tanggal_transaksi <=', $tgl_akhir)->where('tipe_transaksi', $jenis_transaksi);
+            $builder = $this->transaksiModel->getTransaksi()->where('tanggal_transaksi >=', $tgl_awal)->where('tanggal_transaksi <=', $tgl_akhir)->where('tipe_transaksi', $jenis_transaksi)->where('status_transaksi', '4');
         }
 
 

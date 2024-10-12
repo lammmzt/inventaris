@@ -163,7 +163,7 @@ video {
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 table-responsive">
                             <h4 class="text-blue h4">Histori Pelaporan</h4>
                             <table class="table table-bordered table-hover" id="table_history_pengecekan">
                                 <thead>
@@ -328,7 +328,7 @@ function domReady(fn) {
         document.readyState === "complete" ||
         document.readyState === "interactive"
     ) {
-        setTimeout(fn, 1000);
+        setTimeout(fn, 5000); // 5 seconds
     } else {
         document.addEventListener("DOMContentLoaded", fn);
     }
@@ -348,7 +348,7 @@ domReady(function() {
         // timer for next scan
         setTimeout(() => {
             htmlscanner.start();
-        }, 10000);
+        }, 5000); // 5 seconds
     }
 
     let htmlscanner = new Html5QrcodeScanner(
