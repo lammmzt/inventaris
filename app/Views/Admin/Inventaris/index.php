@@ -40,7 +40,7 @@
                                         <span class="dt-checkbox-label"></span>
                                     </div>
                                 </th>
-                                <th class="table-plus">Kode Inventaris</th>
+                                <th class="table-plus datatable-nosort">Kode Inventaris</th>
                                 <th class="table-plus">Nama Inventaris</th>
                                 <th class="table-plus">Ruangan</th>
                                 <th class="">Status inventaris</th>
@@ -277,7 +277,7 @@
     </div>
 </div>
 
-<!-- modal import data siswa -->
+<!-- modal import data Inventaris -->
 <div class="modal fade" id="importDataInventaris" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
@@ -299,7 +299,8 @@
                             <input type="file" class="form-control" id="file" name="file" required>
                             <div class="form-control-feedback mb-4" id="errorfile"></div>
 
-                            <small class="text-danger">* File Excel harus sesuai dengan template yang telah disediakan
+                            <small class="text-danger">* File Excel harus sesuai dengan template yang telah
+                                disediakan
                                 <a href="#" id="downloadTemplate">Download Template</a>
                             </small>
                         </div>
@@ -330,7 +331,7 @@
                             <table class="table table table-striped" id="tableImport">
                                 <thead>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
-                                    <th scope="col" class="text-center">Kode Transaksi</th>
+                                    <th scope="col" class="text-center ">Kode Transaksi</th>
                                     <th scope="col" class="text-center">Pesan</th>
                                 </thead>
                                 <tbody id="detailData">
@@ -352,7 +353,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         Batal
                     </button>
-                    <button type="submit" class="btn btn-primary" id="btn_tambah_user">
+                    <button type="submit" class="btn btn-primary" id="btn_import_data">
                         Import
                     </button>
                 </div>
@@ -511,7 +512,8 @@ function dataTablesinventaris() {
 
                 },
                 {
-                    data: 'kode_inventaris'
+                    data: 'kode_inventaris',
+                    class: 'datatable-nosort'
                 },
                 {
                     data: 'nama_barang'
@@ -957,8 +959,8 @@ $(function() {
             e.preventDefault();
             $(this).addClass('form-control-success');
         } else {
-            $("#btn_tambah_user").attr("disabled", "disabled");
-            $("#btn_tambah_user").html(
+            $("#btn_import_data").attr("disabled", "disabled");
+            $("#btn_import_data").html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
@@ -984,8 +986,8 @@ $(function() {
                                 $("#error" + key).removeClass('has-danger');
                             }
                         });
-                        $("#btn_tambah_user").removeAttr("disabled");
-                        $("#btn_tambah_user").html("Import");
+                        $("#btn_import_data").removeAttr("disabled");
+                        $("#btn_import_data").html("Import");
                     } else {
                         // alert(response.data);
                         $("#totalData").html(response.total_data);
@@ -1042,8 +1044,8 @@ $(function() {
                         $("#totalGagal").html(response.data_failed.length);
                         data_qr_code = response.data_success;
                         $("#form_import")[0].reset();
-                        $("#btn_tambah_user").removeAttr("disabled");
-                        $("#btn_tambah_user").html("Import");
+                        $("#btn_import_data").removeAttr("disabled");
+                        $("#btn_import_data").html("Import");
                         $('#tableInventaris').DataTable().ajax.reload();
                         $("#statusImport").show();
                         $("#detailImportData").show();

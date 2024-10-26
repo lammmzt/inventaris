@@ -35,7 +35,6 @@ class atkController extends BaseController
         ]);
     }
     
-
     public function ajaxDataTables()
     {
         $builder = $this->atkModel->getatk();

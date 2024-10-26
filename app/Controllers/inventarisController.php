@@ -419,16 +419,16 @@ class inventarisController extends BaseController
             
             $no++;
             
-            $nama_barang = $col[1];
-            $nama_tipe_barang = $col[2];
-            $nama_inventaris = $col[3];
-            $nama_ruangan = $col[4];
-            $spek_inventaris = $col[5];
-            $satuan = $col[6];
-            $qty_inventaris = $col[7];
-            $perolehan_inventaris = $col[8];
-            $sumber_inventaris = $col[9];
-            
+            $nama_barang = $col[0];
+            $nama_tipe_barang = $col[1];
+            $nama_inventaris = $col[2];
+            $nama_ruangan = $col[3];
+            $spek_inventaris = $col[4];
+            $satuan = $col[5];
+            $qty_inventaris = $col[6];
+            $perolehan_inventaris = $col[7];
+            $sumber_inventaris = $col[8];
+            $harga_inventaris = $col[9];
 
             // check data barang
             if($nama_barang != '' && $nama_tipe_barang != '' && $nama_inventaris != '' && $nama_ruangan != '' && $spek_inventaris != '' && $satuan != '' && $qty_inventaris != '' ){
@@ -481,7 +481,7 @@ class inventarisController extends BaseController
                     $ruangan[$nama_ruangan] = $data_ruangan['id_ruangan'];
                 }
 
-                $id_inventaris = 'BRG-'.date('Ymd').'-'.rand(100,9999);
+                $id_inventaris = 'BRG-'.date('Ymd').'-'.rand(100,99999); 
                 // check if data inventaris exist
                 if (!$this->inventarisModel->where(['id_inventaris' => $id_inventaris])->first()) {
 
@@ -514,6 +514,7 @@ class inventarisController extends BaseController
                         'qty_inventaris' => $qty_inventaris,
                         'perolehan_inventaris' => $perolehan_inventaris,
                         'sumber_inventaris' => $sumber_inventaris,
+                        'harga_inventaris' => $harga_inventaris,
                         'qr_code' => $id_inventaris.'.png',
                         'status_inventaris' => '1',
                     ];
