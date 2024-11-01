@@ -72,7 +72,6 @@ class inventarisController extends BaseController
                 return $row->nama_barang. ' - ' .$row->nama_tipe_barang. '('.$row->nama_inventaris.')';
             })
             ->add('status_inventaris', function ($row) {
-                // jika status 0 tidak aktif, 1 aktif, 2 rusak dan 3 hilang
                 if ($row->status_inventaris == '0') {
                     return '<span class="badge badge badge-danger">Hilang</span>';
                 } elseif ($row->status_inventaris == '1') {
@@ -91,7 +90,7 @@ class inventarisController extends BaseController
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
                             <button class="dropdown-item edit_inventaris" id="' . $row->id_inventaris . '"><i class="dw dw-edit2"></i> Edit</button>
                             <button class="dropdown-item delete_inventaris" id="' . $row->id_inventaris . '"><i class="dw dw-delete-3"></i> Delete</button>
-                            '.($row->status_inventaris == '2' || $row->status_inventaris == '3' ? '<button class="dropdown-item perbaiki_inventaris" id="' . $row->id_inventaris . '"><i class="dw dw-warning"></i> Perbaiki</button>' : '').'
+                            '.($row->status_inventaris == '0' || $row->status_inventaris == '2' || $row->status_inventaris == '3' ? '<button class="dropdown-item perbaiki_inventaris" id="' . $row->id_inventaris . '"><i class="dw dw-warning"></i> Perbaiki</button>' : '').'
                         </div>
                 </div>
                 ';
@@ -426,7 +425,7 @@ class inventarisController extends BaseController
             $spek_inventaris = $col[4];
             $satuan = $col[5];
             $qty_inventaris = $col[6];
-            $perolehan_inventaris = $col[7];
+            $perolehan_inventaris = date('Y-m-d', strtotime($col[7]));
             $sumber_inventaris = $col[8];
             $harga_inventaris = $col[9];
 

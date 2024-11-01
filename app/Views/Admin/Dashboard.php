@@ -99,6 +99,7 @@
                                 <th class="">Tanggal</th>
                                 <th class="">Ruangan</th>
                                 <th class="">Status</th>
+                                <th class="">Action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -233,6 +234,10 @@ function dataTablesKondisi() {
                 {
                     data: 'status_pengecekan',
                     name: 'status_pengecekan'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
                 },
 
             ],

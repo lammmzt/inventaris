@@ -107,6 +107,10 @@ function laporanTransaksi() {
                     data.jenis_transaksi = $('#jenis_transaksi').val();
                 }
             },
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
             columns: [{
                     data: 'tanggal_transaksi'
                 },

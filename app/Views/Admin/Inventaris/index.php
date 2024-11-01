@@ -376,7 +376,7 @@
                 </button>
             </div>
             <form id="form_tambah_pelaporan" enctype="multipart/form-data">
-                <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
+                <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/update') ?>" method="post"
                 enctype="multipart/form-data"> -->
                 <div class="modal-body">
                     <div class="row">
@@ -1196,7 +1196,7 @@ $("#form_tambah_pelaporan").submit(function(e) {
     $("#btn_tindak_lanjut_pelaporan").html(
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
     $.ajax({
-        url: '<?= base_url('Admin/Inventaris/Pelaporan/save') ?>',
+        url: '<?= base_url('Admin/Inventaris/Pelaporan/update') ?>',
         method: 'post',
         data: new FormData(this),
         contentType: false,

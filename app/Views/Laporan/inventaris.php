@@ -86,6 +86,12 @@ function laporanINV() {
                     data.tgl_akhir = $('#tgl_akhir').val();
                 }
             },
+
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
+
             columns: [{
                     data: 'id_inventaris'
                 },
@@ -163,8 +169,13 @@ function laporanINV() {
                         });
                     },
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
+                        columns: [0, 1, 2, 3, 4, 5],
+                        modifier: {
+                            selected: null
+                        }
+
                     },
+
                 },
                 // {
                 //     extend: 'excel',

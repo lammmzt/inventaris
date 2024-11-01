@@ -162,6 +162,7 @@ $routes->group('Admin', function ($routes) {
         $routes->get('Pelaporan', 'pengecekanController::Pelaporan');
         $routes->post('fetchInventarisByKodeInventaris', 'pengecekanController::fetchInventarisByKodeInventaris');
         $routes->post('Pelaporan/save', 'pengecekanController::store');
+        $routes->post('Pelaporan/update', 'pengecekanController::update');
     });
     
     $routes->group('Pengadaan', function ($routes) {
