@@ -252,6 +252,42 @@ $('#btn_simpan').click(function() {
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: '',
+                        isi_notifikasi: 'Status trasaksi masuk telah diubah menjadi ' + $(
+                            '#status_transaksi').find(
+                            'option:selected').text(),
+                        role: 'KA. TU'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: '',
+                        isi_notifikasi: 'Status trasaksi masuk telah diubah menjadi ' + $(
+                            '#status_transaksi').find(
+                            'option:selected').text(),
+                        role: 'Petugas BOS'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
                 getSwall(response.status, response.data);
                 setTimeout(function() {
                     window.location.href = '<?= base_url('Admin/ATK/Transaksi') ?>';

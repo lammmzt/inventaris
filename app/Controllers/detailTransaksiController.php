@@ -324,7 +324,7 @@ class detailTransaksiController extends BaseController
             }
         }
 
-        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => $status_transaksi]);
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => $status_transaksi, 'tgl_selesai' => date('Y-m-d')]);
 
         return $this->response->setJSON([
             'error' => false,
@@ -473,6 +473,7 @@ class detailTransaksiController extends BaseController
             'tanggal_transaksi' => $data_transaksi['tanggal_transaksi'],
             'ket_transaksi' => $data_transaksi['ket_transaksi'],   
             'nama_user' => $data_transaksi['nama_user'],
+            'id_user' => $data_transaksi['id_user'],
         ];
         return view('Admin/Transaksi/proses_transaksi_keluar', $data);
     }
@@ -502,7 +503,7 @@ class detailTransaksiController extends BaseController
             
         }
 
-        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '4']);
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '4', 'tgl_selesai' => date('Y-m-d')]);
 
         return $this->response->setJSON([
             'error' => false,
@@ -561,6 +562,7 @@ class detailTransaksiController extends BaseController
             'tgl_transaksi' => $data_transaksi['tanggal_transaksi'],
             'ket_transaksi' => $data_transaksi['ket_transaksi'],   
             'nama_user' => $data_transaksi['nama_user'],
+            'id_user' => $data_transaksi['id_user'],
         ];
         return view('KaTU/Transaksi/Proses', $data);
     }
@@ -583,7 +585,7 @@ class detailTransaksiController extends BaseController
         }
 
         if($status_setuju == 1){
-            $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '2']);
+            $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '2', 'tgl_disetujui' => date('Y-m-d')]);
          }else{
             $this->transaksiModel->update($id_transaksi, ['status_transaksi' => '0']);
         }
@@ -611,6 +613,7 @@ class detailTransaksiController extends BaseController
             'ket_transaksi' => $data_transaksi['ket_transaksi'],   
             'nama_user' => $data_transaksi['nama_user'],
             'status_transaksi' => $data_transaksi['status_transaksi'],
+            'id_user' => $data_transaksi['id_user'],
         ];
         return view('PetugasBOS/Transaksi/Proses', $data);
     }
@@ -620,7 +623,7 @@ class detailTransaksiController extends BaseController
         $id_transaksi = $this->request->getPost('id_transaksi');
 
         // update status transaksi
-        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => $status_transaksi]);
+        $this->transaksiModel->update($id_transaksi, ['status_transaksi' => $status_transaksi, 'tgl_pengadaan' => date('Y-m-d')]);
 
         return $this->response->setJSON([
             'error' => false,

@@ -254,7 +254,7 @@ class transaksiController extends BaseController
     
     public function ajaxDataTablesProsesSetuju()
     {
-        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '1')->orWhere('status_transaksi', '2');
+        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '1')->orWhere('status_transaksi', '2')->orWhere('status_transaksi', '3')->orWhere('status_transaksi', '4');
         return DataTable::of($builder)
              ->add('status_transaksi', function ($row) {
                 if ($row->status_transaksi == 1) {
@@ -297,7 +297,7 @@ class transaksiController extends BaseController
     
     public function ajaxDataTablesProsesPengadaan()
     {
-        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '2')->orWhere('status_transaksi', '3');
+        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '2')->orWhere('status_transaksi', '3')->orWhere('status_transaksi', '4');
         return DataTable::of($builder)
              ->add('status_transaksi', function ($row) {
                 if ($row->status_transaksi == 1) {

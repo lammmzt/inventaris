@@ -14,6 +14,7 @@
                 </div>
                 <form id="form_tambah_transaksi_masuk" class="mt-3">
                     <div class="row">
+                        <input type="hidden" id="id_user" name="id_user" value="<?= $id_user; ?>">
                         <!-- nama pemohon -->
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -275,6 +276,38 @@ $('#btn_simpan').click(function() {
                 if (response.status != '200') {
                     getSwall(response.status, response.data);
                 } else {
+                    $.ajax({
+                        url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                        method: 'post',
+                        data: {
+                            penerima_notifikasi: $('#id_user').val(),
+                            isi_notifikasi: 'Permintaan transaksi masuk telah disetujui',
+                            role: 'KA. TU'
+                        },
+                        success: function(response) {
+                            if (response.status == '200') {
+                                console.log('Notifikasi berhasil ditambahkan');
+                            } else {
+                                console.log('Notifikasi gagal ditambahkan');
+                            }
+                        }
+                    });
+                    $.ajax({
+                        url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                        method: 'post',
+                        data: {
+                            penerima_notifikasi: '',
+                            isi_notifikasi: 'Transaksi masuk telah disetujui',
+                            role: 'Petugas BOS'
+                        },
+                        success: function(response) {
+                            if (response.status == '200') {
+                                console.log('Notifikasi berhasil ditambahkan');
+                            } else {
+                                console.log('Notifikasi gagal ditambahkan');
+                            }
+                        }
+                    });
                     getSwall(response.status, response.data);
                     $("#btn_simpan").removeAttr("disabled");
                     $("#btn_simpan").html('Simpan');

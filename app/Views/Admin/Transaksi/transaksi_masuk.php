@@ -271,6 +271,22 @@ $('#btn_simpan').click(function() {
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: '',
+                        isi_notifikasi: 'Transaksi masuk baru telah ditambahkan',
+                        role: 'KA. TU'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
                 getSwall(response.status, response.data);
                 $('#form_tambah_transaksi_masuk')[0].reset();
                 detail_transaksi = [];

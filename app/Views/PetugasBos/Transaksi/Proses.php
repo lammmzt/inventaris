@@ -14,6 +14,7 @@
                 </div>
                 <form id="form_tambah_transaksi_masuk" class="mt-3">
                     <div class="row">
+                        <input type="hidden" id="id_user" name="id_user" value="<?= $id_user; ?>">
                         <!-- nama pemohon -->
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -273,6 +274,42 @@ $('#btn_simpan').click(function() {
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: $('#id_user').val(),
+                        isi_notifikasi: 'Status trasaksi masuk telah diubah menjadi ' + $(
+                            '#status_transaksi').find(
+                            'option:selected').text(),
+                        role: 'KA. BOS'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        isi_notifikasi: 'Status  trasaksi masuk telah diubah menjadi ' + $(
+                            '#status_transaksi').find(
+                            'option:selected').text(),
+                        role: 'KA. TU'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
+
                 getSwall(response.status, response.data);
                 setTimeout(function() {
                     window.location.href = '<?= base_url('PetugasBOS/ATK/Transaksi') ?>';
