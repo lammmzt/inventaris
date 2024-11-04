@@ -41,6 +41,7 @@
                                     </div>
                                 </th>
                                 <th class="table-plus datatable-nosort">Kode Inventaris</th>
+                                <th class="table-plus">Tgl Perolehan</th>
                                 <th class="table-plus">Nama Inventaris</th>
                                 <th class="table-plus">Ruangan</th>
                                 <th class="">Status inventaris</th>
@@ -516,6 +517,14 @@ function dataTablesinventaris() {
                     class: 'datatable-nosort'
                 },
                 {
+                    data: "perolehan_inventaris",
+                    class: 'text-center',
+                    render: function(data, type, row) {
+                        return moment(data).format('DD-MM-YYYY');
+                    },
+
+                },
+                {
                     data: 'nama_barang'
                 },
                 {
@@ -532,7 +541,8 @@ function dataTablesinventaris() {
 
             ],
             "order": [
-                [4, "desc"]
+                [5, "desc"],
+                [2, "desc"],
             ],
 
             drawCallback: function() {
@@ -1196,7 +1206,7 @@ $("#form_tambah_pelaporan").submit(function(e) {
     $("#btn_tindak_lanjut_pelaporan").html(
         '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>');
     $.ajax({
-        url: '<?= base_url('Admin/Inventaris/Pelaporan/update') ?>',
+        url: '<?= base_url('Admin/Inventaris/Pelaporan/save') ?>',
         method: 'post',
         data: new FormData(this),
         contentType: false,

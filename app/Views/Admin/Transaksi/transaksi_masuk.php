@@ -20,7 +20,7 @@
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="date" class="form-control required" id="tgl_transaksi"
-                                        name="tgl_transaksi" readonly value="<?= date('Y-m-d'); ?>">
+                                        name="tgl_transaksi" required value="<?= date('Y-m-d'); ?>">
                                     <div class="form-control-feedback " id="errortgl_transaksi"></div>
                                 </div>
                             </div>

@@ -278,6 +278,42 @@ $('#btn_update').click(function() {
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: '',
+                        isi_notifikasi: 'Proses pengadaan telah telah diubah menjadi ' + $(
+                            '#status_pengadaan').find(
+                            'option:selected').text(),
+                        role: 'KA. TU'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: '',
+                        isi_notifikasi: 'Proses pengadaan telah telah diubah menjadi ' + $(
+                            '#status_pengadaan').find(
+                            'option:selected').text(),
+                        role: 'Petugas BOS'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
                 getSwall(response.status, response.data);
                 $("#btn_update").removeAttr("disabled");
                 $("#btn_update").html('Update');

@@ -300,6 +300,23 @@ $("#form_tambah_pelaporan").submit(function(e) {
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: '',
+                        isi_notifikasi: 'Pelaporan inventaris ' + $('#id_inventaris')
+                            .val() + ' telah ditambahkan',
+                        role: 'admin'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
                 getSwall(response.status, response.data);
                 $('#form_tambah_pelaporan')[0].reset();
                 $('#table_history_pengecekan tbody').empty();
@@ -311,6 +328,7 @@ $("#form_tambah_pelaporan").submit(function(e) {
                 $('#addinventaris').modal('hide');
                 $("#btn_tambah").removeAttr("disabled");
                 $("#btn_tambah").html('Simpan');
+
             } else {
                 getSwall(response.status, response.data);
                 $("#btn_tambah").removeAttr("disabled");

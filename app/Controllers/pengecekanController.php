@@ -247,7 +247,7 @@ class pengecekanController extends BaseController
            ->add('status_pengecekan', function ($row) {
                 if($row->status_pengecekan == '1'){
                     return '<span class="badge badge-success">Baik</span>';
-                }elseif($row->status_pengecekan == '2'){
+                }elseif($row->status_pengecekan == '2'){    
                     return '<span class="badge badge-warning">Rusak</span>';
                 }elseif($row->status_pengecekan == '3'){
                     return '<span class="badge badge-info">Proses Perbaikan</span>';

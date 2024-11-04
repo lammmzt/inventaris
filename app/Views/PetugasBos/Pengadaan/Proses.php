@@ -14,6 +14,7 @@
                 </div>
                 <form id="form_tambah_pengadaan" class="mt-3">
                     <div class="row">
+                        <input type="hidden" id="id_user" name="id_user" value="<?= $id_user; ?>">
                         <div class="col-md-6">
                             <div class="form-group row">
                                 <label for="nama_user" class="col-sm-4 col-form-label">Nama Pemohon<span
@@ -307,6 +308,40 @@ $('#btn_simpan').click(function() {
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: $('#id_user').val(),
+                        isi_notifikasi: 'Status pengadaan telah diubah menjadi ' + $(
+                            '#status_pengadaan').find(
+                            'option:selected').text(),
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        isi_notifikasi: 'Status pengadaan telah diubah menjadi ' + $(
+                            '#status_pengadaan').find(
+                            'option:selected').text(),
+                        role: 'KA. TU'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
                 getSwall(response.status, response.data);
                 setTimeout(function() {
                     window.location.href = '<?= base_url('PetugasBOS/Pengadaan'); ?>';

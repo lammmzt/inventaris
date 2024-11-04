@@ -115,6 +115,7 @@ class detailPengadaanController extends BaseController
             'id_user' => session()->get('id_user'),
             // 'id_user' => '6f416504-27d9-42fc-8b96-dd23aba4e3
             'ket_pengadaan' => $ket_pengadaan,
+            'tgl_permintaan' => date('Y-m-d'),
             'status_pengadaan' => '1',
         ];
 
@@ -279,8 +280,13 @@ class detailPengadaanController extends BaseController
     public function UpdateProsesPenerimaan(){
         $status_pengadaan = $this->request->getPost('status_pengadaan');
         $id_pengadaan = $this->request->getPost('id_pengadaan');
-        
-        $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => $status_pengadaan]);
+
+        if($status_pengadaan == '3'){
+            $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => $status_pengadaan, 'tgl_pengadaan' => date('Y-m-d')]);
+        }else{
+            $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => $status_pengadaan, 'tgl_selesai' => date('Y-m-d')]);
+        }
+
 
         return $this->response->setJSON([
             'error' => false,
@@ -301,9 +307,10 @@ class detailPengadaanController extends BaseController
             'title' => 'Proses pengadaan Masuk',
             'active' => 'Pengadaan',
             'id_pengadaan' => $id_pengadaan,
-            'tgl_pengadaan' => $data_pengadaan['created_at'],
+            'tgl_pengadaan' => $data_pengadaan['tgl_permintaan'],
             'ket_pengadaan' => $data_pengadaan['ket_pengadaan'], 
             'nama_user' => $data_pengadaan['nama_user'], 
+            'id_user' => $data_pengadaan['id_user'],
         ];
         // dd($data);
         return view('KaTU/Pengadaan/Proses', $data);
@@ -327,7 +334,7 @@ class detailPengadaanController extends BaseController
         
         // jika setuju tidak sama denan 0
         if($status_setuji != 0){
-            $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '2']);
+            $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '2', 'tgl_disetujui' => date('Y-m-d')]);
         }else{
             $this->pengadaanModel->update($id_pengadaan, ['status_pengadaan' => '0']);
         }
@@ -350,10 +357,11 @@ class detailPengadaanController extends BaseController
             'title' => 'Proses pengadaan Masuk',
             'active' => 'Pengadaan',
             'id_pengadaan' => $id_pengadaan,
-            'tgl_pengadaan' => $data_pengadaan['created_at'],
+            'tgl_pengadaan' => $data_pengadaan['tgl_permintaan'],
             'ket_pengadaan' => $data_pengadaan['ket_pengadaan'], 
             'status_pengadaan' => $data_pengadaan['status_pengadaan'],
             'nama_user' => $data_pengadaan['nama_user'], 
+            'id_user' => $data_pengadaan['id_user'],
         ];
         // dd($data);
         return view('PetugasBOS/Pengadaan/Proses', $data);
