@@ -65,6 +65,7 @@
                                 <th class="">Tanggal</th>
                                 <th class="">Ruangan</th>
                                 <th class="">Status</th>
+                                <th class="">Action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -74,7 +75,54 @@
         </div>
     </div>
 </div>
+<!-- modalDetail -->
+<div class="modal fade" id="detail_kondisi" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+    data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    Detail Pelaporan
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <form id="form_tambah_pelaporan" enctype="multipart/form-data">
+                <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
+                enctype="multipart/form-data"> -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <h4 class="text-blue h4 text-center">Histori Pelaporan</h4>
+                            <table class="table table-bordered table-hover" id="table_history_pengecekan">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Pelapor</th>
+                                        <th class="text-center">Tanggal Pengecekan</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Foto</th>
+                                        <th class="text-center" style="width: 100px;">Status</th>
 
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <style>
 .text_date {
     font-size: 14px;
@@ -200,6 +248,10 @@ function dataTablesKondisi() {
                     data: 'status_pengecekan',
                     name: 'status_pengecekan'
                 },
+                {
+                    data: 'action',
+                    name: 'action'
+                }
 
             ],
             columnDefs: [{
@@ -255,6 +307,72 @@ function dataTablesPengadaan() {
 }
 
 dataTablesPengadaan();
+
+
+// get data 
+function getDataInventaris(id) {
+    $.ajax({
+        url: '<?= base_url('Admin/Inventaris/fetchInventarisByKodeInventaris') ?>',
+        method: 'post',
+        data: {
+            id_inventaris: id
+        },
+        success: function(response) {
+            if (response.status == '200') {
+                $('#detail_kondisi').modal('show');
+                if (response.data.pelaporan.length > 0) {
+                    $('#table_history_pengecekan tbody').empty();
+                    $.each(response.data.pelaporan, function(index, value) {
+                        $('#table_history_pengecekan tbody').append(
+                            '<tr>' +
+                            '<td class="text-center">' + (index + 1) + '</td>' +
+                            '<td>' + value.nama_user + '</td>' +
+                            '<td class="text-center">' + value.created_at + '</td>' +
+                            '<td class="text-center">' + value.ket_pengecekan + '</td>' +
+                            '<td class="text-center">' + (value.foto_pengecekan == '' ?
+                                'Tidak ada foto' :
+                                '<a href="<?= base_url('Assets/uploads/pengecekan/') ?>' +
+                                value.foto_pengecekan +
+                                '" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></a>' +
+                                '</td>') +
+                            '<td class="text-center">' +
+                            (value.status_pengecekan ==
+                                '1' ?
+                                '<span class="badge badge-success">Baik</span>' :
+                                value.status_pengecekan == '2' ?
+                                '<span class="badge badge-warning">Rusak</span>' :
+                                value.status_pengecekan == '3' ?
+                                '<span class="badge badge-info">Perbaikan</span>' :
+                                '<span class="badge badge-danger">Hilang</span>') +
+
+                            '</td>' +
+                            '</tr>'
+                        );
+                    });
+                } else {
+                    $('#table_history_pengecekan tbody').empty();
+                    $('#table_history_pengecekan tbody').append(
+                        '<tr>' +
+                        '<td colspan="6" class="text-center">Tidak ada data</td>' +
+                        '</tr>'
+                    );
+                }
+            } else {
+                getSwall(response.status, response.data);
+            }
+        },
+        error: function() {
+            getSwall('error', 'Data tidak ditemukan');
+        }
+    });
+}
+
+// when click button detail
+$(document).on('click', '.detail_perbaikan', function() {
+    const id = $(this).attr('id');
+    // alert(id);
+    getDataInventaris(id);
+});
 </script>
 
 <?= $this->endSection('dataTables'); ?>s
