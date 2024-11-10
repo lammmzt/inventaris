@@ -155,7 +155,7 @@ function dataTablesBarang() {
                 [5, 10, 25, 50, "All"]
             ],
             columns: [{
-                    data: 'kode_barang',
+                    data: 'id_barang',
                     class: 'table-plus'
                 },
                 {
@@ -372,7 +372,11 @@ $(document).on('click', '.delete_barang', function() {
                     success: function(response) {
                         $('#tableBarang').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                    }
+                    },
+                    error: function() {
+                        //alert('data tidak dapat dihapus');
+                        getSwall('error', 'Data tidak dapat dihapus');
+                    },
                 });
             }
         });

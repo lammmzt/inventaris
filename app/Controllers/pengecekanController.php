@@ -50,15 +50,15 @@ class pengecekanController extends BaseController
     
     public function fetchInventarisByKodeInventaris()
     {
-        $kode_inventaris = $this->request->getPost('kode_inventaris');
-        // $kode_inventaris = 'BRG-20240915-9622';
-        $data_inventarus = $this->inventarisModel->getInventaris()->where(['kode_inventaris' => $kode_inventaris])->first();
-        $data_pelaporan = $this->pengecekanModel->getpengecekan()->where(['id_inventaris' => $data_inventarus['id_inventaris']])->limit(5)->orderBy('id_pengecekan', 'DESC')->findAll();
-        if( $data_inventarus != null){
+        $id_inventaris = $this->request->getPost('id_inventaris');
+        // $id_inventaris = 'BRG-20240915-9622';
+        $data_inventaris = $this->inventarisModel->getInventaris()->where(['id_inventaris' => $id_inventaris])->first();
+        $data_pelaporan = $this->pengecekanModel->getpengecekan()->where(['pengecekan.id_inventaris' => $data_inventaris['id_inventaris']])->limit(5)->orderBy('id_pengecekan', 'DESC')->findAll();
+        if( $data_inventaris != null){
             return $this->response->setJSON([
                 'error' => false,
                 'data' => [
-                    'inventaris' => $data_inventarus,
+                    'inventaris' => $data_inventaris,
                     'pelaporan' => $data_pelaporan
                 ],
                 'status' => '200'
@@ -71,6 +71,7 @@ class pengecekanController extends BaseController
             ]);
         }
     }
+    
     public function store()
     {
         $validation =  \Config\Services::validation();
@@ -112,7 +113,7 @@ class pengecekanController extends BaseController
             
             if ($file->isValid() && !$file->hasMoved()) {
                 $newName = $file->getRandomName();
-                $file->move('assets/uploads/pengecekan', $newName);
+                $file->move('Assets/uploads/pengecekan', $newName);
             }
 
             $data = [
@@ -132,6 +133,75 @@ class pengecekanController extends BaseController
         }
     }
 
+    public function update()
+    {
+        $validation =  \Config\Services::validation();
+        $validation->setRules([
+            'ket_pengecekan' => [
+                'label' => 'Nama pengecekan',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'status_pengecekan' => [
+                'label' => 'Status pengecekan',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+            'id_inventaris' => [
+                'label' => 'Inventaris',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ],
+            ],
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => $validation->getErrors(),
+                'status' => '422'
+            ]);
+        } else {
+            $id_user = session()->get('id_user');
+            // jika ada request file
+            $file = $this->request->getFile('foto_pengecekan');
+            $newName = '';
+            
+            if ($file->isValid() && !$file->hasMoved()) {
+                $newName = $file->getRandomName();
+                $file->move('Assets/uploads/pengecekan', $newName);
+            }
+            $status_pengecekan = $this->request->getPost('status_pengecekan');
+            $data = [
+                'ket_pengecekan' => $this->request->getPost('ket_pengecekan'),
+                'status_pengecekan' => $status_pengecekan,
+                'id_inventaris' => $this->request->getPost('id_inventaris'),
+                'foto_pengecekan' => $newName,
+                'id_user' => $id_user,
+            ];
+            $data_pelaporan_rusak = $this->pengecekanModel->getkerusakanActive($this->request->getPost('id_inventaris'))->findAll();
+            // dd($data_pelaporan_rusak);
+            if($data_pelaporan_rusak != null){
+                foreach($data_pelaporan_rusak as $row){
+                    $this->pengecekanModel->update($row['id_pengecekan'], ['status_pengecekan' => $status_pengecekan]);
+                }
+            }
+            $this->inventarisModel->update($this->request->getPost('id_inventaris'), ['status_inventaris' => $this->request->getPost('status_pengecekan')]);
+           
+            $this->pengecekanModel->insert($data);
+            return $this->response->setJSON([
+                'error' => false,
+                'data' => 'Data berhasil diubah',
+                'status' => '200'
+            ]);
+        }
+    }
+
     public function edit()
     {
         $id_pengecekan = $this->request->getPost('id_pengecekan');
@@ -142,7 +212,6 @@ class pengecekanController extends BaseController
             'status' => '200'
         ]);
     }
-
 
     public function destroy()
     {
@@ -172,20 +241,28 @@ class pengecekanController extends BaseController
         if($role == 'Admin' || $role == 'Kepala Sekolah'){
             $builder = $this->pengecekanModel->getPengecekanActive()->Where('status_pengecekan', '2')->orWhere('status_pengecekan', '3');
         }else{
-            $builder = $this->pengecekanModel->getPengecekanActive()->where('id_user', session()->get('id_user'))->limit(5);
+            $builder = $this->pengecekanModel->getPengecekanActive()->where('pengecekan.id_user', session()->get('id_user'))->limit(5);
         }
         return DataTable::of($builder)
            ->add('status_pengecekan', function ($row) {
-                if($row->status_pengecekan == 1){
+                if($row->status_pengecekan == '1'){
                     return '<span class="badge badge-success">Baik</span>';
-                }elseif($row->status_pengecekan == 2){
-                    return '<span class="badge badge-warning">Perbaikan</span>';
-                }elseif($row->status_pengecekan == 3){
-                    return '<span class="badge badge-danger">Rusak</span>';
+                }elseif($row->status_pengecekan == '2'){    
+                    return '<span class="badge badge-warning">Rusak</span>';
+                }elseif($row->status_pengecekan == '3'){
+                    return '<span class="badge badge-info">Proses Perbaikan</span>';
                 }else{
                     return '<span class="badge badge-danger">Hilang</span>';
                 }
             })
+             ->add('action', function ($row) {   
+                return '
+                <div class="dropdown">
+                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list"><button class="dropdown-item detail_perbaikan" id="' . $row->id_inventaris . '"><i class="dw dw-eye"></i> Detail</button></div>
+                </div>
+                ';
+            }, 'last')
             ->toJson(true);
     }
     

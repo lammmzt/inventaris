@@ -13,6 +13,7 @@
                     </div>
                 </div>
                 <form id="form_tambah_transaksi_keluar">
+                    <input type="hidden" name="id_user" id="id_user" value="<?= $id_user; ?>">
                     <input type="hidden" name="id_transaksi" id="id_transaksi" value="<?= $id_transaksi; ?>">
                     <div class="row">
                         <div class="col-md-6">
@@ -276,6 +277,22 @@ $('#btn_simpan').click(function() {
                 if (response.status != '200') {
                     getSwall(response.status, response.data);
                 } else {
+                    $.ajax({
+                        url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                        method: 'post',
+                        data: {
+                            penerima_notifikasi: $('#id_user').val(),
+                            isi_notifikasi: 'Proses permintaan ATK telah diproses',
+                            role: 'KA. TU'
+                        },
+                        success: function(response) {
+                            if (response.status == '200') {
+                                console.log('Notifikasi berhasil ditambahkan');
+                            } else {
+                                console.log('Notifikasi gagal ditambahkan');
+                            }
+                        }
+                    });
                     getSwall(response.status, response.data);
                     $("#btn_simpan").removeAttr("disabled");
                     $("#btn_simpan").html('Simpan');

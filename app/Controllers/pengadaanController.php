@@ -205,7 +205,7 @@ class pengadaanController extends BaseController
 
     public function ajaxDataTablesProsesSetuju()
     {
-        $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '1')->orWhere('status_pengadaan', '2');
+        $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '1')->orWhere('status_pengadaan', '2')->orWhere('status_pengadaan', '3')->orWhere('status_pengadaan', '4');
        
         // dd($builder->findAll());
         return DataTable::of($builder)
@@ -217,7 +217,7 @@ class pengadaanController extends BaseController
                 }else if($row->status_pengadaan == 3){
                     return '<span class="badge badge-info">Proses Pengadaan</span>';
                 }else if($row->status_pengadaan == 4){
-                    return '<span class="badge badge-sucess">Selesai</span>';
+                    return '<span class="badge badge-success">Selesai</span>';
                 }else{
                     return '<span class="badge badge-danger">Ditolak</span>';
                 }
@@ -252,7 +252,7 @@ class pengadaanController extends BaseController
     
     public function ajaxDataTablesProsesPengadaan()
     {
-        $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '2')->orWhere('status_pengadaan', '3');
+        $builder = $this->pengadaanModel->getPengadaan()->where('status_pengadaan', '2')->orWhere('status_pengadaan', '3')->orWhere('status_pengadaan', '4');
        
         // dd($builder->findAll());
         return DataTable::of($builder)
@@ -264,7 +264,7 @@ class pengadaanController extends BaseController
                 }else if($row->status_pengadaan == 3){
                     return '<span class="badge badge-info">Proses Pengadaan</span>';
                 }else if($row->status_pengadaan == 4){
-                    return '<span class="badge badge-sucess">Selesai</span>';
+                    return '<span class="badge badge-success">Selesai</span>';
                 }else{
                     return '<span class="badge badge-danger">Ditolak</span>';
                 }

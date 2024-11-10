@@ -16,6 +16,15 @@ $routes->get('DataTablesDashboardTrans', 'transaksiController::ajaxDataTablesDas
 $routes->get('getAllDataPengecekan', 'pengecekanController::ajaxDataTablesAll');
 $routes->get('DataTablesGetAllPengadaan', 'pengadaanController::ajaxDataTablesGetAll');
 $routes->get('getAllDataTransInYear', 'laporanController::getAllDataTransInYear');
+$routes->group('Setting', function ($routes) {
+        $routes->get('/', 'usersController::Setting');
+        $routes->post('update', 'usersController::update');
+});
+$routes->group('Notifikasi', function ($routes) {
+    $routes->post('fetchNotifikasi', 'notifikasiController::fetchNotifikasi');
+    $routes->post('createNotifikasi', 'notifikasiController::createNotifikasi');
+    $routes->post('readNotifikasi', 'notifikasiController::readNotifikasi');
+});
 // auth route
 $routes->group('Auth', function ($routes) {
         $routes->get('/', 'Auth::index');
@@ -162,6 +171,7 @@ $routes->group('Admin', function ($routes) {
         $routes->get('Pelaporan', 'pengecekanController::Pelaporan');
         $routes->post('fetchInventarisByKodeInventaris', 'pengecekanController::fetchInventarisByKodeInventaris');
         $routes->post('Pelaporan/save', 'pengecekanController::store');
+        $routes->post('Pelaporan/update', 'pengecekanController::update');
     });
     
     $routes->group('Pengadaan', function ($routes) {

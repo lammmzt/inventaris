@@ -17,7 +17,7 @@
                 </div>
                 <form id="form_laporan">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="col-sm-12 col-md-12 col-form-label">Tanggal Awal</label>
                                 <div class="col-sm-12 col-md-12">
@@ -26,11 +26,27 @@
                             </div>
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label class="col-sm-12 col-md-12 col-form-label">Tanggal Akhir</label>
                                 <div class="col-sm-12 col-md-12">
                                     <input class="form-control" type="date" id="tgl_akhir" name="tgl_akhir">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="col-sm-12 col-md-12 col-form-label">Kondisi</label>
+                                <div class="col-sm-12 col-md-12">
+                                    <select class="form-control" id="status_inventaris" name="status_inventaris"
+                                        required>
+                                        <option value="">Semua Kondisi</option>
+                                        <option value="1">Baik</option>
+                                        <option value="2">Rusak</option>
+                                        <option value="3">Perbaikan</option>
+                                        <option value="0">Hilang</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -57,6 +73,7 @@
                             <th>Tanggal Perolehan</th>
                             <th>Harga</th>
                             <th>Sumber</th>
+                            <th>Kondisi</th>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -84,10 +101,17 @@ function laporanINV() {
                 data: function(data) {
                     data.tgl_awal = $('#tgl_awal').val();
                     data.tgl_akhir = $('#tgl_akhir').val();
+                    data.status_inventaris = $('#status_inventaris').val();
                 }
             },
+
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
+
             columns: [{
-                    data: 'kode_inventaris'
+                    data: 'id_inventaris'
                 },
                 {
                     data: 'nama_inventaris'
@@ -105,6 +129,10 @@ function laporanINV() {
                 {
                     data: 'sumber_inventaris'
                 },
+                {
+                    data: 'status_inventaris',
+                    class: 'text-center'
+                }
 
             ],
             order: [
@@ -135,7 +163,11 @@ function laporanINV() {
             buttons: [{
                     extend: 'print',
                     title: '',
-                    messageTop: '<img src="<?= base_url('Assets/kop surat 2.png') ?>" style="width: 100%;"> <br> <h3 class="text-center text-black" style="margin-top: 20px; margin-bottom: 20px; color: black;">Laporan Inventaris</h3>',
+                    // messageTop: '<img src="<?= base_url('Assets/kop surat 2.png') ?>" style="width: 100%;"> <br> <h3 class="text-center text-black" style="margin-top: 20px; margin-bottom: 20px; color: black;">Laporan Inventaris</h3>',
+                    messageTop: function() {
+                        return '<img src="<?= base_url('Assets/kop surat 2.png') ?>" style="width: 100%;"> <br> <h3 class="text-center text-black" style="margin-top: 20px; margin-bottom: 20px; color : black;">Laporan Transaksi <br> Tanggal ' +
+                            $('#tgl_awal').val() + ' s/d ' + $('#tgl_akhir').val() + '</h3>';
+                    },
                     className: 'btn btn-primary',
                     messageBottom: '<table class="footers" style="width: 100%; margin-top: 40px;"><tr><td style="width: 50%;"></td><td style="width: 50%; text-align: center; margin-bottom: 5px">Pekalongan, .............................. <br>Yang Membuat<br><br><br><br></br><br>(...........................................)</td></tr></table>',
                     customize: function(win) {
@@ -163,8 +195,13 @@ function laporanINV() {
                         });
                     },
                     exportOptions: {
-                        columns: [0, 1, 2, 3, 4, 5]
+                        columns: [0, 1, 2, 3, 4, 5, 6],
+                        modifier: {
+                            selected: null
+                        }
+
                     },
+
                 },
                 // {
                 //     extend: 'excel',
@@ -193,6 +230,7 @@ laporanINV();
 $('#btn-reset').on('click', function() {
     $('#tgl_awal').val('');
     $('#tgl_akhir').val('');
+    $('#status_inventaris').val('');
     $('#tabelInventaris').DataTable().ajax.reload();
 });
 

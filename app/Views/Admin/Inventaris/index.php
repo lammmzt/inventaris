@@ -40,7 +40,8 @@
                                         <span class="dt-checkbox-label"></span>
                                     </div>
                                 </th>
-                                <th class="table-plus">Kode Inventaris</th>
+                                <th class="table-plus datatable-nosort">Kode Inventaris</th>
+                                <th class="table-plus">Tgl Perolehan</th>
                                 <th class="table-plus">Nama Inventaris</th>
                                 <th class="table-plus">Ruangan</th>
                                 <th class="">Status inventaris</th>
@@ -77,7 +78,7 @@
                         <div class="col-sm-8">
                             <select class="custom-select2 form-control required" name="id_tipe_barang"
                                 id="id_tipe_barang" style="width: 100%; height: 38px;">
-
+                                <option value="">Pilih Barang</option>
                             </select>
                             <div class="form-control-feedback " id="errorid_tipe_barang"></div>
                         </div>
@@ -277,7 +278,7 @@
     </div>
 </div>
 
-<!-- modal import data siswa -->
+<!-- modal import data Inventaris -->
 <div class="modal fade" id="importDataInventaris" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered">
@@ -299,7 +300,8 @@
                             <input type="file" class="form-control" id="file" name="file" required>
                             <div class="form-control-feedback mb-4" id="errorfile"></div>
 
-                            <small class="text-danger">* File Excel harus sesuai dengan template yang telah disediakan
+                            <small class="text-danger">* File Excel harus sesuai dengan template yang telah
+                                disediakan
                                 <a href="#" id="downloadTemplate">Download Template</a>
                             </small>
                         </div>
@@ -330,7 +332,7 @@
                             <table class="table table table-striped" id="tableImport">
                                 <thead>
                                     <th scope="col" class="text-center datatable-nosort">#</th>
-                                    <th scope="col" class="text-center">Kode Transaksi</th>
+                                    <th scope="col" class="text-center ">Kode Transaksi</th>
                                     <th scope="col" class="text-center">Pesan</th>
                                 </thead>
                                 <tbody id="detailData">
@@ -352,7 +354,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         Batal
                     </button>
-                    <button type="submit" class="btn btn-primary" id="btn_tambah_user">
+                    <button type="submit" class="btn btn-primary" id="btn_import_data">
                         Import
                     </button>
                 </div>
@@ -375,16 +377,15 @@
                 </button>
             </div>
             <form id="form_tambah_pelaporan" enctype="multipart/form-data">
-                <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
-                    enctype="multipart/form-data"> -->
+                <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/update') ?>" method="post"
+                enctype="multipart/form-data"> -->
                 <div class="modal-body">
-                    <input type="hidden" name="id_inventaris" id="id_inventaris_pelaporan">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label>Kode Inventaris</label><input type="text" class="form-control"
-                                    id="kode_inventaris" name="kode_inventaris" placeholder="Kode Inventaris" required
-                                    readonly>
+                                    id="id_inventaris_pelaporan" name="id_inventaris" placeholder="Kode Inventaris"
+                                    required readonly>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
@@ -512,7 +513,16 @@ function dataTablesinventaris() {
 
                 },
                 {
-                    data: 'kode_inventaris'
+                    data: 'kode_inventaris',
+                    class: 'datatable-nosort'
+                },
+                {
+                    data: "perolehan_inventaris",
+                    class: 'text-center',
+                    render: function(data, type, row) {
+                        return moment(data).format('DD-MM-YYYY');
+                    },
+
                 },
                 {
                     data: 'nama_barang'
@@ -531,7 +541,8 @@ function dataTablesinventaris() {
 
             ],
             "order": [
-                [4, "desc"]
+                [5, "desc"],
+                [2, "desc"],
             ],
 
             drawCallback: function() {
@@ -638,7 +649,7 @@ function getSwall(status, message) {
 const inventaris = [
     'nama_inventaris',
     'id_inventaris',
-    'kode_inventaris',
+    'id_inventaris',
     'id_tipe_barang',
     'id_ruangan',
     'qty_inventaris',
@@ -925,7 +936,11 @@ $(document).on('click', '.delete_inventaris', function() {
                     success: function(response) {
                         $('#tableInventaris').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                    }
+                    },
+                    error: function() {
+                        //alert('data tidak dapat dihapus');
+                        getSwall('error', 'Data tidak dapat dihapus');
+                    },
                 });
             }
         });
@@ -954,8 +969,8 @@ $(function() {
             e.preventDefault();
             $(this).addClass('form-control-success');
         } else {
-            $("#btn_tambah_user").attr("disabled", "disabled");
-            $("#btn_tambah_user").html(
+            $("#btn_import_data").attr("disabled", "disabled");
+            $("#btn_import_data").html(
                 '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
             );
             $.ajax({
@@ -981,8 +996,8 @@ $(function() {
                                 $("#error" + key).removeClass('has-danger');
                             }
                         });
-                        $("#btn_tambah_user").removeAttr("disabled");
-                        $("#btn_tambah_user").html("Import");
+                        $("#btn_import_data").removeAttr("disabled");
+                        $("#btn_import_data").html("Import");
                     } else {
                         // alert(response.data);
                         $("#totalData").html(response.total_data);
@@ -1019,7 +1034,7 @@ $(function() {
                                         }
                                     },
                                     {
-                                        data: 'kode_inventaris'
+                                        data: 'id_inventaris'
                                     },
                                     {
                                         data: 'message'
@@ -1039,8 +1054,8 @@ $(function() {
                         $("#totalGagal").html(response.data_failed.length);
                         data_qr_code = response.data_success;
                         $("#form_import")[0].reset();
-                        $("#btn_tambah_user").removeAttr("disabled");
-                        $("#btn_tambah_user").html("Import");
+                        $("#btn_import_data").removeAttr("disabled");
+                        $("#btn_import_data").html("Import");
                         $('#tableInventaris').DataTable().ajax.reload();
                         $("#statusImport").show();
                         $("#detailImportData").show();
@@ -1120,14 +1135,13 @@ $(document).on('click', '.perbaiki_inventaris', function() {
         url: '<?= base_url('Admin/Inventaris/fetchInventarisByKodeInventaris') ?>',
         method: 'post',
         data: {
-            kode_inventaris: id
+            id_inventaris: id
         },
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
                 $('#editPelaporan').modal('show');
                 $('#id_inventaris_pelaporan').val(response.data.inventaris.id_inventaris);
-                $('#kode_inventaris_pelaporan').val(response.data.inventaris.kode_inventaris);
                 $('#nama_inventaris_pelaporan').val(response.data.inventaris.nama_inventaris);
                 $('#nama_ruangan_pelaporan').val(response.data.inventaris.nama_ruangan);
                 if (response.data.inventaris.status_inventaris == '1') {

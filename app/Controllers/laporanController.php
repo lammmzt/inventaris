@@ -41,14 +41,31 @@ class laporanController extends BaseController
     {
         $tgl_awal = $this->request->getPost('tgl_awal');
         $tgl_akhir = $this->request->getPost('tgl_akhir');
-        if($tgl_awal == null || $tgl_akhir == null){
+        $status_inventaris = $this->request->getPost('status_inventaris');
+        if($tgl_awal == '' || $tgl_akhir == ''){
             $tgl_awal = 0;
             $tgl_akhir = 0;
+            $builder = $this->inventarisModel->getInventaris();
+        }else{
+             $builder = $this->inventarisModel->getInventaris()->where('perolehan_inventaris >=', $tgl_awal)->where('perolehan_inventaris <=', $tgl_akhir);
         }
-        $builder = $this->inventarisModel->getInventaris()->where('perolehan_inventaris >=', $tgl_awal)->where('perolehan_inventaris <=', $tgl_akhir);
-
-        return DataTable::of($builder)
         
+        if($status_inventaris != '') {
+            $builder->where('status_inventaris', $status_inventaris);
+        }
+        return DataTable::of($builder)
+        ->add('status_inventaris', function ($row) {
+                if ($row->status_inventaris == '0') {
+                    return '<span class="badge badge badge-danger">Hilang</span>';
+                } elseif ($row->status_inventaris == '1') {
+                    return '<span class="badge badge badge-success">Baik</span>';
+                } elseif ($row->status_inventaris == '2') {
+                    return '<span class="badge badge badge-warning">Rusak</span>';
+                } elseif ($row->status_inventaris == '3') {
+                    return '<span class="badge badge badge-info">Proses Perbaikan</span>';
+                } 
+                return $row->status_inventaris;
+            })
         ->toJson(true);
     }
 
@@ -74,9 +91,9 @@ class laporanController extends BaseController
         }
 
         if($jenis_transaksi == ''){
-            $builder = $this->transaksiModel->getTransaksi()->where('tanggal_transaksi >=', $tgl_awal)->where('tanggal_transaksi <=', $tgl_akhir);
+            $builder = $this->transaksiModel->getTransaksi()->where('tanggal_transaksi >=', $tgl_awal)->where('tanggal_transaksi <=', $tgl_akhir)->where('status_transaksi', '4');
         }else{
-            $builder = $this->transaksiModel->getTransaksi()->where('tanggal_transaksi >=', $tgl_awal)->where('tanggal_transaksi <=', $tgl_akhir)->where('tipe_transaksi', $jenis_transaksi);
+            $builder = $this->transaksiModel->getTransaksi()->where('tanggal_transaksi >=', $tgl_awal)->where('tanggal_transaksi <=', $tgl_akhir)->where('tipe_transaksi', $jenis_transaksi)->where('status_transaksi', '4');
         }
 
 

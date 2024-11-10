@@ -47,4 +47,16 @@ class pengecekanModel extends Model
             ->join('tipe_barang', 'tipe_barang.id_tipe_barang = inventaris.id_tipe_barang')
             ->join('ruangan', 'ruangan.id_ruangan = inventaris.id_ruangan');
     }
+
+    public function getkerusakanActive($id_inventaris){
+        return $this
+            ->select('pengecekan.id_pengecekan, pengecekan.id_user, pengecekan.id_inventaris, pengecekan.ket_pengecekan, pengecekan.foto_pengecekan, pengecekan.status_pengecekan, pengecekan.created_at, users.nama_user, inventaris.nama_inventaris,  ruangan.nama_ruangan, tipe_barang.nama_tipe_barang')
+            ->join('users', 'users.id_user = pengecekan.id_user')
+            ->join('inventaris', 'inventaris.id_inventaris = pengecekan.id_inventaris')
+            ->join('tipe_barang', 'tipe_barang.id_tipe_barang = inventaris.id_tipe_barang')
+            ->join('ruangan', 'ruangan.id_ruangan = inventaris.id_ruangan')
+            ->where(['pengecekan.status_pengecekan' => '2'])
+            ->orWhere(['pengecekan.status_pengecekan' => '3'])
+            ->where(['pengecekan.id_inventaris' => $id_inventaris]);
+    }
 }

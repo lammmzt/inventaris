@@ -63,7 +63,7 @@
                     </ul>
                 </li>
                 <li
-                    class="dropdown <?= $active == 'Inventaris' || $active == 'Pengecekan' || $active == 'Inventaris' ? 'show' : '' ?>">
+                    class="dropdown <?= $active == 'Inventaris' || $active == 'Pengadaan' || $active == 'Pengecekan' || $active == 'Inventaris' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon bi bi-box-seam">
                         </span><span class="mtext">Inventaris</span>
@@ -77,14 +77,18 @@
                                 class="<?= $active == 'Pelaporan'  ? 'active' : '' ?>">
                                 Pelaporan
                             </a></li>
+                        <li><a href="<?= base_url('Admin/Pengadaan') ?>"
+                                class="<?= $active == 'Pengadaan'  ? 'active' : '' ?>">
+                                Pengadaan
+                            </a></li>
                     </ul>
                 </li>
-                <li>
+                <!-- <li>
                     <a href="<?= base_url('Admin/Pengadaan') ?>"
                         class="dropdown-toggle no-arrow <?= $active == 'Pengadaan'  ? 'active' : '' ?>">
                         <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <a href="<?= base_url('Admin/User') ?>"
                         class="dropdown-toggle no-arrow <?= $active == 'Users'  ? 'active' : '' ?>">
@@ -125,13 +129,25 @@
                             </a></li>
                     </ul>
                 </li>
-
-                <li>
+                <li
+                    class="dropdown <?= $active == 'Inventaris' || $active == 'Pengecekan' || $active == 'Pengadaan' || $active == 'Inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-box-seam">
+                        </span><span class="mtext">Inventaris</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('PetugasBOS/Pengadaan') ?>"
+                                class="<?= $active == 'Pengadaan'  ? 'active' : '' ?>">
+                                Pengadaan
+                            </a></li>
+                    </ul>
+                </li>
+                <!-- <li>
                     <a href="<?= base_url('PetugasBOS/Pengadaan') ?>"
                         class="dropdown-toggle no-arrow <?= $active == 'Pengadaan'  ? 'active' : '' ?>">
                         <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
                     </a>
-                </li>
+                </li> -->
                 <li
                     class="dropdown <?= $active == 'laporan_transaksi' || $active == 'laporan_inventaris' ? 'show' : '' ?>">
                     <a href="javascript:;" class="dropdown-toggle">
@@ -164,13 +180,25 @@
                             </a></li>
                     </ul>
                 </li>
-
-                <li>
+                <li
+                    class="dropdown <?= $active == 'Inventaris' || $active == 'Pengecekan' || $active == 'Pengadaan' || $active == 'Inventaris' ? 'show' : '' ?>">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon bi bi-box-seam">
+                        </span><span class="mtext">Inventaris</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="<?= base_url('KaTU/Pengadaan') ?>"
+                                class="<?= $active == 'Pengadaan'  ? 'active' : '' ?>">
+                                Pengadaan
+                            </a></li>
+                    </ul>
+                </li>
+                <!-- <li>
                     <a href="<?= base_url('KaTU/Pengadaan') ?>"
                         class="dropdown-toggle no-arrow <?= $active == 'Pengadaan'  ? 'active' : '' ?>">
                         <span class="micon bi bi-bucket"></span><span class="mtext">Pengadaan</span>
                     </a>
-                </li>
+                </li> -->
 
                 <?php
                 endif;

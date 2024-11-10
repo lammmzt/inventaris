@@ -78,7 +78,7 @@ class transaksiController extends BaseController
                 <div class="dropdown">
                     <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> <i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                        ' . ($row->status_transaksi == 1 ? '<a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/' . $row->id_transaksi) . '"><i class="dw dw-edit2"></i> Edit</a>
+                        ' . ($row->status_transaksi == 1 ? '
                         <a class="dropdown-item " id="' . $row->id_transaksi . '" href="' . base_url('Admin/ATK/Transaksi/Keluar/Proses/' . $row->id_transaksi) . '"><i class="dw dw-check"></i> Proses</a>' : '') . ' 
                         <button class="dropdown-item detail_trans_keluar" id="' . $row->id_transaksi . '"><i class="dw dw-eye"></i> Detail</button>
                 </div>
@@ -254,7 +254,7 @@ class transaksiController extends BaseController
     
     public function ajaxDataTablesProsesSetuju()
     {
-        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '1')->orWhere('status_transaksi', '2');
+        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '1')->orWhere('status_transaksi', '2')->orWhere('status_transaksi', '3')->orWhere('status_transaksi', '4');
         return DataTable::of($builder)
              ->add('status_transaksi', function ($row) {
                 if ($row->status_transaksi == 1) {
@@ -297,7 +297,7 @@ class transaksiController extends BaseController
     
     public function ajaxDataTablesProsesPengadaan()
     {
-        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '2')->orWhere('status_transaksi', '3');
+        $builder = $this->transaksiModel->getTransaksiMasuk()->where('status_transaksi', '2')->orWhere('status_transaksi', '3')->orWhere('status_transaksi', '4');
         return DataTable::of($builder)
              ->add('status_transaksi', function ($row) {
                 if ($row->status_transaksi == 1) {
@@ -342,7 +342,7 @@ class transaksiController extends BaseController
     public function ajaxDataTablesPegawai()
     {
         $id_user = session()->get('id_user');
-        $builder = $this->transaksiModel->getTransaksiKeluar()->where('id_user', $id_user);
+        $builder = $this->transaksiModel->getTransaksiKeluar()->where('transaksi.id_user', $id_user);
         // dd($builder);
         return DataTable::of($builder)
             ->add('status_transaksi', function ($row) {
@@ -399,9 +399,9 @@ class transaksiController extends BaseController
         $role = session()->get('role');
         if($role == 'KA. TU'){
             $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '1');
-        }else if($role = 'Pegawai'){
+        }else if($role == 'Pegawai'){
             $id_user = session()->get('id_user');
-            $builder = $this->transaksiModel->getTransaksi()->where('id_user', $id_user)->where('status_transaksi', '1');
+            $builder = $this->transaksiModel->getTransaksi()->where('transaksi.id_user', $id_user)->where('status_transaksi', '1');
         }else{
             $builder = $this->transaksiModel->getTransaksi()->where('tipe_transaksi', '0')->Where('status_transaksi', '2');
         }

@@ -13,6 +13,7 @@
                     </div>
                 </div>
                 <form id="form_tambah_pengadaan" class="mt-3">
+                    <input type="hidden" id="id_user" name="id_user" value="<?= $id_user; ?>">
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group row">
@@ -412,6 +413,37 @@ $('#btn_simpan').click(function() {
                 if (response.status != '200') {
                     getSwall(response.status, response.data);
                 } else {
+                    $.ajax({
+                        url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                        method: 'post',
+                        data: {
+                            penerima_notifikasi: $('#id_user').val(),
+                            isi_notifikasi: 'Pengadaan telah disetujui.',
+                        },
+                        success: function(response) {
+                            if (response.status == '200') {
+                                console.log('Notifikasi berhasil ditambahkan');
+                            } else {
+                                console.log('Notifikasi gagal ditambahkan');
+                            }
+                        }
+                    });
+                    $.ajax({
+                        url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                        method: 'post',
+                        data: {
+                            penerima_notifikasi: '',
+                            isi_notifikasi: 'Pengadaan telah disetujui.',
+                            role: 'Petugas BOS'
+                        },
+                        success: function(response) {
+                            if (response.status == '200') {
+                                console.log('Notifikasi berhasil ditambahkan');
+                            } else {
+                                console.log('Notifikasi gagal ditambahkan');
+                            }
+                        }
+                    });
                     getSwall(response.status, response.data);
                     $("#btn_simpan").removeAttr("disabled");
                     $("#btn_simpan").html('Simpan');

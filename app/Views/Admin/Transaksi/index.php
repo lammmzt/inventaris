@@ -81,7 +81,7 @@
     </div>
 </div>
 
-<!-- detail trans keluar -->
+<!-- detail trans masuk -->
 <div class="modal fade" id="modalDetailTransMasuk" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -152,6 +152,24 @@
                         </div>
                     </div>
                 </div>
+                <div id="accordion">
+                    <div class="card">
+                        <div class="card-header">
+                            <button class="btn btn-block" data-toggle="collapse" data-target="#faq1">
+                                Timeline Transaksi Masuk
+                            </button>
+                        </div>
+                        <div id="faq1" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <div class="timeline mb-30">
+                                    <ul id="list_timeline">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -235,6 +253,24 @@
                         </div>
                     </div>
                 </div>
+                <div id="accordion">
+                    <div class="card">
+                        <div class="card-header">
+                            <button class="btn btn-block" data-toggle="collapse" data-target="#faq1">
+                                Timeline Transaksi Keluar
+                            </button>
+                        </div>
+                        <div id="faq1" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <div class="timeline mb-30">
+                                    <ul id="list_timeline2">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -366,16 +402,71 @@ $(document).on('click', '.detail_trans_masuk', function() {
             $('#tanggal_transaksi').val(data.data.tanggal_transaksi);
             $('#keterangan').val(data.data.ket_transaksi);
             $('#status').html(data.data.status_transaksi == 1 ?
-                '<span class="badge badge-warning">Permintaan</span>' :
+                '<span class="badge badge-warning">Persetujuan</span>' :
                 data.data.status_transaksi == 2 ?
-                '<span class="badge badge-primary">persetujuan</span>' :
+                '<span class="badge badge-primary">Disetujui</span>' :
                 data.data.status_transaksi == 3 ?
                 '<span class="badge badge-info">Proses pengadaan</span>' :
                 data.data.status_transaksi == 4 ?
                 '<span class="badge badge-success">Selesai</span>' :
                 '<span class="badge badge-danger">Ditolak</span>');
             $('#modalDetailTransMasuk').modal('show');
+            var timeline = [];
+            if (data.data.tanggal_transaksi != null) {
+                timeline.push({
+                    'tgl': data.data.tanggal_transaksi,
+                    'status': 'Permintaan transaksi masuk oleh ' + data.data.nama_user,
+                });
+            }
+            if (data.data.tgl_disetujui != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_disetujui,
+                    'status': 'Disetujui oleh Kepala TU',
+                });
+            }
+            if (data.data.tgl_pengadaan != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_pengadaan,
+                    'status': 'Proses Pengadaan',
+                });
+            }
+            if (data.data.tgl_selesai != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_selesai,
+                    'status': 'Barang Diterima oleh ' + data.data.nama_user,
+                });
+            }
+            let html = '';
 
+            if (timeline.length > 0) {
+                timeline.forEach((item, index) => {
+                    html += `
+                    <li>
+                        <div class="timeline-date">${item.tgl}</div>
+                        <div class="timeline-desc card-box">
+                            <div class="pd-20">
+                                <h6 class="mb-10 h6">
+                                    ${item.status}
+                                </h6>
+                            </div>
+                        </div>
+                    </li>
+                    `;
+                });
+            } else {
+                html += `
+                <li>
+                    <div class="block">
+                        <div class="tags">
+                            <a href="#" class="tag">
+                                <span>Belum ada timeline</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                `;
+            }
+            $('#list_timeline').html(html);
 
             $.ajax({
                 url: '<?= base_url('Admin/ATK/Transaksi/fetchDetailTransByIdTrans') ?>',
@@ -435,6 +526,62 @@ $(document).on('click', '.detail_trans_keluar', function() {
                 '<span class="badge badge-success">Selesai</span>' :
                 '<span class="badge badge-warning">Permintaan</span>');
             $('#modalDetailTransKeluar').modal('show');
+            var timeline = [];
+            if (data.data.tanggal_transaksi != null) {
+                timeline.push({
+                    'tgl': data.data.tanggal_transaksi,
+                    'status': 'Permintaan transaksi keluar oleh ' + data.data.nama_user,
+                });
+            }
+            if (data.data.tgl_disetujui != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_disetujui,
+                    'status': 'Disetujui oleh Kepala TU',
+                });
+            }
+            if (data.data.tgl_pengadaan != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_pengadaan,
+                    'status': 'Proses Pengadaan',
+                });
+            }
+            if (data.data.tgl_selesai != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_selesai,
+                    'status': 'Barang Diterima oleh ' + data.data.nama_user,
+                });
+            }
+            let html = '';
+
+            if (timeline.length > 0) {
+                timeline.forEach((item, index) => {
+                    html += `
+                    <li>
+                        <div class="timeline-date">${item.tgl}</div>
+                        <div class="timeline-desc card-box">
+                            <div class="pd-20">
+                                <h6 class="mb-10 h6">
+                                    ${item.status}
+                                </h6>
+                            </div>
+                        </div>
+                    </li>
+                    `;
+                });
+            } else {
+                html += `
+                <li>
+                    <div class="block">
+                        <div class="tags">
+                            <a href="#" class="tag">
+                                <span>Belum ada timeline</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                `;
+            }
+            $('#list_timeline2').html(html);
 
 
             $.ajax({

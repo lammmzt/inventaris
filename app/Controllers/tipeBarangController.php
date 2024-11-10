@@ -21,9 +21,9 @@ class tipeBarangController extends BaseController
 
     public function index()
     {
-        $kode_barang = $this->request->getUri()->getSegment(4);
-        // dd($kode_barang);
-        $data_barang = $this->barangModel->getBarangByCode($kode_barang);
+        $id_barang = $this->request->getUri()->getSegment(4);
+        // dd($id_barang);
+        $data_barang = $this->barangModel->getBarang($id_barang);
         if ($data_barang == null) {
             return redirect()->to(base_url('Admin/Barang'));    
         }
@@ -31,7 +31,7 @@ class tipeBarangController extends BaseController
             'main_menu' => 'Data Barang',
             'title' => 'Detail Barang',
             'active' => 'detail_barang',
-            'kode_barang' => $kode_barang,
+            'id_barang' => $id_barang,
             'nama_barang' => $data_barang['nama_barang'],
             'jenis_barang' => $data_barang['jenis_barang'],
             'id_barang' => $data_barang['id_barang'],

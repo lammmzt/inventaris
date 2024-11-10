@@ -107,6 +107,10 @@ function laporanTransaksi() {
                     data.jenis_transaksi = $('#jenis_transaksi').val();
                 }
             },
+            "bPaginate": false,
+            "bLengthChange": false,
+            "bFilter": true,
+            "bInfo": false,
             columns: [{
                     data: 'tanggal_transaksi'
                 },
@@ -137,7 +141,13 @@ function laporanTransaksi() {
             buttons: [{
                     extend: 'print',
                     title: '',
-                    messageTop: '<img src="<?= base_url('Assets/kop surat 2.png') ?>" style="width: 100%;"> <br> <h3 class="text-center text-black" style="margin-top: 20px; margin-bottom: 20px; color: black;">Laporan Transaksi</h3>',
+                    // messageTop: '<img src="<?= base_url('Assets/kop surat 2.png') ?>" style="width: 100%;"> <br> <h3 class="text-center text-black" style="margin-top: 20px; margin-bottom: 20px; color: black;">Laporan Transaksi <br> Tanggal ' +
+                    //      + ' s/d ' +  + '</h3>',
+                    messageTop: function() {
+                        return '<img src="<?= base_url('Assets/kop surat 2.png') ?>" style="width: 100%;"> <br> <h3 class="text-center text-black" style="margin-top: 20px; margin-bottom: 20px; color : black;">Laporan Transaksi <br> Tanggal ' +
+                            $('#tgl_awal').val() + ' s/d ' + $('#tgl_akhir').val() + '</h3>';
+                    },
+
                     className: 'btn btn-primary',
                     messageBottom: '<table class="footers" style="width: 100%; margin-top: 40px;"><tr><td style="width: 50%;"></td><td style="width: 50%; text-align: center; margin-bottom: 5px">Pekalongan, .............................. <br>Yang Membuat<br><br><br><br></br><br>(...........................................)</td></tr></table>',
                     customize: function(win) {
@@ -216,6 +226,7 @@ $('#btn-filter').on('click', function() {
     tgl_awal = $('#tgl_awal').val();
     tgl_akhir = $('#tgl_akhir').val();
     $('#tabelTransaksi').DataTable().ajax.reload();
+    // alert(tgl_awal);
 });
 </script>
 

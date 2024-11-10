@@ -14,6 +14,12 @@
             </div>
         </div>
     </div>
+    <div class="col-md-12 mb-4">
+        <div class="card-box height-100-p pd-20">
+            <h2 class="h4 mb-20">Transaksi ATK Tahun <?= date('Y'); ?></h2>
+            <div id="chart5"></div>
+        </div>
+    </div>
     <div class="col-md-6">
         <div class="card-box mb-30">
             <div class="pd-20">
@@ -93,6 +99,7 @@
                                 <th class="">Tanggal</th>
                                 <th class="">Ruangan</th>
                                 <th class="">Status</th>
+                                <th class="">Action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -102,7 +109,53 @@
         </div>
     </div>
 </div>
+<!-- modalDetail -->
+<div class="modal fade" id="detail_kondisi" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true"
+    data-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    Detail Pelaporan
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <form id="form_tambah_pelaporan" enctype="multipart/form-data">
+                <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
+                enctype="multipart/form-data"> -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 table-responsive">
+                            <h4 class="text-blue h4 text-center">Histori Pelaporan</h4>
+                            <table class="table table-bordered table-hover" id="table_history_pengecekan">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Pelapor</th>
+                                        <th class="text-center">Tanggal Pengecekan</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Foto</th>
+                                        <th class="text-center" style="width: 100px;">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <style>
 .text_date {
     font-size: 14px;
@@ -229,6 +282,11 @@ function dataTablesKondisi() {
                     name: 'status_pengecekan'
                 },
 
+                {
+                    data: 'action',
+                    name: 'action'
+                }
+
             ],
             columnDefs: [{
                 targets: "datatable-nosort",
@@ -283,6 +341,236 @@ function dataTablesPengadaan() {
 }
 
 dataTablesPengadaan();
+
+// get data transaksi
+function getAllDataTransInYear() {
+    $.ajax({
+        url: "<?= base_url('getAllDataTransInYear') ?>",
+        type: "GET",
+        dataType: "json",
+        success: function(response) {
+            if (response.error == false) {
+                var data = response.data;
+                var qty_masuk = [];
+                var qty_keluar = [];
+                var mount = [];
+                data.forEach(function(item) {
+                    qty_masuk.push(item.qty_masuk);
+                    qty_keluar.push(item.qty_keluar);
+                    // inisialisasi bulan JAN - DEC
+                    var month = '';
+                    if (item.mount == 1) {
+                        month = 'Jan';
+                    } else if (item.mount == 2) {
+                        month = 'Feb';
+                    } else if (item.mount == 3) {
+                        month = 'Mar';
+                    } else if (item.mount == 4) {
+                        month = 'Apr';
+                    } else if (item.mount == 5) {
+                        month = 'May';
+                    } else if (item.mount == 6) {
+                        month = 'Jun';
+                    } else if (item.mount == 7) {
+                        month = 'Jul';
+                    } else if (item.mount == 8) {
+                        month = 'Aug';
+                    } else if (item.mount == 9) {
+                        month = 'Sep';
+                    } else if (item.mount == 10) {
+                        month = 'Oct';
+                    } else if (item.mount == 11) {
+                        month = 'Nov';
+                    } else if (item.mount == 12) {
+                        month = 'Dec';
+                    }
+                    mount.push(month);
+                });
+
+                chart5.updateSeries([{
+                    data: qty_masuk
+                }, {
+                    data: qty_keluar
+                }]);
+                chart5.updateOptions({
+                    xaxis: {
+                        categories: mount
+                    }
+                });
+            } else {
+                alert('Error');
+                console.log(response.data);
+            }
+        }
+    });
+}
+
+getAllDataTransInYear();
+// chart
+var options5 = {
+    chart: {
+        height: 350,
+        type: 'bar',
+        parentHeightOffset: 0,
+        fontFamily: 'Poppins, sans-serif',
+        toolbar: {
+            show: false,
+        },
+    },
+    colors: ['#1b00ff', '#f56767'],
+    grid: {
+        borderColor: '#c7d2dd',
+        strokeDashArray: 5,
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: '25%',
+            endingShape: 'rounded'
+        },
+    },
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+    },
+    series: [{
+        name: 'ATK Masuk',
+        data: []
+    }, {
+        name: 'ATK Keluar',
+        data: []
+    }],
+    xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: {
+            style: {
+                colors: ['#353535'],
+                fontSize: '16px',
+            },
+        },
+        axisBorder: {
+            color: '#8fa6bc',
+        }
+    },
+    yaxis: {
+        title: {
+            text: ''
+        },
+        labels: {
+            style: {
+                colors: '#353535',
+                fontSize: '16px',
+            },
+        },
+        axisBorder: {
+            color: '#f00',
+        }
+    },
+    legend: {
+        horizontalAlign: 'right',
+        position: 'top',
+        fontSize: '16px',
+        offsetY: 0,
+        labels: {
+            colors: '#353535',
+        },
+        markers: {
+            width: 10,
+            height: 10,
+            radius: 15,
+        },
+        itemMargin: {
+            vertical: 0
+        },
+    },
+    fill: {
+        opacity: 1
+
+    },
+    tooltip: {
+        style: {
+            fontSize: '15px',
+            fontFamily: 'Poppins, sans-serif',
+        },
+        y: {
+            formatter: function(val) {
+                return val
+            }
+        }
+    }
+}
+var chart5 = new ApexCharts(document.querySelector("#chart5"), options5);
+chart5.render();
+
+
+// get data 
+function getDataInventaris(id) {
+    $.ajax({
+        url: '<?= base_url('Admin/Inventaris/fetchInventarisByKodeInventaris') ?>',
+        method: 'post',
+        data: {
+            id_inventaris: id
+        },
+        success: function(response) {
+            if (response.status == '200') {
+                $('#detail_kondisi').modal('show');
+                if (response.data.pelaporan.length > 0) {
+                    $('#table_history_pengecekan tbody').empty();
+                    $.each(response.data.pelaporan, function(index, value) {
+                        $('#table_history_pengecekan tbody').append(
+                            '<tr>' +
+                            '<td class="text-center">' + (index + 1) + '</td>' +
+                            '<td>' + value.nama_user + '</td>' +
+                            '<td class="text-center">' + value.created_at + '</td>' +
+                            '<td class="text-center">' + value.ket_pengecekan + '</td>' +
+                            '<td class="text-center">' + (value.foto_pengecekan == '' ?
+                                'Tidak ada foto' :
+                                '<a href="<?= base_url('Assets/uploads/pengecekan/') ?>' +
+                                value.foto_pengecekan +
+                                '" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i></a>' +
+                                '</td>') +
+                            '<td class="text-center">' +
+                            (value.status_pengecekan ==
+                                '1' ?
+                                '<span class="badge badge-success">Baik</span>' :
+                                value.status_pengecekan == '2' ?
+                                '<span class="badge badge-warning">Rusak</span>' :
+                                value.status_pengecekan == '3' ?
+                                '<span class="badge badge-info">Perbaikan</span>' :
+                                '<span class="badge badge-danger">Hilang</span>') +
+
+                            '</td>' +
+                            '</tr>'
+                        );
+                    });
+                } else {
+                    $('#table_history_pengecekan tbody').empty();
+                    $('#table_history_pengecekan tbody').append(
+                        '<tr>' +
+                        '<td colspan="6" class="text-center">Tidak ada data</td>' +
+                        '</tr>'
+                    );
+                }
+            } else {
+                getSwall(response.status, response.data);
+            }
+        },
+        error: function() {
+            getSwall('error', 'Data tidak ditemukan');
+        }
+    });
+}
+
+// when click button detail
+$(document).on('click', '.detail_perbaikan', function() {
+    const id = $(this).attr('id');
+    // alert(id);
+    getDataInventaris(id);
+});
 </script>
 
 <?= $this->endSection('dataTables'); ?>s

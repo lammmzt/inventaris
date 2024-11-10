@@ -17,8 +17,8 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Kode Barang</label>
-                                    <input class="form-control" type="text" readonly id="kode_barang"
-                                        value="<?= $kode_barang; ?>" />
+                                    <input class="form-control" type="text" readonly id="id_barang"
+                                        value="<?= $id_barang; ?>" />
                                     <input class="form-control" type="hidden" readonly id="id_barang"
                                         value="<?= $id_barang; ?>" />
                                 </div>
@@ -66,8 +66,7 @@
 </div>
 
 <!-- modal addBarang -->
-<div class="modal fade" id="addBarang" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="addBarang" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -116,8 +115,7 @@
 </div>
 
 <!-- modal edit -->
-<div class="modal fade" id="edit_tipe_barang" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="edit_tipe_barang" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -465,7 +463,11 @@ $(document).on('click', '.delete_tipe_barang', function() {
                     success: function(response) {
                         $('#tableTipeBarang').DataTable().ajax.reload();
                         getSwall(response.status, response.data);
-                    }
+                    },
+                    error: function() {
+                        //alert('data tidak dapat dihapus');
+                        getSwall('error', 'Data tidak dapat dihapus');
+                    },
                 });
             }
         });

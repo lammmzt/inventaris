@@ -166,6 +166,91 @@
     <script src="<?= base_url('Assets/'); ?>src/plugins/sweetalert2/sweetalert2.all.js"></script>
 
     <script type="text/javascript">
+    // add notifikasi
+    function addNotifikasi() {
+        $.ajax({
+            url: "<?= base_url('Notifikasi/fetchNotifikasi') ?>",
+            type: "post",
+            success: function(response) {
+                // console.log(response);
+                let html = '';
+                if (response.data == '') {
+                    $('.notification-active').removeClass('badge');
+                    html += `<li>
+                        <a href="#">
+                            <p>Tidak ada notifikasi</p>
+                        </a>
+                    </li>`;
+                } else {
+                    $('.notification-active').addClass('badge');
+                    response.data.forEach((data) => {
+                        var date = new Date(data.created_at);
+                        let now = new Date();
+                        let diff = Math.abs(now - date);
+                        let minutes = Math.floor((diff / 1000) / 60);
+                        let hours = Math.floor(minutes / 60);
+                        let days = Math.floor(hours / 24);
+                        let weeks = Math.floor(days / 7);
+                        let months = Math.floor(weeks / 4);
+                        let years = Math.floor(months / 12);
+                        let waktu = '';
+                        if (years > 0) {
+                            waktu = years + ' tahun yang lalu';
+                        } else if (months > 0) {
+                            waktu = months + ' bulan yang lalu';
+                        } else if (weeks > 0) {
+                            waktu = weeks + ' minggu yang lalu';
+                        } else if (days > 0) {
+                            waktu = days + ' hari yang lalu';
+                        } else if (hours > 0) {
+                            waktu = hours + ' jam yang lalu';
+                        } else if (minutes > 0) {
+                            waktu = minutes + ' menit yang lalu';
+                        } else {
+                            waktu = 'baru saja';
+                        }
+                        html += `<li class="read_notif" id="${data.id_notifikasi}">
+                            <a href="#">
+                                <img src="<?= base_url('Assets/'); ?>informasi.png" alt="" />
+                                <h3>${data.pengirim_notifikasi}</h3>
+                                <p>${data.isi_notifikasi}</p>
+                                <p style="font-size: 11px;" class="text-muted text-right">${waktu}</p>
+                                </a>
+                                <hr>
+                        </li>`;
+                    });
+                }
+                $('#list_notifikasi').html(html);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        addNotifikasi();
+        setInterval(() => {
+            addNotifikasi();
+        }, 5000);
+    });
+
+    $(document).on('click', '.read_notif', function() {
+        const id = $(this).attr('id');
+        // alert(id);
+        $.ajax({
+            url: "<?= base_url('Notifikasi/readNotifikasi') ?>",
+            type: "post",
+            data: {
+                id_notifikasi: id
+            },
+            success: function(response) {
+                addNotifikasi();
+            }
+        });
+    });
+
+    $(document).on('click', '#list_notifikasi', function(e) {
+        e.stopPropagation();
+    });
+
     $(document).on('focusout', '.required', function() {
         const id = $(this).attr('id');
         if ($(this).val() == '') {

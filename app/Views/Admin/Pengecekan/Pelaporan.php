@@ -94,13 +94,11 @@ video {
                 <!-- <form action="<?= base_url('Admin/Inventaris/Pelaporan/save') ?>" method="post"
                 enctype="multipart/form-data"> -->
                 <div class="modal-body">
-                    <input type="hidden" name="id_inventaris" id="id_inventaris">
                     <div class="row">
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label>Kode Inventaris</label><input type="text" class="form-control"
-                                    id="kode_inventaris" name="kode_inventaris" placeholder="Kode Inventaris" required
-                                    readonly>
+                                <label>Kode Inventaris</label><input type="text" class="form-control" id="id_inventaris"
+                                    name="id_inventaris" placeholder="Kode Inventaris" required readonly>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-12">
@@ -165,7 +163,7 @@ video {
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12 table-responsive">
                             <h4 class="text-blue h4">Histori Pelaporan</h4>
                             <table class="table table-bordered table-hover" id="table_history_pengecekan">
                                 <thead>
@@ -222,13 +220,12 @@ function getDataInventaris(id) {
         url: '<?= base_url('Admin/Inventaris/fetchInventarisByKodeInventaris') ?>',
         method: 'post',
         data: {
-            kode_inventaris: id
+            id_inventaris: id
         },
         success: function(response) {
             if (response.status == '200') {
                 $('#addinventaris').modal('show');
                 $('#id_inventaris').val(response.data.inventaris.id_inventaris);
-                $('#kode_inventaris').val(response.data.inventaris.kode_inventaris);
                 $('#nama_inventaris').val(response.data.inventaris.nama_inventaris);
                 $('#nama_ruangan').val(response.data.inventaris.nama_ruangan);
                 if (response.data.inventaris.status_inventaris == '1') {
@@ -248,7 +245,7 @@ function getDataInventaris(id) {
                             '<td class="text-center">' + (index + 1) + '</td>' +
                             '<td>' + value.nama_user + '</td>' +
                             '<td class="text-center">' + value.created_at + '</td>' +
-                            '<td>' + value.ket_pengecekan + '</td>' +
+                            '<td class="text-center">' + value.ket_pengecekan + '</td>' +
                             '<td class="text-center">' + (value.foto_pengecekan == '' ?
                                 'Tidak ada foto' :
                                 '<a href="<?= base_url('Assets/uploads/pengecekan/') ?>' +
@@ -303,6 +300,23 @@ $("#form_tambah_pelaporan").submit(function(e) {
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: '',
+                        isi_notifikasi: 'Pelaporan inventaris ' + $('#id_inventaris')
+                            .val() + ' telah ditambahkan',
+                        role: 'admin'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
                 getSwall(response.status, response.data);
                 $('#form_tambah_pelaporan')[0].reset();
                 $('#table_history_pengecekan tbody').empty();
@@ -314,6 +328,7 @@ $("#form_tambah_pelaporan").submit(function(e) {
                 $('#addinventaris').modal('hide');
                 $("#btn_tambah").removeAttr("disabled");
                 $("#btn_tambah").html('Simpan');
+
             } else {
                 getSwall(response.status, response.data);
                 $("#btn_tambah").removeAttr("disabled");
@@ -331,7 +346,7 @@ function domReady(fn) {
         document.readyState === "complete" ||
         document.readyState === "interactive"
     ) {
-        setTimeout(fn, 1000);
+        setTimeout(fn, 5000); // 5 seconds
     } else {
         document.addEventListener("DOMContentLoaded", fn);
     }
@@ -344,14 +359,14 @@ domReady(function() {
     function onScanSuccess(decodeText, decodeResult) {
         textContent = decodeText;
 
-        kode_inventaris = textContent.toString();
+        id_inventaris = textContent.toString();
 
-        // alert(kode_inventaris);
-        getDataInventaris(kode_inventaris);
+        // alert(id_inventaris);
+        getDataInventaris(id_inventaris);
         // timer for next scan
         setTimeout(() => {
             htmlscanner.start();
-        }, 10000);
+        }, 5000); // 5 seconds
     }
 
     let htmlscanner = new Html5QrcodeScanner(

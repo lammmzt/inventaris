@@ -15,6 +15,9 @@ class transaksiModel extends Model
         'ket_transaksi',
         'status_transaksi',
         'tanggal_transaksi',
+        'tgl_disetujui',
+        'tgl_pengadaan',
+        'tgl_selesai',
         'created_at',
         'updated_at'
     ];
@@ -27,11 +30,11 @@ class transaksiModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
+                ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user, transaksi.tgl_disetujui, transaksi.tgl_pengadaan, transaksi.tgl_selesai')
                 ->join('users', 'users.id_user = transaksi.id_user');
         }
         return $this
-            ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
+            ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user, transaksi.tgl_disetujui, transaksi.tgl_pengadaan, transaksi.tgl_selesai')
             ->join('users', 'users.id_user = transaksi.id_user')
             ->where(['id_transaksi' => $id])->first();
     }
@@ -40,7 +43,7 @@ class transaksiModel extends Model
     public function getTransaksiMasuk()
     {
         return $this
-            ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user') 
+            ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user, transaksi.tgl_disetujui, transaksi.tgl_pengadaan, transaksi.tgl_selesai') 
             ->join('users', 'users.id_user = transaksi.id_user')
             ->where('tipe_transaksi', '0');
     }
@@ -48,16 +51,15 @@ class transaksiModel extends Model
     public function getTransaksiKeluar()
     {
         return $this
-            ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
+            ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user, transaksi.tgl_disetujui, transaksi.tgl_pengadaan, transaksi.tgl_selesai')
             ->join('users', 'users.id_user = transaksi.id_user')
             ->where('tipe_transaksi', '1');
     }
 
     public function getTransActive(){
          return $this
-                ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user')
+                ->select('transaksi.id_transaksi, transaksi.id_user, transaksi.tipe_transaksi, transaksi.ket_transaksi, transaksi.status_transaksi, transaksi.tanggal_transaksi, users.nama_user, transaksi.tgl_disetujui, transaksi.tgl_pengadaan, transaksi.tgl_selesai')
                 ->join('users', 'users.id_user = transaksi.id_user')
-                // jika status 1 atau 2 atau 3
                 ->where('status_transaksi', '1')
                 ->orWhere('status_transaksi', '2')
                 ->orWhere('status_transaksi', '3');

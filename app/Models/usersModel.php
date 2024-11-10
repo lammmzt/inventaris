@@ -21,4 +21,9 @@ class usersModel extends Model
         return $this->where(['id_user' => $id])->first();
     }
 
+    public function getUsersByRole($role)
+    {
+        return $this->where('role', $role)->findAll();
+    }
+
 }

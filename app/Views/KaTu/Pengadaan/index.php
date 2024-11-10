@@ -60,8 +60,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Keterangan</label>
@@ -78,30 +76,48 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-md-12">
-                    <div class="table-responsive pt-4 response">
-                        <table class="table table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="text-center">#</th>
-                                    <th scope="col">Nama ATK</th>
-                                    <th scope="col" class="text-center">Spek</th>
-                                    <th scope="col" class="text-center">Pemintaan</th>
-                                    <th scope="col" class="text-center">Catatan</th>
-                                    <th scope="col" class="text-center">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody_pengadaan">
-                                <tr>
-                                    <td colspan="5" class="text-center">Data Kosong</td>
-                                </tr>
+                    <div class="col-md-12">
+                        <div class="table-responsive pt-4 response">
+                            <table class="table table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="text-center">#</th>
+                                        <th scope="col">Nama ATK</th>
+                                        <th scope="col" class="text-center">Spek</th>
+                                        <th scope="col" class="text-center">Pemintaan</th>
+                                        <th scope="col" class="text-center">Catatan</th>
+                                        <th scope="col" class="text-center">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody_pengadaan">
+                                    <tr>
+                                        <td colspan="5" class="text-center">Data Kosong</td>
+                                    </tr>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                <div id="accordion">
+                    <div class="card">
+                        <div class="card-header">
+                            <button class="btn btn-block" data-toggle="collapse" data-target="#faq1">
+                                Timeline Pengadaan
+                            </button>
+                        </div>
+                        <div id="faq1" class="collapse" data-parent="#accordion">
+                            <div class="card-body">
+                                <div class="timeline mb-30">
+                                    <ul id="list_timeline">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -144,7 +160,7 @@ function dataTablesPengadaan() {
                     data: 'nama_user'
                 },
                 {
-                    data: 'created_at',
+                    data: 'tgl_permintaan',
                     class: 'text-center'
                 },
                 {
@@ -195,12 +211,66 @@ $(document).on('click', '.detail_pengadaan', function() {
                 '<span class="badge badge-warning">Persetujuan</span>' : data.data
                 .status_pengadaan == 2 ? '<span class="badge badge-primary">Disetujui</span>' :
                 data.data.status_pengadaan == 3 ?
-                '<span class="badge badge-info">Pengadaan</span>' : data.data
+                '<span class="badge badge-info">Proses Pengadaan</span>' : data.data
                 .status_pengadaan == 4 ? '<span class="badge badge-success">Selesai</span>' :
                 '<span class="badge badge-danger">Ditolak</span>');
             $('#modalDetailPengadaan').modal('show');
+            var timeline = [];
+            if (data.data.tgl_permintaan != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_permintaan,
+                    'status': 'Permintaan Pengadaan',
+                });
+            }
+            if (data.data.tgl_disetujui != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_disetujui,
+                    'status': 'Disetujui oleh Kepala TU',
+                });
+            }
+            if (data.data.tgl_pengadaan != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_pengadaan,
+                    'status': 'Proses Pengadaan',
+                });
+            }
+            if (data.data.tgl_selesai != null) {
+                timeline.push({
+                    'tgl': data.data.tgl_selesai,
+                    'status': 'Barang Diterima oleh ' + data.data.nama_user,
+                });
+            }
+            let html = '';
 
-
+            if (timeline.length > 0) {
+                timeline.forEach((item, index) => {
+                    html += `
+                    <li>
+                        <div class="timeline-date">${item.tgl}</div>
+                        <div class="timeline-desc card-box">
+                            <div class="pd-20">
+                                <h6 class="mb-10 h6">
+                                    ${item.status}
+                                </h6>
+                            </div>
+                        </div>
+                    </li>
+                    `;
+                });
+            } else {
+                html += `
+                <li>
+                    <div class="block">
+                        <div class="tags">
+                            <a href="#" class="tag">
+                                <span>Belum ada timeline</span>
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                `;
+            }
+            $('#list_timeline').html(html);
             $.ajax({
                 url: '<?= base_url('Admin/Pengadaan/fetchPengadaanById') ?>',
                 type: 'post',

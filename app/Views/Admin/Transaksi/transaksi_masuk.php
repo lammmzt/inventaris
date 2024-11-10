@@ -20,7 +20,7 @@
                                         class="rq">*</span></label>
                                 <div class="col-sm-8">
                                     <input type="date" class="form-control required" id="tgl_transaksi"
-                                        name="tgl_transaksi" readonly value="<?= date('Y-m-d'); ?>">
+                                        name="tgl_transaksi" required value="<?= date('Y-m-d'); ?>">
                                     <div class="form-control-feedback " id="errortgl_transaksi"></div>
                                 </div>
                             </div>
@@ -271,6 +271,22 @@ $('#btn_simpan').click(function() {
         dataType: 'json',
         success: function(response) {
             if (response.status == '200') {
+                $.ajax({
+                    url: '<?= base_url('Notifikasi/createNotifikasi') ?>',
+                    method: 'post',
+                    data: {
+                        penerima_notifikasi: '',
+                        isi_notifikasi: 'Transaksi masuk baru telah ditambahkan',
+                        role: 'KA. TU'
+                    },
+                    success: function(response) {
+                        if (response.status == '200') {
+                            console.log('Notifikasi berhasil ditambahkan');
+                        } else {
+                            console.log('Notifikasi gagal ditambahkan');
+                        }
+                    }
+                });
                 getSwall(response.status, response.data);
                 $('#form_tambah_transaksi_masuk')[0].reset();
                 detail_transaksi = [];
