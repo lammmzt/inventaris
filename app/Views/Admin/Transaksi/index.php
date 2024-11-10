@@ -156,7 +156,7 @@
                     <div class="card">
                         <div class="card-header">
                             <button class="btn btn-block" data-toggle="collapse" data-target="#faq1">
-                                Timeline Pengadaan
+                                Timeline Transaksi Masuk
                             </button>
                         </div>
                         <div id="faq1" class="collapse" data-parent="#accordion">
@@ -257,7 +257,7 @@
                     <div class="card">
                         <div class="card-header">
                             <button class="btn btn-block" data-toggle="collapse" data-target="#faq1">
-                                Timeline Pengadaan
+                                Timeline Transaksi Keluar
                             </button>
                         </div>
                         <div id="faq1" class="collapse" data-parent="#accordion">
