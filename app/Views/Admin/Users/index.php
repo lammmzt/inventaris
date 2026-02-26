@@ -10,6 +10,10 @@
                         <h4 class="text-blue h4">Data User</h4>
                     </div>
                     <div class="col-sm-6 text-right">
+                        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#importDataUsers"
+                            type="button">
+                            <i class="icon-copy fa fa-upload" aria-hidden="true"></i>
+                        </a>
                         <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addUser" type="button">
                             <i class="icon-copy fa fa-plus" aria-hidden="true"></i>
                         </a>
@@ -21,6 +25,7 @@
                             <tr>
                                 <th class="table-plus">Username</th>
                                 <th class="table-plus">Nama</th>
+                                <th class="table-plus">No. Whatsapp</th>
                                 <th>Role</th>
                                 <th class="datatable-nosort">Action</th>
                             </tr>
@@ -64,6 +69,16 @@
                             <input type="text" class="form-control required" id="username" name="username"
                                 placeholder="Masukan username">
                             <div class="form-control-feedback " id="errorusername"></div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="no_wa_user" class="col-sm-4 col-form-label">No. Whatsapp<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control required" id="no_wa_user" name="no_wa_user"
+                                placeholder="Masukan nomor wa" maxlength="15"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                            <div class="form-control-feedback " id="errorno_wa_user"></div>
                         </div>
                     </div>
                     <!-- select -->
@@ -127,6 +142,16 @@
                             <div class="form-control-feedback " id="erroreditusername"></div>
                         </div>
                     </div>
+                    <div class="form-group row">
+                        <label for="editno_wa_user" class="col-sm-4 col-form-label">No. Whatsapp<span
+                                class="rq">*</span></label></label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control required" id="editno_wa_user" name="no_wa_user"
+                                maxlength="15"
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                            <div class="form-control-feedback " id="erroreditno_wa_user"></div>
+                        </div>
+                    </div>
                     <!-- select -->
                     <div class="form-group row">
                         <label for="editrole" class="col-sm-4 col-form-label">Role<span
@@ -178,6 +203,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="viewno_wa_user" class="col-sm-4 col-form-label">No. Whatsapp</label></label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="viewno_wa_user" name="no_wa_user" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="viewrole" class="col-sm-4 col-form-label">Role</label></label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="viewrole" name="role" readonly>
@@ -212,6 +243,93 @@
 </div>
 
 
+<!-- import data -->
+<div class="modal fade" id="importDataUsers" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">
+                    Import Data User
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <form id="form_import">
+                <!-- <form action="<?= base_url('Admin/User/Import') ?>" method="post" enctype="multipart/form-data"> -->
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label for="file" class="col-sm-4 col-form-label">File Template</label>
+                        <div class="col-sm-8">
+                            <input type="file" class="form-control" id="file" name="file" required>
+                            <div class="form-control-feedback mb-4" id="errorfile"></div>
+
+                            <small class="text-danger">* File Excel harus sesuai dengan template yang telah
+                                disediakan
+                                <a href="<?= base_url('Assets/Files/template_import_user.xlsx') ?>"
+                                    target="_blank">Download Template</a>
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- <div class="row mx-2">
+                        <div class="col-sm-12">
+                            <div class="progress" style="height: 20px;">
+                                <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"
+                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                            </div>
+                        </div>
+                    </div> -->
+                    <div class="row mt-2 justify-content-center" id="statusImport" style="display: none;">
+                        <div class="col-sm-4">
+                            <p>Total Data : <span id="totalData">0</span></p>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>Sukses : <span id="totalSukses">0</span></p>
+                        </div>
+                        <div class="col-sm-4">
+                            <p>Gagal : <span id="totalGagal">0</span></p>
+                        </div>
+                    </div>
+                    <div class="row mx-2 mt-1" id="detailImportData" style="display: none;">
+                        <!-- <p class="text-center">Detail Import</p>  -->
+                        <div class="table-responsive pagging">
+                            <table class="table table table-striped" id="tableImport">
+                                <thead>
+                                    <th scope="col" class="text-center datatable-nosort">#</th>
+                                    <th scope="col" class="text-center ">Username</th>
+                                    <th scope="col" class="text-center">Ket</th>
+                                    <th scope="col" class="text-center">Status</th>
+                                </thead>
+                                <tbody id="detailData">
+                                    <!-- <tr>
+                                        <td colspan="2" class="text-center">Belum ada data</td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-12 text-center mt-2">
+                            <button class="btn btn-primary" type="button" id="print_qr_code_import">
+                                <i class="icon-copy fa fa-print" aria-hidden="true"></i> Cetak QR Code
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btn_import_data">
+                        Import
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- ======================================== END users ======================================== -->
 
 
@@ -240,6 +358,9 @@ function dataTablesUsers() {
                 },
                 {
                     data: 'nama_user'
+                },
+                {
+                    data: 'no_wa_user'
                 },
                 {
                     data: 'role'
@@ -520,6 +641,133 @@ $(document).on('click', '.change_status_user', function() {
         success: function(response) {
             // $('#tableUsers').DataTable().ajax.reload();
             getSwall(response.status, response.data);
+        }
+    });
+});
+
+// when close modal import data
+$('#importDataUsers').on('hidden.bs.modal', function() {
+    $("#form_import")[0].reset();
+    $("#statusImport").hide();
+    $("#detailImportData").hide();
+    $('#tableImport').DataTable().destroy();
+    $("#errorfile").html('');
+    $("#errorfile").removeClass('has-danger');
+    data_qr_code = [];
+});
+
+$(function() {
+    $("#form_import").submit(function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        if (!this.checkValidity()) {
+            e.preventDefault();
+            $(this).addClass('form-control-success');
+        } else {
+            $("#btn_import_data").attr("disabled", "disabled");
+            $("#btn_import_data").html(
+                '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+            );
+            $.ajax({
+                url: '<?= base_url('Admin/User/Import') ?>',
+                method: 'post',
+                data: formData,
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.error) {
+                        // foeach error 
+                        $.each(response.data, function(key, value) {
+                            if (value != '') {
+                                $("#" + key).addClass('form-control-danger');
+                                $("#error" + key).addClass('has-danger');
+                                $("#error" + key).html(value);
+                            } else {
+                                $("#" + key).removeClass('form-control-danger');
+                                $("#" + key).addClass('form-control-success');
+                                $("#error" + key).html('');
+                                $("#error" + key).removeClass('has-danger');
+                            }
+                        });
+                        $("#btn_import_data").removeAttr("disabled");
+                        $("#btn_import_data").html("Import");
+                    } else {
+                        // alert(response.data);
+                        $("#totalData").html(response.total_data);
+                        $("#totalSukses").html(response.data_success);
+                        getSwall(response.status, response.data);
+
+                        if (response.result.length > 0) {
+                            // datatables import
+                            $('#tableImport').DataTable({
+                                scrollCollapse: true,
+                                autoWidth: false,
+                                responsive: true,
+                                columnDefs: [{
+                                    targets: "datatable-nosort",
+                                    orderable: false,
+                                }],
+                                "lengthMenu": [
+                                    [5, 10, 25, 50, -1],
+                                    [5, 10, 25, 50, "All"]
+                                ],
+                                dom: 'Bfrtip',
+                                buttons: [
+                                    'excel', 'pdf'
+                                ],
+
+                                data: response.result,
+                                columns: [
+                                    // {
+                                    //     data: null,
+                                    //     render: function(data, type, row,
+                                    //         meta) {
+                                    //         return meta.row + meta
+                                    //             .settings
+                                    //             ._iDisplayStart + 1;
+                                    //     }
+                                    // },
+                                    {
+                                        data: 'no'
+                                    },
+                                    {
+                                        data: 'username'
+                                    },
+                                    {
+                                        data: 'ket'
+                                    },
+                                    {
+                                        data: 'status'
+                                    },
+                                ],
+                                "language": {
+                                    "info": "_START_-_END_ of _TOTAL_ entries",
+                                    searchPlaceholder: "Search",
+                                    paginate: {
+                                        next: '<i class="ion-chevron-right"></i>',
+                                        previous: '<i class="ion-chevron-left"></i>'
+                                    }
+                                },
+                            });
+                        }
+
+                        $("#totalGagal").html(response.data_failed);
+                        data_qr_code = response.data_success;
+                        $("#form_import")[0].reset();
+                        $("#btn_import_data").removeAttr("disabled");
+                        $("#btn_import_data").html("Import");
+                        $('#tableUsers').DataTable().ajax.reload();
+                        $("#statusImport").show();
+                        $("#detailImportData").show();
+                        $('#tableUsers').DataTable().ajax.reload();
+                        // clear error
+                        $("#errorfile").html('');
+                        $("#errorfile").removeClass('has-danger');
+                    }
+                }
+            });
         }
     });
 });

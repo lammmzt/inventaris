@@ -49,6 +49,7 @@ $routes->group('Admin', function ($routes) {
         $routes->post('fetchDataUser', 'usersController::fetchDataUser');
         $routes->post('fetchAll', 'usersController::fetchAll');
         $routes->post('updatePass', 'usersController::updatePass');
+        $routes->post('Import', 'usersController::importData');
     });
 
     $routes->group('Ruangan', function ($routes) {
@@ -73,6 +74,19 @@ $routes->group('Admin', function ($routes) {
         $routes->post('updateStatus', 'satuanController::changeStatus');
         $routes->post('fetchDataSatuan', 'satuanController::fetchDataSatuan');
         $routes->post('fetchAll', 'satuanController::fetchAll');
+    });
+
+    $routes->group('waGateway', function ($routes) {
+        $routes->get('/', 'waGatewayController::index');
+        $routes->get('DataTables', 'waGatewayController::ajaxDataTables');
+        $routes->post('save', 'waGatewayController::store');
+        $routes->post('delete', 'waGatewayController::destroy');
+        $routes->post('edit', 'waGatewayController::edit');
+        $routes->post('update', 'waGatewayController::update');
+        $routes->post('updateStatus', 'waGatewayController::changeStatus');
+        $routes->post('fetchDatawaGateway', 'waGatewayController::fetchDatawaGateway');
+        $routes->post('fetchAll', 'waGatewayController::fetchAll');
+        $routes->post('testConnection', 'waGatewayController::testConnection');
     });
 
     $routes->group('Barang', function ($routes) {
@@ -111,6 +125,8 @@ $routes->group('Admin', function ($routes) {
         $routes->post('changeStatus', 'atkController::changeStatus');
         $routes->post('fetchAll', 'atkController::fetchAll');
         $routes->post('fetchDataATK', 'atkController::fetchDataatk');
+        $routes->post('getAtkByBarcode', 'atkController::getAtkByBarcode');
+        $routes->post('importData', 'atkController::importData');
     });
 
     $routes->group('ATK/Transaksi', function ($routes) {
@@ -132,9 +148,12 @@ $routes->group('Admin', function ($routes) {
         $routes->get('Masuk', 'detailTransaksiController::transaksi_masuk');
         $routes->post('insertTransaksiMasuk', 'detailTransaksiController::insertTransaksiMasuk');
         $routes->post('fetchDetailTransByIdTrans', 'detailTransaksiController::fetchDetailTransByIdTrans');
+        $routes->post('fetchDetailTransByIdDetailTrans', 'detailTransaksiController::fetchDetailTransByIdDetailTrans');
         $routes->get('Masuk/(:segment)', 'detailTransaksiController::edit_trans_masuk/$1');
+        $routes->post('updateAtkName', 'detailTransaksiController::updateAtkName');
         // $routes->get('DataTablesEditTransMasuk', 'detailTransaksiController::ajaxDataTablesMasuk');
         $routes->post('DataTablesEditTransMasuk', 'detailTransaksiController::ajaxDataTablesMasuk');
+        $routes->post('DataTablesEditTransMasukAdmin', 'detailTransaksiController::ajaxDataTablesMasukAdmin');
         $routes->post('deleteTransMasuk', 'detailTransaksiController::destroyTransMasuk');
         $routes->post('updateDetailATKMasuk', 'detailTransaksiController::updateDetailATKMasuk');
         $routes->post('updateQtyMasuk', 'detailTransaksiController::updateQtyMasuk');

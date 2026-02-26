@@ -83,6 +83,13 @@ class usersController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
+            'no_wa_user' => [
+                'label' => 'No Whatsapp',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ]
+            ]
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -100,6 +107,7 @@ class usersController extends BaseController
                 'password' => password_hash($this->request->getPost('username'), PASSWORD_DEFAULT),
                 'role' => $this->request->getPost('role'),
                 'nama_user' => $this->request->getPost('nama_user'),
+                'no_wa_user' => $this->request->getPost('no_wa_user'),
                 'created_at' => date('Y-m-d H:i:s'),
             ];
             $this->userModel->insert($data);
@@ -160,6 +168,13 @@ class usersController extends BaseController
                     'required' => '{field} tidak boleh kosong',
                 ],
             ],
+            'no_wa_user' => [
+                'label' => 'No Whatsapp',
+                'rules' => 'required',
+                'errors' => [
+                    'required' => '{field} tidak boleh kosong',
+                ]
+            ]
         ]);
 
         if (!$validation->withRequest($this->request)->run()) {
@@ -173,6 +188,7 @@ class usersController extends BaseController
                 'username' => $this->request->getPost('username'),
                 'role' => $this->request->getPost('role'),
                 'nama_user' => $this->request->getPost('nama_user'),
+                'no_wa_user' => $this->request->getPost('no_wa_user'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
             $this->userModel->update($id, $data);
@@ -279,5 +295,131 @@ class usersController extends BaseController
                 }
             }
         }
+    }
+
+    public function importData(){
+        $file_excel = $this->request->getFile('file');
+        $validation = \Config\Services::validation();
+
+        // Define validation rules
+        $validation->setRules([
+            'file' => [
+                'rules' => 'uploaded[file]|ext_in[file,xls,xlsx,csv]',
+                'errors' => [
+                    'uploaded' => 'File tidak boleh kosong',
+                    'required' => 'File tidak boleh kosong',
+                    'ext_in' => 'File harus berupa xls, xlsx, csv'
+                ]
+            ]
+        ]);
+
+        // Validate the request data
+        if (!$validation->run($this->request->getPost())) {
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => $validation->getErrors(),
+                'status' => '422'
+            ]);
+        }
+    
+        
+        // get data user
+        $data_user = $this->userModel->findAll();
+        $data_user = array_column($data_user, 'id_user', 'username');
+    
+
+        // Initialize the PhpSpreadsheet reader based on the file extension
+        $ext = $file_excel->getClientExtension();
+        if ($ext == 'xls') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } elseif ($ext == 'xlsx') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        } elseif ($ext == 'csv') {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Csv();
+        }
+
+        $spreadsheet = $reader->load($file_excel);
+        $data = $spreadsheet->getActiveSheet()->toArray();
+
+        // add total data to process
+        $total_data = count($data) - 1;
+        $no = 0;
+        $success = 0;
+        $failed = 0;
+        $ressult = [];
+        // dd($total_data);
+        foreach ($data as $x => $col) {
+
+            if ($x == 0) {
+                continue;
+            }
+            
+            $no++;
+            
+            $nama_user = $col[1];
+            $username = $col[2];
+            $no_wa_user = $col[3];
+            $role = $col[4];
+
+            // check data user
+            if($nama_user != '' && $username != '' && $no_wa_user != '' && $role != '' ){
+                // check if data username exist
+                if (!array_key_exists($username, $data_user)) {
+                    $uuid = Uuid::uuid4();
+                    $id_user = $uuid->toString();
+                    $data = [
+                        'id_user' => $id_user,
+                        'nama_user' => $nama_user,
+                        'username' => $username,
+                        'password' => password_hash($username, PASSWORD_DEFAULT),
+                        'no_wa_user' => $no_wa_user,
+                        'role' => $role,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ];
+                    $this->userModel->insert($data);
+                    $data_user[$username] = $id_user;
+                    $ressult[] = [
+                        'no' => $no,
+                        'username' => $username,
+                        'ket' => 'Data berhasil ditambahkan',
+                        'status' => 'Success'
+                    ];
+                    $success++;
+                }else{
+                    $data = [
+                        'nama_user' => $nama_user,
+                        'no_wa_user' => $no_wa_user,
+                        'role' => $role,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ];
+                    $this->userModel->update($data_user[$username], $data);
+                    $ressult[] = [
+                        'no' => $no,
+                        'username' => $username,
+                        'ket' => 'Data berhasil diupdate',
+                        'status' => 'Success'
+                    ];
+                    $success++;
+                }
+            }else{
+                $ressult[] = [
+                    'no' => $no,
+                    'username' => $username,
+                    'ket' => 'Data tidak boleh kosong',
+                    'status' => 'Failed'
+                ];
+                $failed++;
+            }
+        }
+        return $this->response->setJSON([
+                'error' => false,
+                'status' => '200',
+                'data' => 'Data berhasil diimport',
+                'total_data' => $total_data,
+                'data_success' => $success,
+                'data_failed' => $failed,
+                'result' => $ressult
+        ]);
     }
 }

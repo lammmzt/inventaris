@@ -52,6 +52,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="barcode_atk"
+                                    class="col-sm-4 col-form-label">Cari<span></span></label></label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="barcode_atk" name="barcode_atk"
+                                        placeholder="Scan Barcode ATK">
+                                    <div class="form-control-feedback " id="errorbarcode_atk"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="form-group row">
                         <label for="id_atk" class="col-sm-2 col-form-label">Nama ATK<span
@@ -142,10 +153,10 @@ function getATK() {
             var html = '';
             html += '<option value="">Pilih ATK</option>';
             $.each(response.data, function(key, value) {
-                html += '<option value="' + value.id_atk + '">' + value.nama_barang +
+                html += '<option value="' + value.id_atk + ' data-stok="' + value.qty_atk + '">' +
+                    value.nama_barang +
                     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' + ' @ ' + value
-                    .nama_satuan +
-                    '</option>';
+                    .nama_satuan + ' Stok: ' + value.qty_atk + '</option>';
                 // html += '<option value="' + value.id_atk + '">' + +
                 //     ' - ' + value.nama_tipe_barang + '(' + value.merek_atk + ')' +
                 //     '</option>';
@@ -187,6 +198,11 @@ function addDetailTransaksi() {
     var id_atk = $('#id_atk').val();
     var atk_text = $('#id_atk option:selected').text();
     var qty = 1;
+    var stok = $('#id_atk option:selected').data('stok');
+    if (stok < qty) {
+        getSwall('error', 'Stok tidak mencukupi');
+        return;
+    }
     var index = detail_transaksi.findIndex(x => x.id_atk == id_atk);
     if (index == -1) {
         detail_transaksi.push({
@@ -195,10 +211,63 @@ function addDetailTransaksi() {
             qty: qty
         });
     } else {
+        if (stok < detail_transaksi[index].qty + qty) {
+            getSwall('error', 'Stok tidak mencukupi');
+            return;
+        }
         detail_transaksi[index].qty = parseInt(detail_transaksi[index].qty) + 1;
     }
     renderDetailTransaksi();
 }
+
+$('#barcode_atk').on('keydown', function(e) {
+    if (e.key === "Enter") {
+        e.preventDefault(); // cegah refresh halaman
+        // ajac getAtkByBarcode
+        $.ajax({
+            url: '<?= base_url('Admin/ATK/getAtkByBarcode') ?>',
+            method: 'post',
+            dataType: 'json',
+            data: {
+                barcode_atk: $(this).val()
+            },
+            success: function(response) {
+                if (response.error) {
+                    getSwall(response.status, response.data);
+                    $('#barcode_atk').val('');
+                } else {
+                    var id_atk = response.data.id_atk;
+                    var stok = response.data.qty_atk;
+                    var atk_text = response.data.nama_barang +
+                        ' - ' + response.data.nama_tipe_barang + '(' + response.data.merek_atk +
+                        ')' + ' @ ' + response
+                        .data.nama_satuan + ' Stok: ' + response.data.qty_atk;
+                    var qty = 1;
+                    if (stok < qty) {
+                        getSwall('error', 'Stok tidak mencukupi');
+                        return;
+                    }
+                    var index = detail_transaksi.findIndex(x => x.id_atk == id_atk);
+                    if (index == -1) {
+                        detail_transaksi.push({
+                            id_atk: id_atk,
+                            atk_text: atk_text,
+                            qty: qty
+                        });
+                    } else {
+                        if (stok < detail_transaksi[index].qty + qty) {
+                            getSwall('error', 'Stok tidak mencukupi');
+                            return;
+                        }
+                        detail_transaksi[index].qty = parseInt(detail_transaksi[index].qty) + 1;
+                    }
+                    renderDetailTransaksi();
+                    $('#barcode_atk').val('');
+                }
+            }
+        });
+    }
+});
 
 
 // fungsi render detail transaksi
@@ -239,6 +308,12 @@ $('#btn_plus').click(function() {
 // event change input qty
 $(document).on('change', '.input_qty', function() {
     var index = $(this).attr('id').split('_')[1];
+    // jika qty kurangdari jumlah stok
+    if (detail_transaksi[index].stok < $(this).val()) {
+        getSwall('error', 'Stok tidak mencukupi');
+        $(this).val(detail_transaksi[index].stok);
+        return;
+    }
     detail_transaksi[index].qty = $(this).val();
     renderDetailTransaksi();
 });

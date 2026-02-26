@@ -45,6 +45,8 @@
                                 class="<?= $active == 'Ruangan'  ? 'active' : '' ?>">Ruangan</a></li>
                         <li><a href="<?= base_url('Admin/Satuan') ?>"
                                 class="<?= $active == 'Satuan'  ? 'active' : '' ?>">Satuan</a></li>
+                        <li><a href="<?= base_url('Admin/waGateway') ?>"
+                                class="<?= $active == 'waGateway'  ? 'active' : '' ?>">Wa Gateway</a></li>
                     </ul>
                 </li>
                 <li

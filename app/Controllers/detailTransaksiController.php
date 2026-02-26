@@ -6,20 +6,24 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Hermawan\DataTables\DataTable;
 use App\Models\transaksiModel;
 use App\Models\atkModel;
+use App\Models\usersModel;
 use App\Models\detailTransaksiModel;
 use Ramsey\Uuid\Uuid;
+use App\Libraries\Fonnte;
 
 class detailTransaksiController extends BaseController
 {
     protected $transaksiModel;
     protected $detailTransaksiModel;
     protected $atkModel;
+    protected $usersModel;
 
     public function __construct()
     {
         $this->detailTransaksiModel = new detailTransaksiModel();
         $this->transaksiModel = new transaksiModel();
         $this->atkModel = new atkModel();
+        $this->usersModel = new usersModel();
     }
 
     // ==================== INDEX ====================
@@ -39,6 +43,55 @@ class detailTransaksiController extends BaseController
         return DataTable::of($builder)
             ->add('nama_barang', function ($row) {
                 return  $row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
+            })
+            ->add('status_detail_transaksi', function ($row) {
+                return '<select class="form-control input_status required" id="'. $row->id_detail_transaksi .'">
+                            <option value="" '. ($row->status_detail_transaksi == '0' ? 'selected' : '') .'>--Pilih Status--</option>
+                            <option value="1" '. ($row->status_detail_transaksi == '1' ? 'selected' : '') .'>Setuju</option>
+                            <option value="2" '. ($row->status_detail_transaksi == '2' ? 'selected' : '') .'>Tolak</option>
+                        </select>';
+            })
+            ->add('status_detail', function ($row) {
+                if ($row->status_detail_transaksi == '0'){
+                    return '<span class="badge badge-warning">Menunggu</span>';
+                }elseif($row->status_detail_transaksi == '1'){
+                    return '<span class="badge badge-success">Disetujui</span>';
+                }else{
+                    return '<span class="badge badge-danger">Ditolak</span>';
+                }
+                
+            })
+            ->add('catatan_detail_transaksi', function ($row) {
+                return '<textarea class="form-control input_catatan" style="min-width: 100px; height: 50px;" placeholder="Catatan" '. ($row->status_detail_transaksi == '1' ? '' : 'readonly') .'
+                 id="'. $row->id_detail_transaksi .'">'. $row->catatan_detail_transaksi .'</textarea>';
+            })
+             ->add('qty', function ($row) {
+                return '<input type="number" class="form-control text-center input_qty" '.($row->status_detail_transaksi == '1' ? '' : 'readonly') .' style="min-width: 100px;" min="1" value="' . $row->qty . '" id="'. $row->id_detail_transaksi .'">';
+            })
+            ->add('action', function ($row) {   
+                return '
+                <button type="button" class="btn btn-danger deleteTransMasuk" id="'. $row->id_detail_transaksi .'">Hapus</button> 
+                ';
+            }, 'last')
+            ->toJson(true);
+    }
+    
+    public function ajaxDataTablesMasukAdmin()
+    {
+        $id_transaksi = $this->request->getPost('id_transaksi');
+        // $id_transaksi = 'c21c3d19-d9de-4e95-9f7b-b42dcbd401f1';
+        $role = session()->get('role');
+
+        if($role == 'Petugas BOS'){
+            $builder = $this->detailTransaksiModel->getTransByTransId($id_transaksi)->where(['status_detail_transaksi' => '1']);
+        }else{
+            $builder = $this->detailTransaksiModel->getTransByTransId($id_transaksi);
+        }
+        // dd($builder);
+    
+        return DataTable::of($builder)
+            ->add('nama_barang', function ($row) {
+                return  '<button type="button" class="btn btn-sm editBarang" data-toggle="modal" data-target="#modalEditBarang" data-id="'. $row->id_detail_transaksi .'"><span class="text-danger fa fa-edit"></span></button>'.$row->nama_barang . ' - ' . $row->nama_tipe_barang . ' (' . $row->merek_atk . ') @ ' . $row->nama_satuan;
             })
             ->add('status_detail_transaksi', function ($row) {
                 return '<select class="form-control input_status required" id="'. $row->id_detail_transaksi .'">
@@ -119,6 +172,30 @@ class detailTransaksiController extends BaseController
     {
         $id_transaksi = $this->request->getPost('id_transaksi');
         $data = $this->detailTransaksiModel->getTransByTransId($id_transaksi)->findAll();
+        if($data == null){
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => 'Data tidak ditemukan',
+                'status' => '404'
+            ]);
+        }
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => $data,
+            'status' => '200'
+        ]);
+    }
+    public function fetchDetailTransByIdDetailTrans()
+    {
+        $id_detail_transaksi = $this->request->getPost('id_detail_transaksi');
+        $data = $this->detailTransaksiModel->getDetailTransaksi($id_detail_transaksi);
+        if($data == null){
+            return $this->response->setJSON([
+                'error' => true,
+                'data' => 'Data tidak ditemukan',
+                'status' => '404'
+            ]);
+        }
         return $this->response->setJSON([
             'error' => false,
             'data' => $data,
@@ -126,7 +203,23 @@ class detailTransaksiController extends BaseController
         ]);
     }
 
+    public function updateAtkName(){ 
+        $id_atk = $this->request->getPost('id_atk');
+        $id_detail_transaksi = $this->request->getPost('id_detail_transaksi');
 
+        $data = [
+            'id_detail_transaksi' => $id_detail_transaksi,
+            'id_atk' => $id_atk,
+        ];
+        
+        $this->detailTransaksiModel->update($id_detail_transaksi, $data);
+        
+        return $this->response->setJSON([
+            'error' => false,
+            'data' => 'Data berhasil disimpan',
+            'status' => '200'
+        ]);
+    }
     // ==================== TRANSAKSI MASUK ====================
 
     public function transaksi_masuk()
@@ -381,6 +474,46 @@ class detailTransaksiController extends BaseController
             $this->detailTransaksiModel->save($dt_trx);
         }
 
+        $user = $this->usersModel->select('nama_user')
+                      ->where('id_user', $id_user)
+                      ->first();
+        // date_id
+        $date_id = date('d-m-Y', strtotime($tgl_transaksi));
+        $nama_user = $user['nama_user'] ?? '-';
+        // Header pesan
+        $message = "📌 *PERMINTAAN ATK BARU*\n\n"
+                . "🗓️ Tanggal   : {$date_id}\n"
+                . "👤 Pemohon   : {$nama_user}\n"
+                . "📝 Keterangan: {$ket_transaksi}\n\n"
+                . "*Daftar ATK yang diminta:*\n";
+        // Detail ATK
+        $no = 1;
+        foreach ($detail_transaksi as $item) {
+            $atk = $this->atkModel->getAtk($item['id_atk']);
+            $nama_tipe_barang = $atk['nama_barang'].' - '.$atk['nama_tipe_barang'].'('.$atk['merek_atk'].')' ?? 'ATK tidak ditemukan';
+            $satuan = '@'.$atk['nama_satuan'] ?? 'Satuan tidak ditemukan';
+            $message .= "{$no}. {$nama_tipe_barang} — {$item['qty']} {$satuan}\n";
+            $no++;
+        }
+        // Footer
+        $message .= "\n🔗 Link: ".base_url('Admin/ATK/Transaksi/Keluar/Proses/'.$data['id_transaksi'])."\n"
+                ."Status: *Menunggu Persetujuan Admin*\n"
+                . "Mohon segera ditindaklanjuti.\n\n"
+                . ""
+                . "— *SIPANDA SMANSA*";
+
+        // get user admin        
+        $user_admin = $this->usersModel->where('role', 'Admin')->findAll();
+
+        // kirim pesan
+        if(count($user_admin) > 0){
+            foreach ($user_admin as $item) {
+                $phone = $item['no_wa_user'];
+                $wa = new Fonnte();
+                $result = $wa->send($phone, $message);
+            }
+        }
+        
         return $this->response->setJSON([
             'error' => false,
             'data' => 'Data berhasil disimpan',

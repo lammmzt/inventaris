@@ -28,15 +28,15 @@ class detailTransaksiModel extends Model
     {
         if ($id == false) {
             return $this
-                ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_atk, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi')
+                ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_atk, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi, atk.barcode_atk')
                 ->join('atk', 'atk.id_atk = detail_transaksi.id_atk')
                 ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.id_transaksi');
         }
         return $this
-            ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_atk, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi')
+            ->select('detail_transaksi.id_detail_transaksi, detail_transaksi.id_transaksi, detail_transaksi.id_atk, detail_transaksi.qty, atk.merek_atk, transaksi.tanggal_transaksi, detail_transaksi.status_detail_transaksi, detail_transaksi.catatan_detail_transaksi, atk.barcode_atk')
             ->join('atk', 'atk.id_atk = detail_transaksi.id_atk')
             ->join('transaksi', 'transaksi.id_transaksi = detail_transaksi.id_transaksi')
-            ->where(['id_detail_transaksi' => $id])
+            ->where(['detail_transaksi.id_detail_transaksi' => $id])
             ->first();
     }
 

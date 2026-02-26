@@ -18,27 +18,34 @@
                         <div class="tab-pane fade show active" id="biodata" role="tabpanel">
                             <div class="pd-20 mx-4 mt-4">
                                 <div class="profile-setting py-2 mb-4">
-                                    <form>
+                                    <form id="formUpdateBiodata" method="POST">
+                                        <input type="hidden" name="id_user" id="id_user">
                                         <div class="form-group row">
                                             <label>Nama Lengkap</label>
-                                            <input class="form-control form-control-lg" type="text" readonly
-                                                id="nama_user">
+                                            <input class="form-control form-control-lg" type="text" id="nama_user"
+                                                name="nama_user">
                                         </div>
                                         <div class="form-group row">
                                             <label>Username</label>
                                             <input class="form-control form-control-lg" type="text" readonly
-                                                id="username">
+                                                id="username" name="username">
+                                        </div>
+                                        <div class="form-group row">
+                                            <label>No. Whatsapp</label>
+                                            <input class="form-control form-control-lg" type="text" id="no_wa_user"
+                                                name="no_wa_user">
                                         </div>
                                         <div class="form-group row">
                                             <label>Role</label>
-                                            <input class="form-control form-control-lg" type="text" readonly id="role">
+                                            <input class="form-control form-control-lg" type="text" readonly id="role"
+                                                name="role">
 
                                         </div>
                                         <!-- status -->
                                         <div class="form-group row">
                                             <label>Status</label>
                                             <input class="form-control form-control-lg" type="text" readonly
-                                                id="status_user">
+                                                id="status_user" name="status_user">
                                         </div>
 
                                         <div class="form-group row">
@@ -52,6 +59,11 @@
                                             <input class="form-control form-control-lg" type="text" readonly
                                                 id="last_login">
                                         </div>
+                                        <div class="form-group row mt-4">
+                                            <button type="submit" class="btn btn-primary" id="btnUpdateBiodata">Update
+                                                Biodata</button>
+                                        </div>
+
                                     </form>
                                 </div>
                             </div>
@@ -100,7 +112,7 @@
 
 
 <script>
-let userFileds = ['nama_user', 'username', 'role', 'created_at', 'last_login', 'id_user'];
+let userFileds = ['nama_user', 'username', 'role', 'created_at', 'last_login', 'id_user', 'no_wa_user'];
 
 function getUser() {
     $.ajax({
@@ -161,6 +173,35 @@ $("#formResetPass").submit(function(e) {
                 } else {
                     getSwall(response.status, response.data);
                     $('#btnResetPass').html('Update Password').attr('disabled', false);
+                }
+            }
+        });
+    }
+});
+
+$("#formUpdateBiodata").submit(function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    // alert('test');
+    if (!this.checkValidity()) {
+        e.preventDefault();
+    } else {
+        $('#btnUpdateBiodata').html(
+            '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+        ).attr('disabled', true);
+        $.ajax({
+            url: '<?= base_url('Admin/User/update') ?>',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response.status == '200') {
+                    getSwall(response.status, response.data);
+                    $('#btnUpdateBiodata').html('Update Biodata').attr('disabled', false);
+                } else {
+                    getSwall(response.status, response.data);
+                    $('#btnUpdateBiodata').html('Update Biodata').attr('disabled', false);
                 }
             }
         });

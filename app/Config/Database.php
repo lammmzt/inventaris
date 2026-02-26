@@ -29,14 +29,14 @@ class Database extends Config
         'hostname'     => 'localhost',
 
         // local
-        // 'username'     => 'root',
-        // 'password'     => '',
-        // 'database'     => 'inventory',
+        'username'     => 'root',
+        'password'     => '',
+        'database'     => 'inventory',
 
         // hosting
-        'username'     => 'inventory',
-        'password'     => 'Kartini39$',
-        'database'     => 'inventory',
+        // 'username'     => 'inventory',
+        // 'password'     => 'Kartini39$',
+        // 'database'     => 'inventory',
 
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',

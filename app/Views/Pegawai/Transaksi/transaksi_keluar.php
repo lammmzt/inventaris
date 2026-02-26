@@ -307,7 +307,6 @@ $('#btn_simpan').click(function() {
                 $('#id_user').trigger('change');
                 $('#id_atk').val('');
                 $('#id_atk').trigger('change');
-                $('#tgl_transaksi').val('');
                 $('#ket_transaksi').val('');
                 $('#errorid_user').html('');
                 $("#errorid_user").removeClass('has-danger');
